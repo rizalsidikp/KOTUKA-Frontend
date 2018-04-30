@@ -1,0 +1,49 @@
+@import '../../styles/variable';
+
+.im-row{
+	background-color: white;
+	width: 100%;
+	min-height: 10px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
+	border-radius: 5px;
+	margin: 0;
+}
+.im-col{
+	max-width: 170px;
+	width: 100%;
+}
+.im-select{
+	padding: 10px 0;
+	background-color: $blue-dark;	
+	border-radius: 5px 0 0 5px;
+	.Select-control{
+		background-color: $blue-dark !important;
+		border: 0;
+		&:hover{
+			box-shadow: none;
+		}
+	}
+	.Select-placeholder{
+		color: white;
+		font-size: 20px;
+		font-weight: bold;
+	}
+	.Select-arrow{
+		border-color: #FFF transparent transparent;
+	}
+	.Select-input{
+		input{
+			color: white;
+			background-color: $blue-dark !important;
+		}
+	}
+}
+
+.im-money{
+	width: 100%;
+	font-size: 20px;
+	border: 0;
+	&:focus{
+		outline: 0;
+	}
+}

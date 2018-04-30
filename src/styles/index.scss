@@ -1,0 +1,203 @@
+@import 'variable';
+
+body {
+    font-family: "Source Sans Pro" !important;
+    overflow-x: hidden;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.no-margin {
+	margin: 0;
+}
+
+.no-padding{
+	padding: 0;
+}
+
+.button, .button-sm{
+	padding: 6px 25px;
+	font-size: 20px;
+	cursor: pointer;
+	border: 0;
+	&:focus{
+		outline: 0;
+	}
+	&:disabled{
+		cursor: default;
+	}
+}
+
+.button-sm{
+	padding: 3px 20px;
+	font-size: 16px;
+}
+
+.p_line{
+	line-height: 17px;
+}
+
+
+//button color
+.button-yellow{
+	background-color: $yellow;
+}
+.button-blue{
+	background-color: $blue;
+}
+.button-blue-dark{
+	background-color: $blue-dark;
+	color: white;
+}
+.button-black{
+	background-color: $black-button;
+	color: $black-bold;
+	&:disabled{
+		background-color: $black-disabled;
+	}
+}
+.button-red-google{
+	background-color: $red-google;
+	color: white;
+}
+.button-blue-facebook{
+	background-color: $blue-facebook;
+	color: white;
+}
+
+.button-shadow{
+	box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px;
+}
+
+.button-rounded{
+	border-radius: 28px;
+}
+
+.font-weight-semi-bold{
+	font-weight: 600;
+}
+
+.full-width{
+	width: 100%;
+}
+
+.horizontal-padding{
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+//dashboard container
+.dashboard-container{
+	padding: 30px 0 224px;
+}
+
+//modal
+.ml-header{
+	padding: 30px;
+	padding-bottom: 60px;
+}
+.ml-content{
+	padding: 30px;
+}
+.modal-button{
+	margin: 10px 0;
+}
+
+i {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
+.no-top-margin {
+	margin-top: 0 !important;
+}
+
+.no-bottom-margin {
+	margin-bottom: 0 !important;
+}
+
+//styling for datepicker
+.react-datepicker-wrapper, .react-datepicker__input-container{
+	width: 100%;
+}
+
+.font10 {
+    font-size: 10px !important;
+}
+.font11 {
+    font-size: 11px !important;
+}
+.font12 {
+    font-size: 12px !important;
+}
+.font14 {
+    font-size: 14px !important;
+}
+.font16 {
+    font-size: 16px !important;
+}
+.font18 {
+	font-size: 18px !important;
+}
+.font20 {
+	font-size: 20px !important;
+}
+.font22 {
+    font-size: 22px !important;
+}
+.font24 {
+    font-size: 24px !important;
+}
+.font28 {
+    font-size: 28px !important;
+}
+.font36 {
+    font-size: 36px !important;
+}
+
+
+@font-face {
+	font-family: "Source Sans Pro";
+	src: url("../fonts/Source_Sans_Pro/SourceSansPro-Black.ttf") format("truetype");
+	font-weight: bolder;
+}
+@font-face {
+	font-family: "Source Sans Pro";
+	src: url("../fonts/Source_Sans_Pro/SourceSansPro-Bold.ttf") format("truetype");
+	font-weight: bold;
+}
+@font-face {
+	font-family: "Source Sans Pro";
+	src: url("../fonts/Source_Sans_Pro/SourceSansPro-SemiBold.ttf") format("truetype");
+	font-weight: 600;
+}
+@font-face {
+	font-family: "Source Sans Pro";
+	src: url("../fonts/Source_Sans_Pro/SourceSansPro-Regular.ttf") format("truetype");
+	font-weight: normal;
+}			
+			

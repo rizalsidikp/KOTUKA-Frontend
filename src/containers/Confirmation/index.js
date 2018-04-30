@@ -1,0 +1,34 @@
+import React, { Component } from 'react'
+import Row from '../../components/Row'
+
+import './style.scss'
+
+import { Logo } from './../../images'
+import strings from '../../localizations'
+import CopyRight from '../../components/CopyRight'
+
+class Confirmation extends Component {
+	render() {
+		return (
+			<div>
+				<div className="container confirm-container">
+					<Row>
+						<div className="col col-md-12 text-center">
+							<img src={ Logo } className='confirm-logo' />
+						</div>
+						<div className="col col-md-12 text-center">
+							<div className="confirm-img" />
+						</div>
+						<div className="col col-md-5 mx-auto text-center">
+							<h1 className="font24 text-blue font-weight-semi-bold">{ strings.sent_confirm }</h1>
+							<p className="font20 text-gray-80">{strings.to_log_in} <span className="text-blue clickable">(rizalsidikp24@gmail.com). <br /> </span>{ strings.we_sent }</p>
+						</div>
+					</Row>
+				</div>
+				<CopyRight />
+			</div>
+		)
+	}
+}
+
+export default Confirmation

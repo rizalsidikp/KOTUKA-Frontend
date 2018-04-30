@@ -1,0 +1,19 @@
+@import '../../styles/variable';
+
+.confirm-container{
+	min-height: 569px;
+}
+
+.confirm-img{
+	margin: auto;
+	margin-top: 100px;
+	margin-bottom: 35px;
+	width: 168px;
+	height: 168px;
+	border-radius: 84px;
+	background: $cream;
+}
+
+.confirm-logo{
+	margin: 15px 0;
+}

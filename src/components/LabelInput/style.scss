@@ -1,0 +1,29 @@
+@import '../../styles/variable';
+
+.li-input{
+	width: 100%;
+	border: 1px solid #CCCCCC;
+	border-radius: 10px;
+	font-size: 16px;
+	padding: 5px 15px;
+	margin-bottom: 10px;
+	&:focus{
+		outline: 0;
+	}
+}
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: $gray-80;
+	opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: $gray-80;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+	color: $gray-80;
+}
+
+.resize-none{
+	resize: none;
+}

@@ -1,0 +1,17 @@
+@import '../../styles/variable';
+
+.home-container{
+	padding: 50px 30px;
+}
+.home-h2{
+	padding: 0 15px;
+	margin: auto;
+	margin-top: 50px;
+	padding-bottom: 16px;
+	margin-bottom: 16px;
+	border-bottom: 1px solid $blue;
+	max-width: max-content;
+}
+.home-curr{
+	margin-bottom: 60px;
+}

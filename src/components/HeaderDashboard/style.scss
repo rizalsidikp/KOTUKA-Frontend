@@ -1,0 +1,38 @@
+@import '../../styles/variable';
+
+.hd-top-border{
+	box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px;
+	border-radius: 0 0 4px 4px;
+	height: 4px;
+}
+.hd-row{
+	padding: 20px 0;
+}
+
+.hd-button{
+	font-size: 16px;
+	padding: 0 15px;
+	font-weight: 600;
+	color: $black-semi;
+	cursor: pointer;
+	transition: 0.3s all ease;
+	&:hover{
+		color: $blue;
+	}
+}
+
+.hd-button-active{
+	color: $blue;
+	cursor: default;
+}
+
+.hd-image{
+	width: 36px;
+	height: 36px;
+	background: $cream;
+	border-radius: 18px;
+}
+
+.hd-arrow{
+	margin: 0 10px;
+}

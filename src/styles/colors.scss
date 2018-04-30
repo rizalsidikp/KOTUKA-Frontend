@@ -1,0 +1,60 @@
+@import 'variable';
+
+.text-blue{
+	color: $blue;
+}
+.background-blue{
+	background: $blue;
+}
+
+.text-blue-dark{
+	color: $blue-dark;
+}
+.background-blue-dark{
+	background: $blue-dark;
+}
+
+
+.background-blue-light{
+	background: $blue-light;
+}
+
+.text-blue-semi{
+	color: $blue-semi;
+}
+.background-blue-semi{
+	background: $blue-semi;
+}
+
+.text-gray{
+	color: $gray;
+}
+
+
+.text-gray-80{
+	color: $gray-80;
+}
+
+
+.text-black{
+	color: $black;
+}
+
+.text-black-semi{
+	color: $black-semi;
+}
+
+
+.text-black-bold{
+	color: $black-bold;
+}
+
+
+.text-gray-dark{
+	color: $gray-dark;
+}
+
+
+.background-cream{
+	background-color: $cream;
+}

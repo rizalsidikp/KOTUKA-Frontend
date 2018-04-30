@@ -1,0 +1,26 @@
+export default {
+  DEV_STATUS: 'development',
+  VERSION_CODE: 99,
+  BASE_URL: 'https://dev.triplogic.io/v2/api',
+  PHOTO_PROFILE_URL: 'https://dev.triplogic.io/v2/api/photo_profile',
+  PHOTO_ID_CARD: 'https://dev.triplogic.io/v2/api/user/idcard',
+  BASE_URL_TIKET: 'https://api-sandbox.tiket.com',
+  USER_AGENT_TIKET: 'twh:24307730;Tripologic',
+  SLACK_WEBHOOK: 'https://hooks.slack.com/services/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',
+  TERM_URL: 'https://dev.triplogic.io/term/',
+  PRIVACY_URL: 'https://dev.triplogic.io/privacy/',
+  ID_ADDRESS_BANDUNG: 101,
+  ID_ADDRESS_JAKARTA: 102,
+  ID_STATION_BANDUNG: 7,
+  ID_STATION_JAKARTA: 1,
+  WEB_CLIENT_ID: '591373799641-mpr1eg0q9v1cctfpi2sp74dhiflbrd49.apps.googleusercontent.com', // Required by google login
+  CLIENT_ID: 2,
+  CLIENT_SECRET: 'XnOt9LOHaMp5U2SA2wzc4llzntbdwakWOYkrUBgY',
+  GRANT_TYPE: 'password',
+  BASE_URL_OAUTH: 'https://dev.triplogic.io/v2/',
+  SCOPE: 'user-app',
+  FIREBASE_API_KEY: 'AIzaSyD6MyhTYph0EQNwZvsA7xk_jn350gIZd_A',
+  FIREBASE_AUTH_DOMAIN: 'tripologik-f721b.firebaseapp.com',
+  VERSION: 2,
+  MAPS_API_KEY: 'AIzaSyByF6gtbVgPP3tCWW49grwOjT-VPPkQtaU'
+};
