@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Row from '../../components/Row'
+import { Redirect } from 'react-router-dom'
 
 import './style.scss'
 
@@ -9,6 +10,9 @@ import CopyRight from '../../components/CopyRight'
 
 class Confirmation extends Component {
 	render() {
+		if(!this.props.location.state){
+				return <Redirect to="/" />
+		}
 		return (
 			<div>
 				<div className="container confirm-container">
@@ -20,8 +24,8 @@ class Confirmation extends Component {
 							<div className="confirm-img" />
 						</div>
 						<div className="col col-md-5 mx-auto text-center">
-							<h1 className="font24 text-blue font-weight-semi-bold">{ strings.sent_confirm }</h1>
-							<p className="font20 text-gray-80">{strings.to_log_in} <span className="text-blue clickable">(rizalsidikp24@gmail.com). <br /> </span>{ strings.we_sent }</p>
+							<h1 className="font24 text-secondary font-weight-semi-bold">{ strings.sent_confirm }</h1>
+							<p className="font20 text-gray-80">{strings.to_log_in} <span className="text-secondary clickable">({this.props.location.state.email}). <br /> </span>{ strings.we_sent }</p>
 						</div>
 					</Row>
 				</div>
