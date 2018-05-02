@@ -4,10 +4,10 @@ import storage from 'redux-persist/es/storage'
 import thunkMiddleware from 'redux-thunk'
 
 
-// import HomeReducer from './containers/Home/reducer'
+import HeaderReducer from './containers/Header/reducer'
 
 const rootReducer = {
-	// homeReducer: HomeReducer,
+	headerReducer: HeaderReducer,
 }
 
 const Immutable = require('immutable')
