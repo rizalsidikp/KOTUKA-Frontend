@@ -6,3 +6,5 @@ yarn.lock
 
 src/config.js
 dist/
+
+.env
