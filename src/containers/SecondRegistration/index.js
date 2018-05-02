@@ -17,8 +17,8 @@ class SecondRegistration extends Component {
 						<div className="col col-md-12 text-center">
 							<img src={ Logo } className="sr-logo" />
 						</div>
-						<div className="col col-md-6 background-blue-light sr-form">
-							<h1 className="font20 text-blue-dark font-weight-bold">{ strings.lets_complete_your_profile }</h1>
+						<div className="col col-md-6 background-secondary-light sr-form">
+							<h1 className="font20 text-primary font-weight-bold">{ strings.lets_complete_your_profile }</h1>
 							<LabelInput name='first_midle_name' label={ strings.first_n_midle_name } placeholder={ strings.first_n_midle_name } /> 
 							<LabelInput name='last_name' label={ strings.last_name } placeholder={ strings.last_name } /> 
 							<LabelInput name='phone' label={ strings.phone } placeholder={ strings.phone } /> 
