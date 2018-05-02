@@ -15,6 +15,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 
 import './styles/index.scss'
 import './styles/colors.scss'
+import './styles/buttons.scss'
 
 import Routes from './routes'
 import history from './history'
