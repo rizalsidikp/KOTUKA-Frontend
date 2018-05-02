@@ -1,17 +1,42 @@
-$blue: #22BBCC;
-$blue-dark: #198290;
+//primary color (Primary Color)
+$primary: #198290;
+$primary-hover: #177783;
+$primary-active: #156B76;
+
+
+//secondary color (Secondary Color)
+$secondary: #22BBCC;
+$secondary-hover: #4AC7D5;
+$secondary-active: #72D3DE;
+
+$secondary-light: #E8F8F9;
+$secondary-semi: #64CFDB;
+$secondary-facebook: #2559B4;
+
+//secondary-white color 
+$secondary-white-hover: #EAF8FA;
+$secondary-white-active: #D6F2F5;
+
+//yellow color
 $yellow: #FFEF0A;
+$yellow-hover: #FFF136;
+$yellow-active: #FFF463;
+
+//balck color
 $black: #003940;
-$white: #FFF;
-$gray: #AAAAAA;
-$gray-dark: #8A8A8A;
-$gray-80: #CCCCCC;
-$cream: #FAFAFA;
+
 $black-bold: #464646;
 $black-button: #86ABAD;
 $black-semi: #6A6A6A;
 $black-disabled: #B5D1D2;
-$blue-light: #E8F8F9;
-$blue-semi: #64CFDB;
+
+//gray
+$gray: #AAAAAA;
+$gray-dark: #8A8A8A;
+$gray-80: #CCCCCC;
+
+//cream
+$cream: #FAFAFA;
+
+//red
 $red-google: #FF120A;
-$blue-facebook: #2559B4;

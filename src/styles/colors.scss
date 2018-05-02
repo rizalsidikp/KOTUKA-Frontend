@@ -1,29 +1,29 @@
 @import 'variable';
 
-.text-blue{
-	color: $blue;
+.text-secondary{
+	color: $secondary !important;
 }
-.background-blue{
-	background: $blue;
-}
-
-.text-blue-dark{
-	color: $blue-dark;
-}
-.background-blue-dark{
-	background: $blue-dark;
+.background-secondary{
+	background: $secondary;
 }
 
-
-.background-blue-light{
-	background: $blue-light;
+.text-primary{
+	color: $primary !important;
+}
+.background-primary{
+	background: $primary;
 }
 
-.text-blue-semi{
-	color: $blue-semi;
+
+.background-secondary-light{
+	background: $secondary-light;
 }
-.background-blue-semi{
-	background: $blue-semi;
+
+.text-secondary-semi{
+	color: $secondary-semi;
+}
+.background-secondary-semi{
+	background: $secondary-semi;
 }
 
 .text-gray{

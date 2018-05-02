@@ -2,7 +2,8 @@
 
 body {
     font-family: "Source Sans Pro" !important;
-    overflow-x: hidden;
+		overflow-x: hidden;
+		min-height: 100%;
 }
 
 .clickable {
@@ -17,63 +18,10 @@ body {
 	padding: 0;
 }
 
-.button, .button-sm{
-	padding: 6px 25px;
-	font-size: 20px;
-	cursor: pointer;
-	border: 0;
-	&:focus{
-		outline: 0;
-	}
-	&:disabled{
-		cursor: default;
-	}
-}
-
-.button-sm{
-	padding: 3px 20px;
-	font-size: 16px;
-}
-
 .p_line{
 	line-height: 17px;
 }
 
-
-//button color
-.button-yellow{
-	background-color: $yellow;
-}
-.button-blue{
-	background-color: $blue;
-}
-.button-blue-dark{
-	background-color: $blue-dark;
-	color: white;
-}
-.button-black{
-	background-color: $black-button;
-	color: $black-bold;
-	&:disabled{
-		background-color: $black-disabled;
-	}
-}
-.button-red-google{
-	background-color: $red-google;
-	color: white;
-}
-.button-blue-facebook{
-	background-color: $blue-facebook;
-	color: white;
-}
-
-.button-shadow{
-	box-shadow: rgba(0, 0, 0, 0.16) 0 3px 6px;
-}
-
-.button-rounded{
-	border-radius: 28px;
-}
 
 .font-weight-semi-bold{
 	font-weight: 600;
@@ -138,6 +86,14 @@ i {
 
 .no-bottom-margin {
 	margin-bottom: 0 !important;
+}
+
+//circle big style
+.circle-big{
+	position: absolute;
+	bottom: 0;
+	right: 90px;
+	height: 200px;
 }
 
 //styling for datepicker
