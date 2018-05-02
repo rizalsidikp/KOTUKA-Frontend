@@ -20,7 +20,7 @@ class HeaderDashboard extends Component {
 	render() {
 		return (
 			<div className="container">
-				<div className="background-blue hd-top-border" />
+				<div className="background-secondary hd-top-border" />
 				<Row className="align-items-center hd-row">
 					<div className="col col-md-auto">
 						<img src={ Logo } />

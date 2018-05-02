@@ -7,7 +7,7 @@ class RadioButton extends Component {
 	render() {
 		const { label = '', checked = false, name = '', onChange = () => {} } = this.props
 		return (
-			<label className="radio-container font16 text-blue"  >{ label }
+			<label className="radio-container font16 text-secondary"  >{ label }
 				<input type="radio" name={ name } checked={ checked } onChange={ onChange } />
 				<span className="checkmark"></span>
 			</label>

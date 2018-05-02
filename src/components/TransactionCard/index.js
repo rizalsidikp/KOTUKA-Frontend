@@ -12,11 +12,11 @@ class TransactionCard extends Component {
 					<span className='font16 text-black-semi font-weight-semi-bold'>Waiting for picker</span>
 				</div>
 				<div className='col d-flex flex-column align-items-end'>
-					<span className="font12 text-blue font-weight-bold">{ strings.will_get }</span>
-					<span className="font24 text-blue-dark font-weight-bold tran-c-line-16">£ 2,074.63</span>
+					<span className="font12 text-secondary font-weight-bold">{ strings.will_get }</span>
+					<span className="font24 text-primary font-weight-bold tran-c-line-16">£ 2,074.63</span>
 					<br />
-					<span className="font12 text-blue font-weight-bold tran-c-line-1">{ strings.you_have_to_transfer }</span>
-					<span className="font24 text-blue-dark font-weight-bold">Rp 40,000,000</span>
+					<span className="font12 text-secondary font-weight-bold tran-c-line-1">{ strings.you_have_to_transfer }</span>
+					<span className="font24 text-primary font-weight-bold">Rp 40,000,000</span>
 				</div>
 			</Row>
 		)

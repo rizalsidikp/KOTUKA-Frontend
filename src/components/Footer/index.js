@@ -5,7 +5,7 @@ import './style.scss'
 class Footer extends Component {
 	render() {
 		return (
-			<div className="container-fluid background-blue-dark">
+			<div className="container-fluid background-primary">
 				<div className="container footer-container">
 					Footer
 				</div>

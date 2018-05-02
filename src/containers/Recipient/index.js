@@ -37,9 +37,9 @@ class Recipient extends Component {
 			<Row className="justify-content-center dashboard-container">
 				<div className="col col-md-8">
 					<div className="text-right">
-						<button className="button button-blue button-rounded button-shadow text-white font-weight-bold text-capitalize" onClick={ () => this.setState({ modalRecipient: true }) }>+ { strings.add }</button>
+						<button className="button button-secondary" onClick={ () => this.setState({ modalRecipient: true }) }>+ { strings.add }</button>
 					</div>
-					<h2 className="font20 text-blue font-weight-semi-bold rec-h2">My Self</h2>
+					<h2 className="font20 text-secondary font-weight-semi-bold rec-h2">My Self</h2>
 					<ReactTable
 						data={ data }
 						columns={ myself }
@@ -47,7 +47,7 @@ class Recipient extends Component {
 						showPageJump={ false }
 						style={{ marginBottom: 20, }}
 					/>
-					<h2 className="font20 text-blue font-weight-semi-bold rec-h2">Someone Else</h2>
+					<h2 className="font20 text-secondary font-weight-semi-bold rec-h2">Someone Else</h2>
 					<ReactTable
 						data={ data }
 						columns={ someone_else }

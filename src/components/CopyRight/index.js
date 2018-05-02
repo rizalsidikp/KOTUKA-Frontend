@@ -15,16 +15,16 @@ class CopyRight extends Component {
 	}
 	
 	render() {
-		const { theme = 'blue-dark' } = this.props
+		const { theme = 'primary' } = this.props
 		return (
-			<div className={ 'container-fluid '.concat(theme === 'blue-dark' ? 'background-blue-dark' : '') }>
+			<div className={ 'container-fluid '.concat(theme === 'primary' ? 'background-primary' : '') }>
 				<div className="container">
 					<Row className={ 'align-items-center cp-row '.concat(theme === 'light' ? 'cp-row-light' : '') }>
-						<div className={ 'col text-left font14 font-weight-semi-bold '.concat(theme === 'light' ? 'text-blue' : 'text-white') }>
+						<div className={ 'col text-left font14 font-weight-semi-bold '.concat(theme === 'light' ? 'text-secondary' : 'text-white') }>
 							{ strings.cp_right }
 						</div>
 						<div className="col text-right">
-							<button className="button button-rounded button-blue font20 text-white font-weight-semi-bold" onClick={ () => this.setState({ modalHelp: true }) }>{ strings.need_help }</button>
+							<button className="button button-secondary" onClick={ () => this.setState({ modalHelp: true }) }>{ strings.need_help }</button>
 						</div>
 					</Row>
 				</div>

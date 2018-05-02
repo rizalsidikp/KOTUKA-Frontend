@@ -21,8 +21,8 @@ class TradeCard extends Component {
 							!withoutSelect &&
 							<p className="font12 text-gray no-margin p_line">4 { strings.hours_ago }</p>
 						}
-						<p className="font16 text-blue no-margin p_line font-weight-semi-bold">{ strings.need } <span className="text-black">Rp 20,000,000</span></p>
-						<p className="font16 text-blue-dark no-margin p_line font-weight-semi-bold">{ strings.can_give } <span className="text-black">£ 1,036.40</span></p>
+						<p className="font16 text-secondary no-margin p_line font-weight-semi-bold">{ strings.need } <span className="text-black">Rp 20,000,000</span></p>
+						<p className="font16 text-primary no-margin p_line font-weight-semi-bold">{ strings.can_give } <span className="text-black">£ 1,036.40</span></p>
 					</div>
 					{
 						!withoutSelect &&
@@ -31,7 +31,7 @@ class TradeCard extends Component {
 								<TradeLevel />
 								<span className="font12 text-gray">1Rp = £ 0.00005184</span>
 							</div>
-							<button className="button-sm button-blue button-rounded text-white font-weight-bold align-self-end">{ strings.select }</button>
+							<button className="button-sm button-secondary align-self-end">{ strings.select }</button>
 						</div>
 					}
 					{

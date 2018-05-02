@@ -20,7 +20,7 @@ export const myself = [
 		Header: 'Option',
 		accessor: 'name',
 		Cell: props =>  <span className="clickable">Delete</span> ,
-		className: 'text-blue text-center'
+		className: 'text-secondary text-center'
 	}
 ]
 
@@ -47,6 +47,6 @@ export const someone_else = [
 		Header: 'Option',
 		accessor: 'name',
 		Cell: props =>  <span className="clickable">Delete</span> ,
-		className: 'text-blue text-center'
+		className: 'text-secondary text-center'
 	}
 ]

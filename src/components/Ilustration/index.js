@@ -13,7 +13,7 @@ class Ilustration extends Component {
 		return (
 			<Row className={ 'justify-content-center il-row '.concat(reverse ? 'flex-row-reverse' : '') }>
 				<div className="col col-md-4">
-					<h3 className="font20 text-blue-dark font-weight-semi-bold">{title}</h3>
+					<h3 className="font20 text-primary font-weight-semi-bold">{title}</h3>
 					<span className="font16 text-gray">{subtitle}</span>
 				</div>
 				<div className="col col-md-4">

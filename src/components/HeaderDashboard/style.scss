@@ -17,12 +17,12 @@
 	cursor: pointer;
 	transition: 0.3s all ease;
 	&:hover{
-		color: $blue;
+		color: $secondary;
 	}
 }
 
 .hd-button-active{
-	color: $blue;
+	color: $secondary;
 	cursor: default;
 }
 
