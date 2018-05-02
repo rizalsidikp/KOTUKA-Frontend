@@ -9,10 +9,10 @@ import './style.scss'
 
 class LabelInput extends Component {
 	render() {
-		const { name='', label = '', placeholder = 'Placeholder..', value = '', type = 'text', onChange = () => {}  } = this.props
+		const { name='', label = '', placeholder = 'Placeholder..', value = '', type = 'text', onChange = () => {}, disabled = false  } = this.props
 		return (
 			<div className="d-block">
-				<label className="font16 text-blue full-width no-margin font-weight-semi-bold">{ label }</label>
+				<label className="font16 text-secondary full-width no-margin font-weight-semi-bold">{ label }</label>
 				{
 					type === 'textarea' ?
 						<textarea name={ name } placeholder={ placeholder } value={ value } onChange={ onChange } className="li-input resize-none" rows={ 4 }></textarea>
@@ -20,7 +20,7 @@ class LabelInput extends Component {
 						type === 'date' ?
 							<DatePicker className="li-input" name={ name } placeholder={ placeholder } selected={ moment() } onChange={ onChange } />
 							:
-							<input name={ name } className="li-input" type={ type } placeholder={ placeholder } value={ value } onChange={ onChange } />
+							<input name={ name } className="li-input" type={ type } placeholder={ placeholder } value={ value } onChange={ onChange } disabled={ disabled } />
 				}
 			</div>	
 		)
@@ -33,7 +33,8 @@ LabelInput.propTypes = {
 	value: PropTypes.string,
 	type: PropTypes.string,
 	onChange: PropTypes.func,
-	name: PropTypes.string
+	name: PropTypes.string,
+	disabled: PropTypes.bool
 }
 
 export default LabelInput
