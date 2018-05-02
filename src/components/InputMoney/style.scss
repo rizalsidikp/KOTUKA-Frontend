@@ -14,10 +14,19 @@
 }
 .im-select{
 	padding: 10px 0;
-	background-color: $blue-dark;	
+	background-color: $primary;	
 	border-radius: 5px 0 0 5px;
+	.Select-value{
+		&:focus{
+			outline: 0;
+		}
+	}
+	.Select-value-label{
+		font-weight: bold;
+		color: white !important;
+	}
 	.Select-control{
-		background-color: $blue-dark !important;
+		background-color: $primary !important;
 		border: 0;
 		&:hover{
 			box-shadow: none;
@@ -34,9 +43,15 @@
 	.Select-input{
 		input{
 			color: white;
-			background-color: $blue-dark !important;
+			background-color: $primary !important;
 		}
 	}
+}
+
+.select-logo{
+	height: 20px;
+	margin-right: 8px;
+	margin-top: -4px;
 }
 
 .im-money{
@@ -45,5 +60,8 @@
 	border: 0;
 	&:focus{
 		outline: 0;
+	}
+	&:disabled{
+		background-color: transparent;
 	}
 }
