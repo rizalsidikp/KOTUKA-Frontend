@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { statusHtmlStorage } from './services/helper'
 
-export default (ComposedComponent, type) => {
+export default (ComposedComponent) => {
 	return class AuthCheck extends Component {
 		authenticate = true
 		
