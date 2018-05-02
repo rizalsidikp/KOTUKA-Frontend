@@ -15,7 +15,10 @@ const Recipient = props => <Async load={ import('./containers/Recipient') } comp
 const TradeConfirmation = props => <Async load={ import('./containers/TradeConfirmation') } componentProps={ props }/>
 
 // auth check
-// import AuthCheck from './authcheck'
+import AuthCheck from './authcheck'
+import AuthBackCheck from './authbackcheck'
+
+import { CircleBig } from 'images'
 
 
 
@@ -38,11 +41,12 @@ class Routes extends Component {
 						activePage={ this.props.location.pathname.split('/')[2] }
 						location={ this.props.location }
 					/>
-					<div>
+					<div className="position-relative">
 						<Route path='/dashboard/post' component={ Post } />             
 						<Route path='/dashboard/transaction' component={ Transaction } />             
 						<Route path='/dashboard/tradeconfirmation' component={ TradeConfirmation } />             
-						<Route path='/dashboard/recipient' component={ Recipient } />             
+						<Route path='/dashboard/recipient' component={ Recipient } />  
+						<img src={ CircleBig } className="circle-big" />    
 					</div>
 					<CopyRight theme='light' />
 				</div>
@@ -55,9 +59,9 @@ class Routes extends Component {
 						<Header/>
 						: null
 				}
-				<Route exact path="/" component={ Home } />
+				<Route exact path="/" component={ AuthBackCheck(Home) } />
 				<Route path="/confirmation" component={ Confirmation } />
-				<Route path="/dashboard" component={ DashboardPage } />
+				<Route path="/dashboard" component={ AuthCheck(DashboardPage) } />
 				<Route path="/secondregistration" component={ SecondRegistration } />
 				{/* <Route path="/user" component={AuthCheck(UserPage, 'user')} />                     */}
 			</div>
