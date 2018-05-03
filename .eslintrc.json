@@ -29,6 +29,8 @@
         "propWrapperFunctions": [ "forbidExtraProps" ]
     },
     "rules": {
+				"no-console": 0,
+				"no-useless-escape": 0,
         "indent": [
             "error",
             "tab"
