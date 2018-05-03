@@ -5,9 +5,11 @@ import thunkMiddleware from 'redux-thunk'
 
 
 import HeaderReducer from './containers/Header/reducer'
+import HomeReducer from './containers/Home/reducer'
 
 const rootReducer = {
 	headerReducer: HeaderReducer,
+	homeReducer: HomeReducer
 }
 
 const Immutable = require('immutable')
