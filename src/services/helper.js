@@ -103,7 +103,7 @@ export function validatePhoneNumber(phoneNumber) {
 */
 export function chunkArray(list = [], titleKey, valueKey, imageKey) {
 	list.sort(compare)
-	return list.reduce((carry, data) => {
+	return list.reduce((carry, data, index) => {
 		carry.push({
 			label:
 			<div className="Select-value">
@@ -111,6 +111,7 @@ export function chunkArray(list = [], titleKey, valueKey, imageKey) {
 				<span className="text-black font-weight-bold">{ data[titleKey] }</span>
 			</div>,
 			value: data[valueKey],
+			index
 		})
 		return carry
 
@@ -204,4 +205,8 @@ export function compare(a,b) {
 		return 1
 	}
 	return 0
+}
+
+export function convertMoneyString(money) {
+	return money.replace(/[^a-zA-Z 0-9.]+/g,'')
 }
