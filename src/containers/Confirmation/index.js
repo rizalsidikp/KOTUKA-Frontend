@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Row from '../../components/Row'
 import { Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import './style.scss'
 
@@ -11,7 +12,7 @@ import CopyRight from '../../components/CopyRight'
 class Confirmation extends Component {
 	render() {
 		if(!this.props.location.state){
-				return <Redirect to="/" />
+			return <Redirect to="/" />
 		}
 		return (
 			<div>
@@ -33,6 +34,10 @@ class Confirmation extends Component {
 			</div>
 		)
 	}
+}
+
+Confirmation.propTypes = {
+	location: PropTypes.object
 }
 
 export default Confirmation
