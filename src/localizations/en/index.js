@@ -61,5 +61,9 @@ export default {
 	country: 'Country',
 	other: 'Other',
 	question: 'Question',
-	send: 'Send'
+	send: 'Send',
+	fast: 'Fast',
+	tolerable: 'Tolerable',
+	fair: 'Fair',
+	remove: 'Remove'	
 }
