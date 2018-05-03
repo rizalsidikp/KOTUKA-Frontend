@@ -46,7 +46,7 @@ export function loginWithFacebook() {
 			const name = userSplitName(user.name)
 			const payload = {
 				...name,
-				birthday: moment(user.birthday, 'MM/DD/YYYY').format("YYYY-MM-DD"),
+				birthday: moment(user.birthday, 'MM/DD/YYYY').format('YYYY-MM-DD'),
 				avatar: user.picture.data.url,
 				email: user.email
 			}

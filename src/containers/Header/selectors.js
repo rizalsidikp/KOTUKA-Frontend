@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 
-export const selectHeader = (state) => state => state.headerReducer
+export const selectHeader = () => state => state.headerReducer
 
 export const getLoading = () => createSelector(
 	selectHeader(),
