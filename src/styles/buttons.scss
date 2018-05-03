@@ -17,7 +17,6 @@
 	}
 	&:disabled{
 		cursor: default;
-		background-color: $black-disabled;
 	}
 	&:active{
 		box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
@@ -45,6 +44,9 @@
 	&:active{
 		background-color: $primary-active;
 	}
+	&:disabled{
+		background-color: $primary-disabled;
+	}
 }
 
 .button-secondary{
@@ -54,6 +56,9 @@
 	}
 	&:active{
 		background-color: $secondary-active;
+	}
+	&:disabled{
+		background-color: $secondary-disabled;
 	}
 }
 
@@ -65,6 +70,10 @@
 	&:active{
 		background-color: $secondary-white-active;
 	}
+	&:disabled{
+		background-color: white;
+		color: $secondary-disabled
+	}
 }
 
 .button-yellow{
@@ -75,6 +84,10 @@
 	}
 	&:active{
 		background-color: $yellow-active;
+	}
+	&:disabled{
+		background-color: $secondary-disabled;
+		color: white;
 	}
 }
 

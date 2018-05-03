@@ -15,6 +15,14 @@
 }
 
 
+.background-primary-dark{
+	background: $primary-dark;
+}
+.text-primary-dark{
+	color: $primary-dark !important;
+}
+
+
 .background-secondary-light{
 	background: $secondary-light;
 }
@@ -52,6 +60,14 @@
 
 .text-gray-dark{
 	color: $gray-dark;
+}
+
+
+.text-gray-80{
+	color: $gray-80;
+}
+.background-gray-80{
+	background-color: $gray-80;
 }
 
 
