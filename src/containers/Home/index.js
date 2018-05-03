@@ -92,7 +92,8 @@ Home.propTypes = {
 	getClosestTrade: PropTypes.func,
 	convertMoney: PropTypes.func,
 	setLoading: PropTypes.func,
-	tradeSelected: PropTypes.func
+	tradeSelected: PropTypes.func,
+	removeTrade: PropTypes.func
 }
 
 const mapStateToProps = createStructuredSelector({
