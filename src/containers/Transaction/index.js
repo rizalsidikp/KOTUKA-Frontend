@@ -10,7 +10,9 @@ class Transaction extends Component {
 			<div className="container dashboard-container">
 				<Row className="justify-content-center">
 					<div className="col col-md-8">
-						<TransactionCard />
+						<TransactionCard 
+							status="Waiting for trader to transfer"
+						/>
 					</div>
 				</Row>
 			</div>
