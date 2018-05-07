@@ -18,7 +18,10 @@
 		width: 100%;
 		height: auto;
 		padding-top: 100%;
-		background: $secondary;
+		background-color: $secondary;
+		background-position: center;
+		background-size: cover;
+		background-repeat: no-repeat;
 }
 .tc-disabled{
 	position: absolute;
