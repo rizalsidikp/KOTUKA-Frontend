@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Async from 'react-code-splitting'
-import HeaderDashboard from './components/HeaderDashboard'
+import HeaderDashboard from './containers/HeaderDashboard'
 import CopyRight from './components/CopyRight'
 
 const Home = props => <Async load={ import('./containers/Home') } componentProps={ props }/>
@@ -63,7 +63,6 @@ class Routes extends Component {
 				<Route path="/confirmation" component={ Confirmation } />
 				<Route path="/dashboard" component={ AuthCheck(DashboardPage) } />
 				<Route path="/secondregistration" component={ SecondRegistration } />
-				{/* <Route path="/user" component={AuthCheck(UserPage, 'user')} />                     */}
 			</div>
 		)
 	}
