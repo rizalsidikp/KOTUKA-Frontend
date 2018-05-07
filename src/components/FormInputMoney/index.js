@@ -45,10 +45,10 @@ class FormInputMoney extends Component {
 
 	onChangeSelected = (val, mode) => {
 		if(mode === 'need'){
-			this.props.onSelectNeed(val.value)
+			this.props.onSelectNeed(val)
 		}
 		if(mode === 'have'){
-			this.props.onSelectHave(val.value)
+			this.props.onSelectHave(val)
 		}
 		this.onChangeMoney(this.props.amountNeed)
 	}
@@ -85,7 +85,7 @@ class FormInputMoney extends Component {
 				</Row>
 				<Row>
 					<div className="col col-xs-12 text-center">
-						<button className="button button-yellow" onClick={ this.props.onStartTrading } disabled={ buttonDisabled }>{ strings.get_start }</button>
+						<button className="button button-yellow" onClick={ this.props.onStartTrading } disabled={ buttonDisabled }>{ this.props.buttonText }</button>
 					</div>
 				</Row>
 			</div>
@@ -106,7 +106,8 @@ FormInputMoney.propTypes = {
 	convertMoney: PropTypes.func,
 	onStartTrading: PropTypes.func,
 	buttonDisabled: PropTypes.bool,
-	setLoading: PropTypes.func
+	setLoading: PropTypes.func,
+	buttonText: PropTypes.string
 }
 
 export default FormInputMoney
