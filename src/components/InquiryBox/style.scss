@@ -1,0 +1,36 @@
+.ib-box{
+	border-radius: 18px;
+	margin: 4px 0;
+	overflow: hidden;
+	max-width: fit-content;
+	max-width: -moz-max-content;
+}
+
+.ib-name{
+	padding: 4px 16px;
+}
+
+.ib-pay{
+	padding: 4px 10px;
+	transition: 0.3s all ease;
+}
+
+.ib-completed{
+	padding: 4px 12px;
+}
+
+.ib-checklist {
+	margin: 5px 8px;
+	width: 6px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.ib-check-circle {
+	margin: 4px;
+	border-radius: 15px;
+}
