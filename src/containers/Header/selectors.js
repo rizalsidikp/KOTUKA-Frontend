@@ -6,3 +6,8 @@ export const getLoading = () => createSelector(
 	selectHeader(),
 	state => state.get('loading')
 )
+
+export const getUser = () => createSelector(
+	selectHeader(),
+	state => state.get('user')
+)

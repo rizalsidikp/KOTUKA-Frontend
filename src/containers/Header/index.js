@@ -25,7 +25,7 @@ class Header extends Component {
 	}
 
 	componentWillMount() {
-		this.props.setInitialState()
+		this.props.setLoading(false)
 	}
 
 	setModalLogin = (modalLogin) => {
@@ -107,6 +107,7 @@ Header.propTypes = {
 	loginWithGoogle: PropTypes.func,
 	login: PropTypes.func,
 	register: PropTypes.func,
+	setLoading: PropTypes.func
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -118,7 +119,8 @@ const mapDispatchToProps = (dispatch) => ({
 	loginWithGoogle: () => dispatch(actions.loginWithGoogle()),
 	loginWithFacebook: () => dispatch(actions.loginWithFacebook()),
 	login: (username, password) => dispatch(actions.login(username, password)),
-	register: (username, password) => dispatch(actions.register(username, password)) 
+	register: (username, password) => dispatch(actions.register(username, password)), 
+	setLoading: (loading) => dispatch(actions.setLoading(loading))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

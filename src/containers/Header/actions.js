@@ -1,6 +1,6 @@
 import * as constants from './constants'
 import auth from './../../services/auth'
-import { setHtmlStorage } from './../../services/helper'
+import { setHtmlStorage, removeHtmlStorage } from './../../services/helper'
 import history from './../../history'
 import moment from 'moment'
 
@@ -9,10 +9,13 @@ export function setLoading(loading) {
 }
 
 export function setInitialState() {
-	return (dispatch) => {
-		dispatch(setLoading(false))
-	}
+	return { type: constants.SET_INITIAL_STATE }
 }
+
+export function setUser(user) {
+	return { type: constants.SET_USER, payload: { user } }
+}
+
 
 export function loginWithGoogle() {
 	return async(dispatch) => {
@@ -27,6 +30,7 @@ export function loginWithGoogle() {
 				email: user.email
 			}
 			const userResponse = await auth.exLogin(payload)
+			dispatch(setUser(userResponse.data_user))
 			setHtmlStorage('accessToken', userResponse.token, 24*3600)
 			setHtmlStorage('firebaseToken', userResponse.rtDB, 24*3600)
 			history.push('/dashboard/post')
@@ -51,6 +55,7 @@ export function loginWithFacebook() {
 				email: user.email
 			}
 			const userResponse = await auth.exLogin(payload)
+			dispatch(setUser(userResponse.data_user))			
 			setHtmlStorage('accessToken', userResponse.token, 24*3600)
 			setHtmlStorage('firebaseToken', userResponse.rtDB, 24*3600)
 			history.push('/dashboard/post')
@@ -72,6 +77,7 @@ export function login(username, password) {
 					state: { email: response.result.email }
 				})	
 			}
+			dispatch(setUser(response.result))			
 			setHtmlStorage('accessToken', response.token, 24*3600)
 			setHtmlStorage('firebaseToken', response.rtDB, 24*3600)
 			return history.push('/dashboard/post')			
@@ -79,6 +85,15 @@ export function login(username, password) {
 			console.log(error)
 		}
 		dispatch(setLoading(false))		
+	}
+}
+
+export function logout() {
+	return async(dispatch) => {
+		removeHtmlStorage('accessToken')
+		removeHtmlStorage('firebaseToken')
+		await dispatch(setInitialState())
+		history.push('/')
 	}
 }
 
