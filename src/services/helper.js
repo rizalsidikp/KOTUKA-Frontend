@@ -111,6 +111,8 @@ export function chunkArray(list = [], titleKey, valueKey, imageKey) {
 				<span className="text-black font-weight-bold">{ data[titleKey] }</span>
 			</div>,
 			value: data[valueKey],
+			image: data[imageKey],
+			...data,
 			index
 		})
 		return carry
@@ -208,5 +210,5 @@ export function compare(a,b) {
 }
 
 export function convertMoneyString(money) {
-	return money.replace(/[^a-zA-Z 0-9.]+/g,'')
+	return parseFloat(money.replace(/[^a-zA-Z 0-9.]+/g,''))
 }
