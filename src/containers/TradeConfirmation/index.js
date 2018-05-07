@@ -1,24 +1,14 @@
 import React, { Component } from 'react'
 import { Collapse } from 'react-collapse'
-import ReactTable from 'react-table'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import * as selectors from './selectors'
+import * as actions from './actions'
+import PropTypes from 'prop-types'
+import Select from 'react-select-plus'
+import accounting from 'accounting'
+import getSymbolFromCurrency from 'currency-symbol-map'
 
-import { myself, someone_else } from './../Recipient/column'
-
-const data = [
-	{
-		first_middle_name: 'Rizal',
-		last_name: 'Sidik',
-		country: 'ID',
-		bank_account: '123456'
-	},
-	{
-		first_middle_name: 'Rizal',
-		last_name: 'Sidik',
-		country: 'UK',
-		bank_account: '123456',
-		sort_code: '123 abc'		
-	}
-]
 
 import Row from '../../components/Row'
 
@@ -26,8 +16,11 @@ import './style.scss'
 import strings from '../../localizations'
 import TradeCard from '../../components/TradeCard'
 import LabelInput from '../../components/LabelInput'
-import RadioButton from '../../components/RadioButton'
+// import RadioButton from '../../components/RadioButton'
 import ModalRecipient from '../../components/ModalRecipient'
+import { chunkArray } from '../../services/helper'
+import { getSelectedTrades } from '../Home/selectors'
+import { getUser } from '../Header/selectors'
 
 class TradeConfirmation extends Component {
 	constructor(props) {
@@ -35,11 +28,63 @@ class TradeConfirmation extends Component {
 		this.state={
 			collapse : 1,
 			checked: 'myself',
-			modalRecipient: false
+			modalRecipient: false,
+			first_n_midle_name: 'Rizal',
+			last_name: 'Sidik',
+			account_no: '09889823',
+			// iban: '111999',
+			description: 'Untuk Saya',
 		}
 	}
+	componentWillMount() {
+		this.props.getPurpose()
+	}
+
+	onPickTrade = (need_amount, have_amount) => {
+		const payment_detail = {
+			payment_type : 'mandiri',
+			gross_amount: 2048390.65
+		}
+		const account_info = {
+			account_no : this.state.account_no,
+			'iban' :  '92ie9i29ei92ie92i9e2i9ei29ei92ei9'
+		}
+		let trade_with = []
+		this.props.selectedTrade.forEach(trade => {
+			trade_with.push(trade.id)
+		})
+		this.props.pickTrade(
+			this.props.user.get('id'), need_amount, this.props.selectedTrade[0].have_currency,
+			0.00084, have_amount, this.props.selectedTrade[0].need_currency, 
+			payment_detail, this.props.selectedPurpose.get('text_purpose'),
+			2048390.00, account_info, this.state.first_n_midle_name, this.state.last_name, this.state.description,
+			trade_with, 'Asia/Jakarta'
+		)
+	}
+
+
+
 	render() {	
-		const columns = this.state.checked === 'myself' ? myself : this.state.checked === 'someone' ? someone_else : null 
+		const options = chunkArray(this.props.purpose, 'text_purpose', 'id', '')
+		let you_will_get = 0, you_transfer = 0
+		if(this.props.selectedTrade.length > 0){
+			you_will_get = this.props.selectedTrade[0].have_amount
+			if(this.props.selectedTrade[0].have_currency === 'IDR'){
+				you_will_get = Math.round(you_will_get)
+				you_will_get = accounting.formatMoney(you_will_get,'', 0, ',')
+			}else{
+				you_will_get = Math.round(you_will_get * 100) / 100
+				you_will_get = accounting.formatMoney(you_will_get,'', 2, ',')
+			}
+			you_transfer = this.props.selectedTrade[0].need_amount
+			if(this.props.selectedTrade[0].need_currency === 'IDR'){
+				you_transfer = Math.round(you_transfer)
+				you_transfer = accounting.formatMoney(you_transfer,'', 0, ',')
+			}else{
+				you_transfer = Math.round(you_transfer * 100) / 100
+				you_transfer = accounting.formatMoney(you_transfer,'', 2, ',')
+			}
+		}
 		return (
 			<div className="container dashboard-container">
 				<Row className="justify-content-center">
@@ -55,25 +100,34 @@ class TradeConfirmation extends Component {
 									{
 										this.state.collapse === 1 &&
 										<div>
-											<Row className="trade-c-recipient-row align-items-center">
-												<div className="col col-md-auto">
-													<RadioButton name='type' checked={ this.state.checked === 'myself' } label='My Self' onChange={ () => this.setState({ checked: 'myself' }) } />
-												</div>
-												<div className="col">
-													<RadioButton name='type' checked={ this.state.checked === 'someone' } label='Someone Else' onChange={ () => this.setState({ checked: 'someone' }) } />
-												</div>
-												<div className="col col-md-auto text-right">
-													<button className="button-xs button-secondary ml-auto" onClick={ () => this.setState({ modalRecipient: true }) }> { strings.add } </button> 
-												</div>
-											</Row>
-											<div className="trade-c-table">
-												<ReactTable
-													data={ data }
-													columns={ columns }
-													defaultPageSize={ 3	}
-													showPageJump={ false }
-												/>
-											</div>
+											<LabelInput 
+												name="first_and_middle_name" 
+												placeholder={ strings.first_n_midle_name } 
+												label={ strings.first_n_midle_name } 
+												value={ this.state.first_n_midle_name } 
+												onChange={ (e) => this.setState({ first_n_midle_name: e.target.value }) }
+											/>
+											<LabelInput 
+												name="last_name" 
+												placeholder={ strings.last_name } 
+												label={ strings.last_name } 
+												value={ this.state.last_name } 
+												onChange={ (e) => this.setState({ last_name: e.target.value }) }
+											/>
+											<LabelInput 
+												name="account_no" 
+												placeholder={ strings.account_no } 
+												label={ strings.account_no } 
+												value={ this.state.account_no } 
+												onChange={ (e) => this.setState({ account_no: e.target.value }) }
+											/>
+											<LabelInput 
+												name="description" 
+												placeholder={ strings.description } 
+												label={ strings.description } 
+												value={ this.state.description } 
+												onChange={ (e) => this.setState({ description: e.target.value }) }
+											/>
 										</div>
 									}
 								</Collapse>
@@ -89,8 +143,18 @@ class TradeConfirmation extends Component {
 									{
 										this.state.collapse === 2 &&
 										<div>
-											<LabelInput name='purpose' label={ strings.purpose } placeholder={ strings.purpose } value={ this.state.purpose } onChange={ (e) => this.setState({ purpose: e.target.value }) } />											
-											<LabelInput name='other' label={ strings.other } placeholder={ strings.other } value={ this.state.other } onChange={ (e) => this.setState({ other: e.target.value }) } />											
+											<Select
+												name="form-field-name"
+												value={ this.props.selectedPurpose.get('id') }
+												clearable={ false }
+												onChange={ (val) => this.props.setSelectedPurpose(val) }
+												autosize={ false }
+												options={ options }
+											/>
+											{
+												this.props.selectedPurpose.get('text_purpose') === 'Other' &&
+												<LabelInput name='other' label={ strings.other } placeholder={ strings.other } value={ this.state.other } onChange={ (e) => this.setState({ other: e.target.value }) } />											
+											}
 										</div>
 									}
 								</Collapse>
@@ -105,27 +169,33 @@ class TradeConfirmation extends Component {
 									<div className={ 'font14 '.concat(this.state.collapse === 3 ? 'text-secondary font-weight-bold' : 'text-black-semi') }>{ strings.review }</div>
 									{
 										this.state.collapse === 3 &&
-										<Row>
-											<TradeCard withoutSelect />
-											<TradeCard withoutSelect />
-											<div className="col col-md-6 font12 text-primary font-weight-bold">
-												{ strings.will_get } &emsp; <span className="font16">£ 2,074.63</span>
+										<div>
+											<Row>
+												{
+													this.props.selectedTrade && this.props.selectedTrade.map((trade, tradeIndex) => {
+														return(
+															<TradeCard 
+																key={ tradeIndex }
+																data={ trade }
+																withoutSelect
+															/>
+														)
+													})
+												}
+											</Row>
+											<Row>
+												<div className="col col-md-6 font12 text-primary font-weight-bold">
+													{ strings.will_get } &emsp; <span className="font16">{ getSymbolFromCurrency(this.props.selectedTrade[0].have_currency) } { you_will_get }</span>
+												</div>
+												<div className="col col-md-6 font12 text-primary font-weight-bold">
+													{ strings.you_have_to_transfer } &emsp; <span className="font16">{ getSymbolFromCurrency(this.props.selectedTrade[0].need_currency) } { you_transfer }</span>
+												</div>
+											</Row>
+											<br />
+											<div className="text-center">
+												<button className="button-xs button-yellow" onClick={ () => this.onPickTrade(you_will_get, you_transfer) }>Accept</button>
 											</div>
-											<div className="col col-md-6 font12 text-primary font-weight-bold">
-												{ strings.you_have_to_transfer } &emsp; <span className="font16">Rp 40,000,000</span>
-											</div>
-											{/* <div className="col col-12" >
-												<table>
-													<tbody>
-														<tr>
-															<td className="font16 text-secondary font-weight-bold"></td>
-															<td className="font16 text-secondary font-weight-bold">:</td>
-															<td></td>
-														</tr>
-													</tbody>
-												</table>
-											</div> */}
-										</Row>
+										</div>
 									}
 								</Collapse>
 							</div>
@@ -141,4 +211,38 @@ class TradeConfirmation extends Component {
 	}
 }
 
-export default TradeConfirmation
+TradeConfirmation.propTypes = {
+	purpose: PropTypes.any,
+	selectedPurpose: PropTypes.object,
+	selectedTrade: PropTypes.any,
+	user: PropTypes.object,
+	//funct
+	getPurpose: PropTypes.func,
+	setSelectedPurpose: PropTypes.func,
+	pickTrade: PropTypes.func,
+}
+
+const mapStateToProps = createStructuredSelector({
+	purpose: selectors.getPurpose(),
+	selectedPurpose: selectors.getSelectedPurpose(),
+	selectedTrade: getSelectedTrades(),
+	user: getUser()
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	getPurpose: () => dispatch(actions.getPurpose()),
+	setSelectedPurpose: (selectedPurpose) => dispatch(actions.setSelectedPurpose(selectedPurpose)),
+	pickTrade : (
+		id_user, need_amount, need_currency, 
+		currency_rate, have_amount, have_currency, 
+		payment_detail, trade_purpose, total_amount_transfer,
+		account_info, first_and_middle_name, last_name,
+		description, trade_with, timezone) => dispatch(actions.pickTrade(
+		id_user, need_amount, need_currency, 
+		currency_rate, have_amount, have_currency, 
+		payment_detail, trade_purpose, total_amount_transfer,
+		account_info, first_and_middle_name, last_name,
+		description, trade_with, timezone))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(TradeConfirmation)
