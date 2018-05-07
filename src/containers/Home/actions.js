@@ -6,11 +6,7 @@ import accounting from 'accounting'
 
 export function setInitialState() {
 	return (dispatch) => {
-		dispatch(setLoading(false))
-		dispatch(setAmountNeed(''))
-		dispatch(setAmountHave(''))
-		dispatch(setChooseNeed('IDR'))
-		dispatch(setChooseHave('GBP'))
+		dispatch({ type: constants.SET_INITIAL_STATE })
 		dispatch(setTrades([]))
 		dispatch(setSelectedTrades([]))
 	}
@@ -29,12 +25,21 @@ export function setAmountNeed(amountNeed) {
 	return { type: constants.SET_AMOUNT_NEED, payload: { amountNeed } }
 }
 
-export function setAmountHave(amountHave) {
-	return { type: constants.SET_AMOUNT_HAVE, payload: { amountHave } }
+
+export function setAmountNeedInt(amountNeedInt) {
+	return { type: constants.SET_AMOUNT_NEED_INTEGER, payload: { amountNeedInt } }
+}
+
+export function setAmountHaveInt(amountHaveInt) {
+	return { type: constants.SET_AMOUNT_HAVE_INTEGER, payload: { amountHaveInt } }
 }
 
 export function setChooseNeed(chooseNeed) {
 	return { type: constants.SET_CHOOSE_NEED, payload: { chooseNeed } }
+}
+
+export function setAmountHave(amountHave) {
+	return { type: constants.SET_AMOUNT_HAVE, payload: { amountHave } }
 }
 
 export function setChooseHave(chooseHave) {
@@ -46,16 +51,44 @@ export function setSelectedTrades(selectedTrades) {
 	return { type: constants.SET_SELECTED_TRADES, payload: { selectedTrades } }
 }
 
-export function getClosestTrade(payload) {
+
+export function setDetailPage(detail_page) {
+	return { type: constants.GET_DETAIL_PAGE, payload: { detail_page } }
+}
+
+export function setIsSearching(isSearching) {
+	return { type: constants.SET_IS_SEARCHING, payload: { isSearching } }
+}
+
+
+export function isGettingTrade(isGettingTrade) {
+	return { type: constants.IS_GETTING_TRADE, payload: { isGettingTrade } }
+}
+
+export function getClosestTrade(need, have, amount, transfer, page) {
 	return async(dispatch) => {
 		dispatch(setLoading(true))
+		dispatch(setIsSearching(true))
+		dispatch(isGettingTrade(true))
+		dispatch(setSelectedTrades([]))		
 		try {
+			const payload = {
+				need,
+				have,
+				amount,
+				page
+			}
 			const response = await tradingService.getClosestTrade(payload)
 			dispatch(setTrades(response.result))
+			dispatch(setDetailPage(response.detail_page || {
+				total_page: 1,
+				on_page: 1
+			} ))
 			console.log(response.result)			
 		} catch (error) {
 			console.log(error)
 		}
+		dispatch(isGettingTrade(false))		
 		dispatch(setLoading(false))		
 	}
 }

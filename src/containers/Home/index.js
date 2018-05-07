@@ -19,18 +19,19 @@ import TradeBox from '../../components/TradeBox'
 
 class Home  extends Component {
 
-	onStartTrading = () => {
-		const payload = {
-			need: this.props.chooseNeed,
-			have: this.props.chooseHave,
-			amount: convertMoneyString(this.props.amountNeed)
-		}
-		this.props.getClosestTrade(payload)
+	onStartTrading = async(page = 1) => {
+		await this.props.setAmountNeedInt(convertMoneyString(this.props.amountNeed) || 0)
+		await this.props.setAmountHaveInt(convertMoneyString(this.props.amountHave) || 0)
+		const	need = this.props.chooseNeed.get('currency_alias')
+		const	have =  this.props.chooseHave.get('currency_alias')
+		this.props.getClosestTrade(need, have, this.props.amountNeedInt, this.props.amountHaveInt, page)
 	}
 
 	componentWillMount() {
 		this.props.setInitialState()
 	}
+
+
 	
 	render() {
 		return (
@@ -39,8 +40,8 @@ class Home  extends Component {
 					<div className="container home-container">
 						<Banner />
 						<FormInputMoney
-							selectedNeed={ this.props.chooseNeed }
-							selectedHave={ this.props.chooseHave }
+							selectedNeed={ this.props.chooseNeed.get('currency_alias') }
+							selectedHave={ this.props.chooseHave.get('currency_alias') }
 							onSelectNeed={ (chooseNeed) => this.props.setChooseNeed(chooseNeed) }
 							onSelectHave={ (chooseHave) => this.props.setChooseHave(chooseHave) }
 							amountNeed={ this.props.amountNeed }
@@ -48,15 +49,20 @@ class Home  extends Component {
 							onChangeNeed={ (amountNeed) => this.props.setAmountNeed(amountNeed) }
 							onChangeHave={ (amountHave) => this.props.setAmountHave(amountHave) }
 							convertMoney={ (val, selectedNeed, selectedHave) => this.props.convertMoney(val, selectedNeed, selectedHave) }
-							onStartTrading={ this.onStartTrading }
+							onStartTrading={ () => this.onStartTrading() }
 							buttonDisabled={ this.props.loading }
 							setLoading={ (loading) => this.props.setLoading(loading) }
+							buttonText={ this.props.closestTrade && this.props.closestTrade.length > 0 ? strings.search_again : strings.get_start }
 						/>
 						<TradeBox 
 							closestTrade={ this.props.closestTrade }
 							selectedTrades={ this.props.selectedTrades }
 							onSelectTrade={ (trade) => this.props.tradeSelected(this.props.selectedTrades, trade) }
 							onRemoveTrade={ (index) => this.props.removeTrade(this.props.selectedTrades, index) }
+							loading={ this.props.isGettingTrade }
+							isSearching={ this.props.isSearching }
+							detailPage={ this.props.detailPage }
+							onStartTrading={ (page) => this.onStartTrading(page) }						
 						/>
 					</div>
 				</div>
@@ -79,14 +85,21 @@ Home.propTypes = {
 	loading: PropTypes.bool,
 	amountNeed: PropTypes.string,
 	amountHave: PropTypes.string,
-	chooseNeed: PropTypes.string,
-	chooseHave: PropTypes.string,
+	amountNeedInt: PropTypes.number,
+	amountHaveInt: PropTypes.number,
+	chooseNeed: PropTypes.object,
+	chooseHave: PropTypes.object,
 	closestTrade: PropTypes.any,
-	selectedTrades: PropTypes.array,
+	selectedTrades: PropTypes.any,
+	isSearching: PropTypes.bool,
+	detailPage: PropTypes.object,
+	isGettingTrade: PropTypes.bool,
 	//function
 	setInitialState: PropTypes.func,
 	setAmountNeed: PropTypes.func,
 	setAmountHave: PropTypes.func,
+	setAmountNeedInt: PropTypes.func,
+	setAmountHaveInt: PropTypes.func,
 	setChooseNeed: PropTypes.func,
 	setChooseHave: PropTypes.func,
 	getClosestTrade: PropTypes.func,
@@ -100,19 +113,26 @@ const mapStateToProps = createStructuredSelector({
 	loading: selectors.getLoading(),
 	amountNeed: selectors.getAmountNeed(),
 	amountHave: selectors.getAmountHave(),
+	amountNeedInt: selectors.getAmountNeedInt(),
+	amountHaveInt: selectors.getAmountHaveInt(),
 	chooseNeed: selectors.getChooseNeed(),
 	chooseHave: selectors.getChooseHave(),
 	closestTrade: selectors.getClosestTrade(),
-	selectedTrades: selectors.getSelectedTrades()
+	selectedTrades: selectors.getSelectedTrades(),
+	detailPage: selectors.getDetailPage(),
+	isSearching: selectors.getIsSearching(),
+	isGettingTrade: selectors.getIsGettingTrade()
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	setInitialState: () => dispatch(actions.setInitialState()),
 	setAmountNeed:(amountNeed) => dispatch(actions.setAmountNeed(amountNeed)),
 	setAmountHave: (amountHave) => dispatch(actions.setAmountHave(amountHave)),
+	setAmountNeedInt:(amountNeedInt) => dispatch(actions.setAmountNeedInt(amountNeedInt)),
+	setAmountHaveInt: (amountHaveInt) => dispatch(actions.setAmountHaveInt(amountHaveInt)),
 	setChooseNeed: (chooseNeed) => dispatch(actions.setChooseNeed(chooseNeed)),
 	setChooseHave: (chooseHave) => dispatch(actions.setChooseHave(chooseHave)),
-	getClosestTrade: (payload) => dispatch(actions.getClosestTrade(payload)),
+	getClosestTrade: (need, have, amount, transfer, page) => dispatch(actions.getClosestTrade(need, have, amount, transfer, page)),
 	setLoading: (loading) => dispatch(actions.setLoading(loading)),
 	convertMoney: (val, selectedNeed, selectedHave) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave)),
 	tradeSelected: (selectedTrades, trade) => dispatch(actions.tradeSelected(selectedTrades, trade)),
