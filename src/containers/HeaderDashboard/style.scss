@@ -29,7 +29,10 @@
 .hd-image{
 	width: 36px;
 	height: 36px;
-	background: $cream;
+	background-color: $cream;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 	border-radius: 18px;
 }
 
