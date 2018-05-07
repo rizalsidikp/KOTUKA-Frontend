@@ -4,22 +4,35 @@ import Row from '../Row'
 
 import Select from 'react-select-plus'
 
-import { LogoCircle } from './../../images/'
 import { chunkArray } from './../../services/helper'
 
 import './style.scss'
+import currenciesService from '../../services/currencies'
 
 
 class InputMoney extends Component {
 	constructor(props) {
 		super(props)
+		this.state = {
+			currencies: []
+		}
+	}
+
+	componentWillMount() {
+		this.getCurrencies()
+	}
+
+	getCurrencies = async() => {
+		const response = await currenciesService.getCurrencies()
+		const currencies = response.result
+		this.setState({ currencies })
 	}
 
 	renderItem = (props) => {
 		return(
 			<div className="Select-value">
-				<img className="select-logo" src={ LogoCircle } />
-				<span className="Select-value-label">{props.value}</span>
+				<img className="select-logo" src={ props.image } />
+				<span className="Select-value-label">{ props.value }</span>
 			</div>
 		)
 	}
@@ -27,10 +40,7 @@ class InputMoney extends Component {
 
 	render() {
 		const { disabled = false, value = 0, label = '', theme = 'white', onChange= () => {}, onKeyPress = () => {}, onSelectChange = () => {}, selected = 'GBP' } = this.props
-		const options = chunkArray([
-			{ value: 'GBP', label: 'GBP', img: LogoCircle },
-			{ value: 'IDR', label: 'IDR', img: LogoCircle },
-		], 'label', 'value', 'img')
+		const options = chunkArray(this.state.currencies, 'currency_alias', 'currency_alias', 'country_flag')
 		return (
 			<div>
 				<label className={ 'font20 font-weight-bold '.concat(theme === 'secondary' ? 'text-secondary' : 'text-white') }>{ label }</label>
