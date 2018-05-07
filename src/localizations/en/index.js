@@ -65,5 +65,15 @@ export default {
 	fast: 'Fast',
 	tolerable: 'Tolerable',
 	fair: 'Fair',
-	remove: 'Remove'	
+	remove: 'Remove',
+	transaction_status: 'Transaction Status',
+	you: 'You',
+	pay_now: 'Pay Now',
+	search_again: 'Search Again',
+	search: 'Search',
+	no_post: 'There\'s no post yet , why don\'t create your own ?',
+	prev: 'Prev',
+	next: 'Next',
+	account_no: 'Account Number',
+	description: 'Description'
 }
