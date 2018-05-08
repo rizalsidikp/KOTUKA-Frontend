@@ -133,41 +133,6 @@ export function chunkArray(list = [], titleKey, valueKey, imageKey) {
 */
 
 /**
- * use this function with array.filter
- *  example: array.filter(obj => filterOrigin(obj.string_property))
- * 
- * @param {String} cityname
-*/
-export function filterOrigin(cityname) {
-	switch (cityname) {
-	case 'medan' : return true
-	case 'binjai' : return true
-	case 'padang' : return true
-	case 'pekanbaru' : return true
-	case 'palembang' : return true
-	case 'cilegon' : return true
-	case 'serang' : return true
-	case 'jakarta' : return true
-	case 'bekasi' : return true
-	case 'purwakarta' : return true
-	case 'karawang' : return true
-	case 'bandung' : return true
-	case 'kab. bandung': return true
-	case 'cirebon' : return true
-	case 'semarang' : return true
-	case 'solo' : return true
-	case 'yogyakarta' : return true
-	case 'malang' : return true
-	case 'surabaya' : return true
-	case 'jember' : return true
-	case 'banyuwangi' : return true
-	case 'balikpapan' : return true
-	case 'makassar' : return true
-	default: return false
-	}
-}
-
-/**
  * function to uppercase first letter
  * @param {String} str 'hello'
  * 
@@ -211,4 +176,14 @@ export function compare(a,b) {
 
 export function convertMoneyString(money) {
 	return parseFloat(money.replace(/[^a-zA-Z 0-9.]+/g,''))
+}
+
+export function getFlagFromCurrency(list = [], currency){
+	let flag = ''
+	list.forEach(curr => {
+		if(curr.currency_alias === currency){
+			flag = curr.country_flag
+		}
+	})
+	return flag
 }
