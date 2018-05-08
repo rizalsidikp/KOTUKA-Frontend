@@ -16,23 +16,25 @@ require('firebase/database')
 
 
 export default {
-	getLiveTransaction: () => {
-		firebase
-			.auth()
-			.signInWithCustomToken(localStorage.getItem('firebaseToken'))
-			.then(() => {
-				const resp = firebase.database().ref('transaction/1')
-				resp.on('value', (val) => {
-					console.log(val.val())
+	getLiveTransaction: (id) => {
+		return new Promise((resolve, reject) => {
+			firebase
+				.auth()
+				.signInWithCustomToken(localStorage.getItem('firebaseToken'))
+				.then(() => {
+					const resp = firebase.database().ref(`transaction/${ id }`)
+					resp.on('value', (val) => {
+						console.log(val.val())
+						resolve(val.val())
+					})
 				})
-				
-			})
-			.catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code
-				var errorMessage = error.message
-				console.log('err', errorCode, errorMessage)
-				// ...
-			})
+				.catch(function(error) {
+					// Handle Errors here.
+					var errorCode = error.code
+					var errorMessage = error.message
+					console.log('err', errorCode, errorMessage)
+					reject(error)
+				})
+		})
 	}
 }
