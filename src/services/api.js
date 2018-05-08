@@ -56,7 +56,7 @@ export default {
   */
 	post: (url, form = {}, json = {}, reqConfig = {}) => {
 		const token = localStorage.getItem('accessToken')
-		if (token && (url !== '/oauth/token' || url !== '/register' || url !== '/oauth')) {
+		if (token) {
 			api.defaults.headers.Authorization = `jwt ${token}`
 		}
 		api.defaults.headers['Content-Type'] = !form ? 'application/json' : 'application/x-www-form-urlencoded'
