@@ -1,0 +1,7 @@
+export const SET_LOADING = 'src/containers/Transaction/SET_LOADING'
+export const SET_INITIAL_STATE = 'src/containers/Transaction/SET_INITIAL_STATE'
+export const SET_LIVE_TRANSACTION = 'src/containers/Transaction/SET_LIVE_TRANSACTION'
+export const SET_INQUIRY = 'src/containers/Transaction/SET_INQUIRY'
+export const IS_INQUIRY = 'src/containers/Transaction/IS_INQUIRY'
+export const IS_LIVE_TRANSACTION = 'src/containers/Transaction/IS_LIVE_TRANSACTION'
+export const SET_TRANSACTION = 'src/containers/Transaction/SET_TRANSACTION'
