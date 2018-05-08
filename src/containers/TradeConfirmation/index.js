@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import Select from 'react-select-plus'
 import accounting from 'accounting'
 import getSymbolFromCurrency from 'currency-symbol-map'
-
+import moment from 'moment-timezone'
 
 import Row from '../../components/Row'
 
@@ -18,7 +18,7 @@ import TradeCard from '../../components/TradeCard'
 import LabelInput from '../../components/LabelInput'
 // import RadioButton from '../../components/RadioButton'
 import ModalRecipient from '../../components/ModalRecipient'
-import { chunkArray } from '../../services/helper'
+import { chunkArray, convertMoneyString } from '../../services/helper'
 import { getSelectedTrades } from '../Home/selectors'
 import { getUser } from '../Header/selectors'
 
@@ -41,24 +41,31 @@ class TradeConfirmation extends Component {
 	}
 
 	onPickTrade = (need_amount, have_amount) => {
-		const payment_detail = {
-			payment_type : 'mandiri',
+		need_amount = convertMoneyString(need_amount)
+		have_amount = convertMoneyString(have_amount)
+		const zone_name =  moment.tz.guess()
+		const timezone = moment.tz(zone_name)._z.name
+		let payment_detail = {
+			payment_type : 'manual_transfer',
 			gross_amount: 2048390.65
 		}
-		const account_info = {
+		let account_info = {
 			account_no : this.state.account_no,
-			'iban' :  '92ie9i29ei92ie92i9e2i9ei29ei92ei9'
+			iban :  '92ie9i29ei92ie92i9e2i9ei29ei92ei9'
 		}
 		let trade_with = []
 		this.props.selectedTrade.forEach(trade => {
 			trade_with.push(trade.id)
 		})
+		payment_detail = JSON.stringify(payment_detail)
+		account_info = JSON.stringify(account_info)
+		trade_with = JSON.stringify(trade_with)
 		this.props.pickTrade(
 			this.props.user.get('id'), need_amount, this.props.selectedTrade[0].have_currency,
 			0.00084, have_amount, this.props.selectedTrade[0].need_currency, 
 			payment_detail, this.props.selectedPurpose.get('text_purpose'),
 			2048390.00, account_info, this.state.first_n_midle_name, this.state.last_name, this.state.description,
-			trade_with, 'Asia/Jakarta'
+			trade_with, timezone
 		)
 	}
 

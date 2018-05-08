@@ -3,8 +3,12 @@ import React, { Component } from 'react'
 import './style.scss'
 import Row from '../../components/Row'
 import TransactionCard from '../../components/TransactionCard'
+import firebaseService from './../../services/firebase'
 
 class Transaction extends Component {
+	componentWillMount(){
+		firebaseService.getLiveTransaction()
+	}
 	render() {
 		return (
 			<div className="container dashboard-container">
