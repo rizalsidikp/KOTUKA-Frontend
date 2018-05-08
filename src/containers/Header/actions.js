@@ -1,6 +1,6 @@
 import * as constants from './constants'
 import auth from './../../services/auth'
-import { setHtmlStorage, removeHtmlStorage } from './../../services/helper'
+import { setHtmlStorage } from './../../services/helper'
 import history from './../../history'
 import moment from 'moment'
 
@@ -90,11 +90,13 @@ export function login(username, password) {
 }
 
 export function logout() {
-	return async(dispatch) => {
-		removeHtmlStorage('accessToken')
-		removeHtmlStorage('firebaseToken')
-		await dispatch(setInitialState())
-		history.push('/')
+	return async() => {
+		await localStorage.clear()
+		location.reload()
+		// removeHtmlStorage('accessToken')
+		// removeHtmlStorage('firebaseToken')
+		// await dispatch(setInitialState())
+		// history.push('/')
 	}
 }
 
