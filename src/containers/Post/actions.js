@@ -25,7 +25,7 @@ export function postTrade(id_user, need_amount, need_currency, currency_rate, ha
 				timezone
 			}
 			const response = await tradingService.postTrade(payload)
-			setHtmlStorage('accessToken', response.token, 24*3600)
+			setHtmlStorage('accessToken', response.token, 1500)
 			console.log(response)
 		} catch (error) {
 			console.log(error)

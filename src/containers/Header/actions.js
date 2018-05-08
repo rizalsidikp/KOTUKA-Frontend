@@ -31,8 +31,8 @@ export function loginWithGoogle() {
 			}
 			const userResponse = await auth.exLogin(payload)
 			dispatch(setUser(userResponse.data_user))
-			setHtmlStorage('accessToken', userResponse.token, 24*3600)
-			setHtmlStorage('firebaseToken', userResponse.rtDB, 24*3600)
+			setHtmlStorage('accessToken', userResponse.token, 1500)
+			setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
 			history.push('/dashboard/post')
 		} catch (error) {
 			console.log(error)
@@ -56,8 +56,8 @@ export function loginWithFacebook() {
 			}
 			const userResponse = await auth.exLogin(payload)
 			dispatch(setUser(userResponse.data_user))			
-			setHtmlStorage('accessToken', userResponse.token, 24*3600)
-			setHtmlStorage('firebaseToken', userResponse.rtDB, 24*3600)
+			setHtmlStorage('accessToken', userResponse.token, 1500)
+			setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
 			history.push('/dashboard/post')
 		} catch (error) {
 			console.log(error)
@@ -68,7 +68,7 @@ export function loginWithFacebook() {
 
 export function login(username, password) {
 	return async(dispatch) => {
-		dispatch(setLoading(true))		
+		dispatch(setLoading(true))
 		try {
 			const response = await auth.login(username, password)
 			if(response.result && response.result.verified !== 'verified'){
@@ -77,9 +77,10 @@ export function login(username, password) {
 					state: { email: response.result.email }
 				})	
 			}
-			dispatch(setUser(response.result))			
-			setHtmlStorage('accessToken', response.token, 24*3600)
-			setHtmlStorage('firebaseToken', response.rtDB, 24*3600)
+			console.log(response)
+			dispatch(setUser(response.data_user))			
+			setHtmlStorage('accessToken', response.token, 1500)
+			setHtmlStorage('firebaseToken', response.rtDB, 1500)
 			return history.push('/dashboard/post')			
 		} catch (error) {
 			console.log(error)

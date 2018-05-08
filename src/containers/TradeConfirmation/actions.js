@@ -16,7 +16,7 @@ export function getPurpose(){
 	return async(dispatch) => {
 		try {
 			const response = await purposeService.getPurpose()
-			setHtmlStorage('accessToken', response.token, 24*3600)
+			setHtmlStorage('accessToken', response.token, 1500)
 			dispatch(setPurrpose(response.result))		
 		} catch (error) {
 			console.log(error)
@@ -38,9 +38,9 @@ export function pickTrade(
 			account_info, first_and_middle_name, last_name,
 			description, trade_with, timezone
 		}
-		console.log(payload, "ini payload")
+		console.log(payload, 'ini payload')
 		const response = await tradingService.postTrade(payload)
-		setHtmlStorage('accessToken', response.token, 24*3600)
-		console.log(response)
+		setHtmlStorage('accessToken', response.token, 1500)
+		console.log('picker response', response)
 	}
 }
