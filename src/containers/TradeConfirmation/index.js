@@ -47,7 +47,7 @@ class TradeConfirmation extends Component {
 		const timezone = moment.tz(zone_name)._z.name
 		let payment_detail = {
 			payment_type : 'manual_transfer',
-			gross_amount: 2048390.65
+			gross_amount: have_amount
 		}
 		let account_info = {
 			account_no : this.state.account_no,
