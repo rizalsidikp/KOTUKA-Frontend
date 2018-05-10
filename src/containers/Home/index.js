@@ -34,6 +34,7 @@ class Home  extends Component {
 
 	
 	render() {
+		console.log(this.props.rate)
 		return (
 			<div>
 				<div className="container-fluid background-secondary">
@@ -94,6 +95,7 @@ Home.propTypes = {
 	isSearching: PropTypes.bool,
 	detailPage: PropTypes.object,
 	isGettingTrade: PropTypes.bool,
+	rate: PropTypes.number,
 	//function
 	setInitialState: PropTypes.func,
 	setAmountNeed: PropTypes.func,
@@ -121,7 +123,8 @@ const mapStateToProps = createStructuredSelector({
 	selectedTrades: selectors.getSelectedTrades(),
 	detailPage: selectors.getDetailPage(),
 	isSearching: selectors.getIsSearching(),
-	isGettingTrade: selectors.getIsGettingTrade()
+	isGettingTrade: selectors.getIsGettingTrade(),
+	rate: selectors.getRate()
 })
 
 const mapDispatchToProps = (dispatch) => ({

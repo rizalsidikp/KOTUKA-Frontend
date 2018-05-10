@@ -62,3 +62,8 @@ export const getIsGettingTrade = () => createSelector(
 	selectHome(),
 	state => state.get('isGettingTrade')
 )
+
+export const getRate = () => createSelector(
+	selectHome(),
+	state => state.get('rate')
+)

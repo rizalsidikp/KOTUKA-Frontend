@@ -80,7 +80,6 @@ export function getTransactions(id){
 			else{
 				dispatch(setIsInquiry(false))
 				dispatch(setIsLiveTransaction(false))					
-				dispatch(setLiveTransaction(null))
 				dispatch(setTransactions([]))
 			}
 		} catch (error) {

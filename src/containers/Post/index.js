@@ -33,7 +33,7 @@ class Post extends Component {
 	onPostTrade = async() => {
 		var zone_name =  moment.tz.guess()
 		var timezone = moment.tz(zone_name)._z.name
-		await this.props.postTrade(this.props.user.get('id'), convertMoneyString(this.props.amountNeed), this.props.chooseNeed.get('currency_alias'),	0.84,	convertMoneyString(this.props.amountHave),	this.props.chooseHave.get('currency_alias'), timezone)
+		await this.props.postTrade(this.props.user.get('id'), convertMoneyString(this.props.amountNeed), this.props.chooseNeed.get('currency_alias'),	this.props.rate,	convertMoneyString(this.props.amountHave),	this.props.chooseHave.get('currency_alias'), timezone)
 		this.props.getTransactions(this.props.user.get('id'))		
 	}
 	render() {
@@ -103,6 +103,7 @@ Post.propTypes = {
 	user: PropTypes.object,
 	isInquiry: PropTypes.bool,
 	isLiveTransactions: PropTypes.bool,
+	rate: PropTypes.number,
 	//function
 	setInitialState: PropTypes.func,
 	setAmountNeed: PropTypes.func,
@@ -133,6 +134,7 @@ const mapStateToProps = createStructuredSelector({
 	detailPage: selectors.getDetailPage(),
 	isSearching: selectors.getIsSearching(),
 	isGettingTrade: selectors.getIsGettingTrade(),
+	rate: selectors.getRate(),	
 	postLoading: getLoading(),
 	user: getUser(),
 	isInquiry: getIsInquiry(),

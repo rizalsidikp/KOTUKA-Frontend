@@ -36,7 +36,8 @@ const INITIAL_STATE = fromJS({
 		on_page: 1
 	},
 	isSearching: false,
-	isGettingTrade: false
+	isGettingTrade: false,
+	rate: 0,
 })
 
 export default (state = INITIAL_STATE, action) => {
@@ -84,6 +85,8 @@ export default (state = INITIAL_STATE, action) => {
 		return state.set('isSearching', action.payload.isSearching)
 	case constants.IS_GETTING_TRADE:
 		return state.set('isGettingTrade', action.payload.isGettingTrade)
+	case constants.SET_RATE:
+		return state.set('rate', action.payload.rate)
 	default: return state
 	}
 }

@@ -2,6 +2,7 @@ import * as constants from './constants'
 import tradingService from './../../services/trading'
 import fx from 'money'
 import accounting from 'accounting'
+import { convertMoneyString } from '../../services/helper'
 
 
 export function setInitialState() {
@@ -63,6 +64,10 @@ export function setIsSearching(isSearching) {
 
 export function isGettingTrade(isGettingTrade) {
 	return { type: constants.IS_GETTING_TRADE, payload: { isGettingTrade } }
+}
+
+export function setRate(rate) {
+	return { type: constants.SET_RATE, payload: { rate } }
 }
 
 export function getClosestTrade(need, have, amount, transfer, page) {
@@ -130,6 +135,7 @@ export function convertMoney(val, selectedNeed, selectedHave) {
 			const response = await tradingService.getRates()
 			fx.rates = response.rates
 			let amountHave = fx(parseFloat(amountNeed)).from(selectedNeed).to(selectedHave)
+			let rate = fx(1).from(selectedHave).to(selectedNeed)
 			if(selectedHave === 'IDR'){
 				amountHave = Math.round(amountHave)
 				amountHave = accounting.formatMoney(amountHave,'', 0, ',')
@@ -140,14 +146,20 @@ export function convertMoney(val, selectedNeed, selectedHave) {
 			if(selectedNeed === 'IDR'){
 				amountNeed = Math.round(amountNeed)
 				amountNeed = accounting.formatMoney(amountNeed,'', 0, ',')
+				rate = Math.round(rate)
+				rate = accounting.formatMoney(rate,'', 0, ',')
 			}else{
 				amountNeed = Math.round(amountNeed * 100) / 100
 				amountNeed = accounting.formatMoney(amountNeed,'', 2, ',')
+				// rate = Math.round(rate * 100) / 100
+				rate = accounting.formatMoney(rate,'', 10, ',')
 			}
 			amountHave = amountHave.toString()
 			amountNeed = amountNeed.toString()
+			rate = convertMoneyString(rate)
 			dispatch(setAmountNeed(amountNeed))
 			dispatch(setAmountHave(amountHave))
+			dispatch(setRate(rate))
 		} catch (error) {
 			console.error(error)
 		}

@@ -11,3 +11,4 @@ export const SET_AMOUNT_HAVE_INTEGER = 'src/containers/Home/SET_AMOUNT_HAVE_INTE
 export const GET_TRADES = 'src/containers/Home/GET_TRADES'
 export const SET_SELECTED_TRADES = 'src/containers/Home/SET_SELECTED_TRADES'
 export const GET_DETAIL_PAGE = 'src/containers/Home/GET_DETAIL_PAGE'
+export const SET_RATE = 'src/containers/Home/SET_RATE'

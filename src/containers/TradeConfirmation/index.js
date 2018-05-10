@@ -62,7 +62,7 @@ class TradeConfirmation extends Component {
 		trade_with = JSON.stringify(trade_with)
 		this.props.pickTrade(
 			this.props.user.get('id'), need_amount, this.props.selectedTrade[0].have_currency,
-			0.00084, have_amount, this.props.selectedTrade[0].need_currency, 
+			this.props.selectedTrade[0].currency_rate, have_amount, this.props.selectedTrade[0].need_currency, 
 			payment_detail, this.props.selectedPurpose.get('text_purpose'),
 			2048390.00, account_info, this.state.first_n_midle_name, this.state.last_name, this.state.description,
 			trade_with, timezone
