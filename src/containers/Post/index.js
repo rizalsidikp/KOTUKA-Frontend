@@ -16,8 +16,13 @@ import Row from '../../components/Row'
 import strings from '../../localizations'
 import history from '../../history'
 import moment from 'moment-timezone'
+import { getIsInquiry, getIsLiveTransaction } from '../Transaction/selectors'
+import { getTransactions } from '../Transaction/actions'
 
 class Post extends Component {
+	componentWillMount() {
+		this.props.getTransactions(this.props.user.get('id'))
+	}
 	onStartTrading = async(page = 1) => {
 		await this.props.setAmountNeedInt(convertMoneyString(this.props.amountNeed) || 0)
 		await this.props.setAmountHaveInt(convertMoneyString(this.props.amountHave) || 0)
@@ -25,12 +30,19 @@ class Post extends Component {
 		const	have =  this.props.chooseHave.get('currency_alias')
 		this.props.getClosestTrade(need, have, this.props.amountNeedInt, this.props.amountHaveInt, page)
 	}
-	onPostTrade = () => {
+	onPostTrade = async() => {
 		var zone_name =  moment.tz.guess()
 		var timezone = moment.tz(zone_name)._z.name
-		this.props.postTrade(this.props.user.get('id'), convertMoneyString(this.props.amountNeed), this.props.chooseNeed.get('currency_alias'),	0.84,	convertMoneyString(this.props.amountHave),	this.props.chooseHave.get('currency_alias'), timezone)
+		await this.props.postTrade(this.props.user.get('id'), convertMoneyString(this.props.amountNeed), this.props.chooseNeed.get('currency_alias'),	0.84,	convertMoneyString(this.props.amountHave),	this.props.chooseHave.get('currency_alias'), timezone)
+		this.props.getTransactions(this.props.user.get('id'))		
 	}
 	render() {
+		console.log('inq = ', this.props.isInquiry, ', live = ', this.props.isLiveTransactions)
+		if(this.props.isInquiry || this.props.isLiveTransactions){
+			return(
+				<div>Gaboleh Post Coy</div>
+			)
+		}
 		return (
 			<div className="container dashboard-container post-container">
 				<FormInputMoney 
@@ -89,6 +101,8 @@ Post.propTypes = {
 	isGettingTrade: PropTypes.bool,
 	postLoading: PropTypes.bool,
 	user: PropTypes.object,
+	isInquiry: PropTypes.bool,
+	isLiveTransactions: PropTypes.bool,
 	//function
 	setInitialState: PropTypes.func,
 	setAmountNeed: PropTypes.func,
@@ -102,7 +116,8 @@ Post.propTypes = {
 	setLoading: PropTypes.func,
 	tradeSelected: PropTypes.func,
 	removeTrade: PropTypes.func,
-	postTrade: PropTypes.func
+	postTrade: PropTypes.func,
+	getTransactions: PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -119,7 +134,9 @@ const mapStateToProps = createStructuredSelector({
 	isSearching: selectors.getIsSearching(),
 	isGettingTrade: selectors.getIsGettingTrade(),
 	postLoading: getLoading(),
-	user: getUser()
+	user: getUser(),
+	isInquiry: getIsInquiry(),
+	isLiveTransactions: getIsLiveTransaction()
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -135,7 +152,8 @@ const mapDispatchToProps = (dispatch) => ({
 	convertMoney: (val, selectedNeed, selectedHave) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave)),
 	tradeSelected: (selectedTrades, trade) => dispatch(actions.tradeSelected(selectedTrades, trade)),
 	removeTrade: (selectedTrades, index) => dispatch(actions.removeTrade(selectedTrades, index)),
-	postTrade: (id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone) => dispatch(postTrade(id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone))
+	postTrade: (id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone) => dispatch(postTrade(id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone)),
+	getTransactions: (id) => dispatch(getTransactions(id))	
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)

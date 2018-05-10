@@ -45,11 +45,11 @@ export default (state = INITIAL_STATE, action) => {
 	case constants.IS_INQUIRY:
 		return state.set('isInquiry', action.payload.isInquiry)
 	case constants.SET_LIVE_TRANSACTION:
-		return state.setIn(['liveTransaction', 'id'], action.payload.liveTransaction.id)
+		return state.setIn(['liveTransaction', 'id'], action.payload.liveTransaction.id || 0)
 			.setIn(['liveTransaction', 'on_focus'], action.payload.liveTransaction.on_focus)
-			.setIn(['liveTransaction', 'referrer_code'], action.payload.liveTransaction.referrer_code)
-			.setIn(['liveTransaction', 'transaction_status'], action.payload.liveTransaction.transaction_status)
-			.setIn(['liveTransaction', 'Inquiries'], action.payload.liveTransaction.Inquiries)
+			.setIn(['liveTransaction', 'referrer_code'], action.payload.liveTransaction.referrer_code || '')
+			.setIn(['liveTransaction', 'transaction_status'], action.payload.liveTransaction.transaction_status || '')
+			.setIn(['liveTransaction', 'Inquiries'], action.payload.liveTransaction.Inquiries || [])
 	case constants.IS_LIVE_TRANSACTION:
 		return state.set('isLiveTransaction', action.payload.isLiveTransaction)
 	case constants.SET_TRANSACTION:

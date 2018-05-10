@@ -64,14 +64,14 @@ class Transaction extends Component {
 								have_transfer={ this.props.transactions[0].Inquiries[0].have_amount }
 								inquiries={ this.props.liveTransaction.get('Inquiries') }
 								id_user={ this.props.user.get('id') }
-								currencies={ this.state.currencies }								
+								currencies={ this.state.currencies }
 							/>
 						}
 						<div>ini yg engga</div>
 						{
 							this.props.transactions && this.props.transactions.length > 0 &&
 							this.props.transactions.map((transaction, index) => {
-								if(index === 0){
+								if(this.props.isLiveTransaction && index === 0){
 									return
 								}
 								return(

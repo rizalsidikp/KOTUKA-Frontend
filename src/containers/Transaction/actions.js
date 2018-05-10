@@ -37,12 +37,15 @@ export function getTransactions(id){
 		dispatch(setLoading(true))
 		try {
 			const response = await transactionService.getTransactions(id)
+			console.log(response)
 			setHtmlStorage('accessToken', response.token, 1500)
 			if(response.result){
 				if(response.result.inquiry){
+					console.log('hahaha')
 					dispatch(setIsInquiry(true))
 					dispatch(setInquiry(response.result.inquiry))
 				}else{
+					console.log('hihihi')					
 					dispatch(setIsInquiry(false))
 				}
 				if(response.result.transaction && response.result.transaction.length > 0 ){
@@ -65,7 +68,6 @@ export function getTransactions(id){
 								console.log(error)
 							})
 					}else{
-						dispatch(setLiveTransaction(null))
 						dispatch(setIsLiveTransaction(false))						
 					}
 					dispatch(setTransactions(response.result.transaction))
@@ -74,6 +76,12 @@ export function getTransactions(id){
 					dispatch(setLiveTransaction(null))
 					dispatch(setTransactions([]))
 				}
+			}
+			else{
+				dispatch(setIsInquiry(false))
+				dispatch(setIsLiveTransaction(false))					
+				dispatch(setLiveTransaction(null))
+				dispatch(setTransactions([]))
 			}
 		} catch (error) {
 			console.log(error)

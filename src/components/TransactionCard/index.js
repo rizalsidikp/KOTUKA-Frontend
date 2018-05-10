@@ -50,7 +50,8 @@ class TransactionCard extends Component {
 										key={ index }
 										you={ inquiry.id_user === this.props.id_user }
 										status={ inquiry.status }
-										name={ inquiry.created_by }
+										name={ inquiry.User.first_and_middle_name }
+										deadline={ inquiry.deadline_post }
 									/>
 								)
 							})
