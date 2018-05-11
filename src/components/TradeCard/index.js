@@ -55,7 +55,7 @@ class TradeCard extends Component {
 								<TradeLevel 
 									level={ user.response }
 								/>
-								<span className="font12 text-gray">1{getSymbolFromCurrency(data.have_currency)} = { getSymbolFromCurrency(data.need_currency) } {accounting.formatMoney(data.currency_rate, '')}</span>
+								<span className="font12 text-gray">1{getSymbolFromCurrency(data.have_currency)} = { getSymbolFromCurrency(data.need_currency) } {accounting.formatMoney(data.currency_rate, '', data.have_currency === 'IDR' ? 7 : 2)}</span>
 							</div>
 							{
 								remove ? 
