@@ -187,3 +187,16 @@ export function getFlagFromCurrency(list = [], currency){
 	})
 	return flag
 }
+
+
+export function censoredText(text){
+	let textArr = text.split(' ')
+	let res = []
+	textArr.forEach( (t) => {
+		let length = t.length
+		let r = t[0] + '*'.repeat(length - 1)
+		res.push(r)
+	} )
+
+	return res.join(' ')
+}
