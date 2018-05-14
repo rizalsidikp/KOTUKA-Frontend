@@ -75,6 +75,8 @@ export default {
 	prev: 'Prev',
 	next: 'Next',
 	account_no: 'Account Number',
-	description: 'Description'	
+	description: 'Description',
+	myself: 'My Self',
+	someone_else: 'Someone Else'
 }
 
