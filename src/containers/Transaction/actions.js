@@ -41,11 +41,9 @@ export function getTransactions(id){
 			setHtmlStorage('accessToken', response.token, 1500)
 			if(response.result){
 				if(response.result.inquiry){
-					console.log('hahaha')
 					dispatch(setIsInquiry(true))
 					dispatch(setInquiry(response.result.inquiry))
 				}else{
-					console.log('hihihi')					
 					dispatch(setIsInquiry(false))
 				}
 				if(response.result.transaction && response.result.transaction.length > 0 ){
@@ -56,7 +54,6 @@ export function getTransactions(id){
 							.then(() => {
 								const resp = firebase.database().ref(`transaction/${ response.result.transaction[0].id }`)
 								resp.on('value', async(val) => {
-									console.log(val.val(), 'update')
 									await dispatch(setLiveTransaction(val.val()))
 									dispatch(setIsLiveTransaction(true))
 								})

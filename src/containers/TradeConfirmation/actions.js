@@ -38,7 +38,6 @@ export function pickTrade(
 			account_info, first_and_middle_name, last_name,
 			description, trade_with, timezone
 		}
-		console.log(payload, 'ini payload')
 		const response = await tradingService.postTrade(payload)
 		setHtmlStorage('accessToken', response.token, 1500)
 		console.log('picker response', response)

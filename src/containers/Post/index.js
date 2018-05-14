@@ -37,7 +37,6 @@ class Post extends Component {
 		this.props.getTransactions(this.props.user.get('id'))		
 	}
 	render() {
-		console.log('inq = ', this.props.isInquiry, ', live = ', this.props.isLiveTransactions)
 		if(this.props.isInquiry || this.props.isLiveTransactions){
 			return(
 				<div>Gaboleh Post Coy</div>

@@ -34,7 +34,6 @@ export function getRecipients(id) {
 export function addReipient(payload){
 	return async() => {
 		try {
-			console.log('ini payload', payload)
 			const response = await recipientService.addRecipient(payload)
 			setHtmlStorage('accessToken', response.token, 1500)			
 			console.log(response)
