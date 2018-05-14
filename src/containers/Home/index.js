@@ -34,7 +34,6 @@ class Home  extends Component {
 
 	
 	render() {
-		console.log(this.props.rate)
 		return (
 			<div>
 				<div className="container-fluid background-secondary">
