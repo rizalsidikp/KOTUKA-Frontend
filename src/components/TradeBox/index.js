@@ -60,6 +60,7 @@ class TradeBox extends Component {
 												data={ trade }
 												onSelectTrade={ (trade) => this.props.onSelectTrade(trade) }
 												disabled={ this.props.selectedTrades && this.props.selectedTrades.length > 0 }
+												anonymous
 											/>
 										)
 									})
@@ -90,6 +91,7 @@ class TradeBox extends Component {
 											data={ trade }
 											onRemoveTrade={ () => this.props.onRemoveTrade(tradeIndex) }
 											remove
+											anonymous
 										/>
 									)
 								})
