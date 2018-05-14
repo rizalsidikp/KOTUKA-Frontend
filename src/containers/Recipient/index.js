@@ -1,4 +1,11 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import * as selectors from './selectors'
+import * as actions from './actions'
+
+
 import Row from '../../components/Row'
 import ModalRecipient from '../../components/ModalRecipient'
 import strings from '../../localizations'
@@ -6,23 +13,10 @@ import ReactTable from 'react-table'
 
 import './style.scss'
 
+
 import { myself, someone_else } from './column'
 
-const data = [
-	{
-		first_middle_name: 'Rizal',
-		last_name: 'Sidik',
-		country: 'ID',
-		bank_account: '123456'
-	},
-	{
-		first_middle_name: 'Rizal',
-		last_name: 'Sidik',
-		country: 'UK',
-		bank_account: '123456',
-		sort_code: '123 abc'		
-	}
-]
+import { getUser } from '../Header/selectors'
 
 class Recipient extends Component {
 	constructor(props) {
@@ -31,8 +25,25 @@ class Recipient extends Component {
 			modalRecipient: false
 		}
 	}
+
+	componentWillMount() {
+		this.props.getRecipients(this.props.user.get('id'))
+	}
+
+	addAccount = (payload) => {
+		payload = {
+			id_user: this.props.user.get('id'),
+			...payload
+		}
+		this.props.addRecipient(payload)
+	}
+
+	deleteAccount = (id) => {
+		this.props.deleteRecipient(id)
+	}
 	
 	render() {
+		let mySelf = myself, someoneElse = someone_else
 		return (
 			<Row className="justify-content-center dashboard-container">
 				<div className="col col-md-8">
@@ -41,27 +52,78 @@ class Recipient extends Component {
 					</div>
 					<h2 className="font20 text-secondary font-weight-semi-bold rec-h2">My Self</h2>
 					<ReactTable
-						data={ data }
-						columns={ myself }
+						data={ this.props.recipients }
+						columns={ mySelf }
 						defaultPageSize={ 5	}
 						showPageJump={ false }
 						style={{ marginBottom: 20, }}
+						getTdProps={ (state, rowInfo, column) => {
+							return {
+								onClick: (e, handleOriginal) => {
+									if(column.Header === 'Option'){
+										this.deleteAccount(rowInfo.original.id)
+									}
+									if (handleOriginal) {
+										handleOriginal()
+									}
+								}
+							}
+						} }
 					/>
 					<h2 className="font20 text-secondary font-weight-semi-bold rec-h2">Someone Else</h2>
 					<ReactTable
-						data={ data }
-						columns={ someone_else }
+						data={ this.props.recipients }
+						columns={ someoneElse }
 						defaultPageSize={ 5	}
 						showPageJump={ false }
+						getTdProps={ (state, rowInfo, column) => {
+							return {
+								onClick: (e, handleOriginal) => {
+									if(column.Header === 'Option'){
+										this.deleteAccount(rowInfo.original.id)
+									}
+									if (handleOriginal) {
+										handleOriginal()
+									}
+								}
+							}
+						} }
 					/>
 				</div>
 				<ModalRecipient
 					open={ this.state.modalRecipient }
 					onClose={ () => this.setState({ modalRecipient: false }) }
+					first_and_middle_name={ this.props.user.get('first_and_middle_name') }
+					last_name={ this.props.user.get('last_name') }
+					addAccount={ (payload) => this.addAccount(payload) }
 				/>
 			</Row>
 		)
 	}
 }
 
-export default Recipient
+Recipient.propTypes = {
+	loading: PropTypes.bool,
+	recipients: PropTypes.any,
+	user: PropTypes.object,
+	//function
+	setInitialState: PropTypes.func,
+	getRecipients: PropTypes.func,
+	addRecipient: PropTypes.func,
+	deleteRecipient: PropTypes.func,
+}
+
+const mapStateToProps = createStructuredSelector({
+	loading: selectors.getLoading(),
+	recipients: selectors.getRecipients(),
+	user: getUser()
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	setInitialState: () => dispatch(actions.setInitialState()),
+	getRecipients: (id) => dispatch(actions.getRecipients(id)),
+	addRecipient: (payload) => dispatch(actions.addReipient(payload)),
+	deleteRecipient: (id) => dispatch(actions.deleteRecipient(id))
+})
+
+export default connect (mapStateToProps, mapDispatchToProps)(Recipient)

@@ -4,16 +4,18 @@ import React from 'react'
 
 export const myself = [
 	{
-		Header: 'Country',
-		accessor: 'country'
-	},
-	{
+		id: 'bankAccount',
 		Header: 'Bank account',
-		accessor: 'bank_account'
+		accessor: d => d.account_info.account_no
 	},
 	{
+		id: 'sortCode',
 		Header: 'Sort Code',
-		accessor: 'sort_code'
+		accessor: d => d.account_info.iban
+	},
+	{
+		Header: 'Description',
+		accessor: 'description'
 	},
 	{
 		id: 'opton',
@@ -28,19 +30,25 @@ export const myself = [
 export const someone_else = [
 	{
 		Header: 'First & Middle Name',
-		accessor: 'first_middle_name'
+		accessor: 'first_and_middle_name'
 	},
 	{
 		Header: 'Last Name',
 		accessor: 'last_name'
 	},
 	{
+		id: 'bankAccount',
 		Header: 'Bank account',
-		accessor: 'bank_account'
+		accessor: d => d.account_info.account_no
 	},
 	{
+		id: 'sortCode',
 		Header: 'Sort Code',
-		accessor: 'sort_code'
+		accessor: d => d.account_info.iban
+	},
+	{
+		Header: 'Description',
+		accessor: 'description'
 	},
 	{
 		id: 'opton',
