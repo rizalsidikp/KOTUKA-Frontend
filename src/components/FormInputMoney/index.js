@@ -17,21 +17,30 @@ class FormInputMoney extends Component {
 		}
 	}
 
-	onChangeMoney = (amountNeed) => {
+	onChangeMoney = (amount, type = 'need') => {
 		this.props.setLoading(true)
-		this.props.onChangeNeed(amountNeed)
-		this.props.onChangeHave('Loading...')
+		if(type === 'have'){
+			this.props.onChangeHave(amount)
+			this.props.onChangeNeed('Loading...')
+		}else{
+			this.props.onChangeNeed(amount)
+			this.props.onChangeHave('Loading...')
+		}
 		if (this.state.typingTimeout) {
 			clearTimeout(this.state.typingTimeout)
 		}
-		if(amountNeed === ''){
-			this.props.onChangeHave('')
+		if(amount === ''){
+			if(type === 'have'){
+				this.props.onChangeNeed('')				
+			}else{
+				this.props.onChangeHave('')
+			}
 			this.props.setLoading(false)			
 		}else{
-			let money = new String(amountNeed)
+			let money = new String(amount)
 			this.setState({ 
 				typingTimeout: setTimeout(() => {
-					this.props.convertMoney(convertMoneyString(money), this.props.selectedNeed, this.props.selectedHave)
+					this.props.convertMoney(convertMoneyString(money), this.props.selectedNeed.get('currency_alias'), this.props.selectedHave.get('currency_alias'), type)
 				}, 1000)
 			})
 		}
@@ -45,10 +54,15 @@ class FormInputMoney extends Component {
 
 	onChangeSelected = (val, mode) => {
 		if(mode === 'need'){
+			if(val.currency_alias === this.props.selectedHave.get('currency_alias')){
+				this.props.onSelectHave(this.props.selectedNeed.toJSON())
+			}
 			this.props.onSelectNeed(val)
 		}
 		if(mode === 'have'){
-			this.props.onSelectHave(val)
+			if(val.currency_alias !== this.props.selectedNeed.get('currency_alias')){
+				this.props.onSelectHave(val)
+			}
 		}
 		this.onChangeMoney(this.props.amountNeed)
 	}
@@ -57,37 +71,50 @@ class FormInputMoney extends Component {
 		const { theme = 'white', buttonDisabled = false } = this.props
 		return (
 			<div>
-				<Row className="fim-row">
-					<div className="col">
+				<Row className={ theme === 'confirmation' ? 'no-margin' : 'fim-row' }>
+					<div 
+						className={ theme === 'confirmation' ? 'col col-xs-12 col-md-12' :'col' }
+					>
 						<InputMoney
 							label={ strings.i_need }
 							theme={ theme }
 							value={ this.props.amountNeed }
-							selected={ this.props.selectedNeed }
+							selected={ this.props.selectedNeed.get('currency_alias') }
 							onSelectChange={ (val) => this.onChangeSelected(val, 'need') }
 							onKeyPress={ this.validateKey }
-							onChange={ (e) => this.onChangeMoney(e.target.value) }
+							onChange={ (e) => this.onChangeMoney(e.target.value, 'need') }
+							currencies={ this.props.currencies }
 						/>
 					</div>
-					<div className="col col-md-auto no-padding d-flex align-items-center fim-center">
-						<img src={ LogoCircle } />
-					</div>
-					<div className="col">
+					{
+						theme !== 'confirmation' &&
+						<div className="col col-md-auto no-padding d-flex align-items-center fim-center">
+							<img src={ LogoCircle } />
+						</div>
+					}
+					<div
+						className={ theme === 'confirmation' ? 'col col-xs-12 col-md-12' :'col' }						
+					>
 						<InputMoney 
 							label={ strings.you_have_to_transfer }
 							theme={ theme }
 							value={ this.props.amountHave }
-							selected={ this.props.selectedHave }							
+							selected={ this.props.selectedHave.get('currency_alias') }							
 							onSelectChange={ (val) => this.onChangeSelected(val, 'have') }
-							disabled
+							onKeyPress={ this.validateKey }							
+							onChange={ (e) => this.onChangeMoney(e.target.value, 'have') }
+							currencies={ this.props.currencies }							
 						/>
 					</div>
 				</Row>
-				<Row>
-					<div className="col col-xs-12 text-center">
-						<button className="button button-yellow" onClick={ this.props.onStartTrading } disabled={ buttonDisabled }>{ this.props.buttonText }</button>
-					</div>
-				</Row>
+				{
+					theme !== 'confirmation' &&
+					<Row>
+						<div className="col col-xs-12 text-center">
+							<button className="button button-yellow" onClick={ this.props.onStartTrading } disabled={ buttonDisabled }>{ this.props.buttonText }</button>
+						</div>
+					</Row>
+				}
 			</div>
 		)
 	}
@@ -95,8 +122,8 @@ class FormInputMoney extends Component {
 
 FormInputMoney.propTypes = {
 	theme: PropTypes.string,
-	selectedNeed: PropTypes.string,
-	selectedHave: PropTypes.string,
+	selectedNeed: PropTypes.object,
+	selectedHave: PropTypes.object,
 	onSelectNeed: PropTypes.func,
 	onSelectHave: PropTypes.func,
 	amountNeed: PropTypes.string,
@@ -107,7 +134,8 @@ FormInputMoney.propTypes = {
 	onStartTrading: PropTypes.func,
 	buttonDisabled: PropTypes.bool,
 	setLoading: PropTypes.func,
-	buttonText: PropTypes.string
+	buttonText: PropTypes.string,
+	currencies: PropTypes.array
 }
 
 export default FormInputMoney
