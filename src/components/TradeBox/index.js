@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import accounting from 'accounting'
 import getSymbolFromCurrency from 'currency-symbol-map'
+import { getCostFromCurrency } from './../../services/helper'
 
 
 import Row from '../Row'
@@ -107,7 +108,11 @@ class TradeBox extends Component {
 							<p className="font24 text-white font-weight-bold">{ getSymbolFromCurrency(this.props.selectedTrades[0].have_currency) } { you_will_get }</p>
 							{/* kotuka fee */}
 							<p className="font14 text-secondary-semi no-margin font-weight-bold">{ strings.kotuka_fee }</p>
-							<p className="font14 text-secondary font-weight-bold">{ strings.fee_percent }</p>
+							<p className="font14 text-secondary font-weight-bold">
+								{ strings.fee_percent } 
+								{ getSymbolFromCurrency(this.props.selectedTrades[0].need_currency) }
+								{ getCostFromCurrency(this.props.currencies, this.props.selectedTrades[0].need_currency) } 
+							</p>
 						</div>
 						<div className="col col-md-5">
 							<p className="font20 text-secondary-semi no-margin font-weight-bold">{ strings.you_have_to_transfer }</p>
@@ -143,6 +148,7 @@ TradeBox.propTypes = {
 	detailPage: PropTypes.object,
 	onStartTrading: PropTypes.func,
 	onTradeClick: PropTypes.func,
+	currencies: PropTypes.array
 }
 
 export default TradeBox
