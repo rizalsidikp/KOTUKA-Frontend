@@ -6,6 +6,8 @@ import * as selectors from './selectors'
 import * as actions from './actions'
 import PropTypes from 'prop-types'
 import { convertMoneyString } from './../../services/helper'
+import currenciesService from '../../services/currencies'
+
 
 import './style.scss'
 import FormInputMoney from './../../components/FormInputMoney'
@@ -19,6 +21,24 @@ import TradeBox from '../../components/TradeBox'
 
 class Home  extends Component {
 
+	constructor(props) {
+		super(props)
+		this.state = {
+			currencies: []
+		}
+	}
+
+	componentWillMount() {
+		this.setInitial()
+		this.getCurrencies()		
+	}
+
+	getCurrencies = async() => {
+		const response = await currenciesService.getCurrencies()
+		const currencies = response.result
+		this.setState({ currencies })
+	}
+
 	onStartTrading = async(page = 1) => {
 		await this.props.setAmountNeedInt(convertMoneyString(this.props.amountNeed) || 0)
 		await this.props.setAmountHaveInt(convertMoneyString(this.props.amountHave) || 0)
@@ -27,8 +47,9 @@ class Home  extends Component {
 		this.props.getClosestTrade(need, have, this.props.amountNeedInt, this.props.amountHaveInt, page)
 	}
 
-	componentWillMount() {
-		this.props.setInitialState()
+	
+	setInitial = async() => {
+		await this.props.setInitialState()
 	}
 
 
@@ -40,18 +61,19 @@ class Home  extends Component {
 					<div className="container home-container">
 						<Banner />
 						<FormInputMoney
-							selectedNeed={ this.props.chooseNeed.get('currency_alias') }
-							selectedHave={ this.props.chooseHave.get('currency_alias') }
+							selectedNeed={ this.props.chooseNeed }
+							selectedHave={ this.props.chooseHave }
 							onSelectNeed={ (chooseNeed) => this.props.setChooseNeed(chooseNeed) }
 							onSelectHave={ (chooseHave) => this.props.setChooseHave(chooseHave) }
 							amountNeed={ this.props.amountNeed }
 							amountHave={ this.props.amountHave }
 							onChangeNeed={ (amountNeed) => this.props.setAmountNeed(amountNeed) }
 							onChangeHave={ (amountHave) => this.props.setAmountHave(amountHave) }
-							convertMoney={ (val, selectedNeed, selectedHave) => this.props.convertMoney(val, selectedNeed, selectedHave) }
+							convertMoney={ (val, selectedNeed, selectedHave, type) => this.props.convertMoney(val, selectedNeed, selectedHave, type) }
 							onStartTrading={ () => this.onStartTrading() }
 							buttonDisabled={ this.props.loading }
 							setLoading={ (loading) => this.props.setLoading(loading) }
+							currencies={ this.state.currencies }
 							buttonText={ this.props.closestTrade && this.props.closestTrade.length > 0 ? strings.search_again : strings.get_start }
 						/>
 						<TradeBox 
@@ -62,7 +84,8 @@ class Home  extends Component {
 							loading={ this.props.isGettingTrade }
 							isSearching={ this.props.isSearching }
 							detailPage={ this.props.detailPage }
-							onStartTrading={ (page) => this.onStartTrading(page) }						
+							currencies={ this.state.currencies }							
+							onStartTrading={ (page) => this.onStartTrading(page) }		
 						/>
 					</div>
 				</div>
@@ -136,7 +159,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setChooseHave: (chooseHave) => dispatch(actions.setChooseHave(chooseHave)),
 	getClosestTrade: (need, have, amount, transfer, page) => dispatch(actions.getClosestTrade(need, have, amount, transfer, page)),
 	setLoading: (loading) => dispatch(actions.setLoading(loading)),
-	convertMoney: (val, selectedNeed, selectedHave) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave)),
+	convertMoney: (val, selectedNeed, selectedHave, type) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave, type)),
 	tradeSelected: (selectedTrades, trade) => dispatch(actions.tradeSelected(selectedTrades, trade)),
 	removeTrade: (selectedTrades, index) => dispatch(actions.removeTrade(selectedTrades, index))
 })

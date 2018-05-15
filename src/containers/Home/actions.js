@@ -127,14 +127,22 @@ export function removeTrade(selectedTrades, index) {
 	}
 }
 
-export function convertMoney(val, selectedNeed, selectedHave) {
+export function convertMoney(val, selectedNeed, selectedHave, type = 'need') {
 	return async(dispatch) =>{
 		dispatch(setLoading(true))
 		try {
-			let amountNeed = parseFloat(val)
+			let amountNeed = 0, amountHave = 0
 			const response = await tradingService.getRates()
 			fx.rates = response.rates
-			let amountHave = fx(parseFloat(amountNeed)).from(selectedNeed).to(selectedHave)
+			if(type === 'have'){
+				amountHave = parseFloat(val)
+				amountNeed = fx(parseFloat(amountHave)).from(selectedHave).to(selectedNeed)
+				console.log(amountNeed, amountHave)
+			}else{
+				amountNeed = parseFloat(val)
+				amountHave = fx(parseFloat(amountNeed)).from(selectedNeed).to(selectedHave)
+				console.log(amountNeed, amountHave)
+			}
 			let rate = fx(1).from(selectedHave).to(selectedNeed)
 			if(selectedHave === 'IDR'){
 				amountHave = Math.round(amountHave)
