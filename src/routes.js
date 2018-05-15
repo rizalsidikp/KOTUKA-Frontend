@@ -13,6 +13,9 @@ const Post = props => <Async load={ import('./containers/Post') } componentProps
 const Transaction = props => <Async load={ import('./containers/Transaction') } componentProps={ props }/>
 const Recipient = props => <Async load={ import('./containers/Recipient') } componentProps={ props }/>
 const TradeConfirmation = props => <Async load={ import('./containers/TradeConfirmation') } componentProps={ props }/>
+const ForgotPassword = props => <Async load={ import('./containers/ForgotPassword') } componentProps={ props }/>
+const EmailForgot = props => <Async load={ import('./containers/EmailForgot') } componentProps={ props }/>
+const ResetPassword = props => <Async load={ import('./containers/ResetPassword') } componentProps={ props }/>
 
 // auth check
 import AuthCheck from './authcheck'
@@ -63,6 +66,9 @@ class Routes extends Component {
 				<Route path="/confirmation" component={ Confirmation } />
 				<Route path="/dashboard" component={ AuthCheck(DashboardPage) } />
 				<Route path="/secondregistration" component={ SecondRegistration } />
+				<Route path="/forgotpassword" component={ ForgotPassword } />
+				<Route path="/forgotpasswordemail" component={ EmailForgot } />
+				<Route path="/resetpassword" component={ ResetPassword } />
 			</div>
 		)
 	}
