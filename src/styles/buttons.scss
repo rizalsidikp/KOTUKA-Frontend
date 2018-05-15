@@ -11,6 +11,7 @@
 	text-transform: capitalize;
 	transition: 0.3s all ease;
 	color: white;	
+	margin: 8px 0;
 	box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 	&:focus{
 		outline: 0;
@@ -64,6 +65,7 @@
 
 .button-secondary-white{
 	background-color: white;
+	color: $primary;
 	&:hover{
 		background-color: $secondary-white-hover;		
 	}

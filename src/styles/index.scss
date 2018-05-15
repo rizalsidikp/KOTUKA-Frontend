@@ -14,12 +14,29 @@ body {
 	margin: 0;
 }
 
+.no-horizontal-margin{
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .no-padding{
 	padding: 0;
 }
 
+.no-left-padding{
+	padding-left: 0;
+}
+
+.no-right-padding{
+	padding-right: 0;
+}
+
 .p_line{
 	line-height: 17px;
+}
+
+.line-height-4{
+	line-height: 4px;
 }
 
 
@@ -140,6 +157,38 @@ i {
 }
 .font36 {
     font-size: 36px !important;
+}
+
+
+//confirmation page
+.confirm-container{
+	min-height: 509px;
+	margin-bottom: 60px;
+}
+
+.confirm-img{
+	margin: auto;
+	margin-top: 80px;
+	margin-bottom: 35px;
+	width: 168px;
+	height: 0;	
+	border-radius: 84px;
+	background: $cream;
+}
+.confirm-img-show{
+	height: 168px;	
+}
+
+.confirm-logo{
+	margin: 15px 0;
+}
+
+//card
+.card{
+	border: 0;
+	box-shadow:rgba(0, 0, 0, 0.16) 0px 3px 6px;
+	border-radius: 5px;
+	padding: 24px;
 }
 
 
