@@ -9,10 +9,13 @@ import './style.scss'
 
 class LabelInput extends Component {
 	render() {
-		const { name='', label = '', placeholder = 'Placeholder..', value = '', type = 'text', onChange = () => {}, disabled = false  } = this.props
+		const { name='', label = '', placeholder = 'Placeholder..', value = '', type = 'text', onChange = () => {}, disabled = false, noLabel = false, labelClassName=''  } = this.props
 		return (
 			<div className="d-block">
-				<label className="font16 text-secondary full-width no-margin font-weight-semi-bold">{ label }</label>
+				{
+					!noLabel &&
+					<label className={ 'font16 text-secondary full-width no-margin font-weight-semi-bold '.concat(labelClassName) }>{ label }</label>
+				}
 				{
 					type === 'textarea' ?
 						<textarea name={ name } placeholder={ placeholder } value={ value } onChange={ onChange } className="li-input resize-none" rows={ 4 }></textarea>
@@ -30,11 +33,13 @@ class LabelInput extends Component {
 LabelInput.propTypes = {
 	label: PropTypes.string,
 	placeholder: PropTypes.string,
+	labelClassName: PropTypes.string,
 	value: PropTypes.string,
 	type: PropTypes.string,
 	onChange: PropTypes.func,
 	name: PropTypes.string,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
+	noLabel: PropTypes.bool,
 }
 
 export default LabelInput
