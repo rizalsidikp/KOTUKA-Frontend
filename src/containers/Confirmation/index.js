@@ -3,7 +3,6 @@ import Row from '../../components/Row'
 import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import './style.scss'
 
 import { Logo } from './../../images'
 import strings from '../../localizations'
