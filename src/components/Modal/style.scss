@@ -50,9 +50,11 @@
 	margin: 7% auto;
 	z-index: 101;
 	transform: translateY(-150%);
-	border-radius: 3px;
+	border: 0;
+	border-radius: 5px;
 	transition: 0.8s all ease-in-out;
 	overflow: hidden;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px;
 }
 
 .modal-content-open{
