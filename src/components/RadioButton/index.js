@@ -5,9 +5,9 @@ import './style.scss'
 
 class RadioButton extends Component {
 	render() {
-		const { label = '', checked = false, name = '', onChange = () => {}, onClick = () => {} } = this.props
+		const { label = '', checked = false, name = '', onChange = () => {}, onClick = () => {}, className = '' } = this.props
 		return (
-			<label className="radio-container font16 text-secondary" onClick={ onClick }  >{ label }
+			<label className={ 'radio-container font16 text-secondary '.concat(className) } onClick={ onClick }  >{ label }
 				<input type="radio" name={ name } checked={ checked } onChange={ onChange } />
 				<span className="checkmark"></span>
 			</label>
@@ -18,6 +18,7 @@ class RadioButton extends Component {
 RadioButton.propTypes = {
 	label : PropTypes.string,
 	name : PropTypes.string,
+	className : PropTypes.string,
 	checked: PropTypes.bool,
 	onChange: PropTypes.func,
 	onClick: PropTypes.func,
