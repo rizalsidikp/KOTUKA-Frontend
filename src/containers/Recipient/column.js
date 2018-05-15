@@ -21,7 +21,7 @@ export const myself = [
 		id: 'opton',
 		Header: 'Option',
 		accessor: 'name',
-		Cell: props =>  <span className="clickable">Delete</span> ,
+		Cell: () =>  <span className="clickable">Delete</span> ,
 		className: 'text-secondary text-center'
 	}
 ]
@@ -54,7 +54,7 @@ export const someone_else = [
 		id: 'opton',
 		Header: 'Option',
 		accessor: 'name',
-		Cell: props =>  <span className="clickable">Delete</span> ,
+		Cell: () =>  <span className="clickable">Delete</span> ,
 		className: 'text-secondary text-center'
 	}
 ]
