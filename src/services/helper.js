@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import accounting from 'accounting'
 
 
 /**
@@ -188,6 +189,16 @@ export function getFlagFromCurrency(list = [], currency){
 	return flag
 }
 
+export function getCostFromCurrency(list = [], currency){
+	let fixed_cost = ''
+	list.forEach(curr => {
+		if(curr.currency_alias === currency){
+			fixed_cost = curr.fixed_cost
+		}
+	})
+	return fixed_cost
+}
+
 
 export function censoredText(text){
 	let textArr = text.split(' ')
@@ -199,4 +210,15 @@ export function censoredText(text){
 	} )
 
 	return res.join(' ')
+}
+
+export function formatMoney(money, currency) {
+	if(currency === 'IDR'){
+		money = Math.round(money)
+		money = accounting.formatMoney(money,'', 0, ',')
+	}else{
+		money = Math.round(money * 100) / 100
+		money = accounting.formatMoney(money,'', 2, ',')
+	}
+	return money
 }
