@@ -75,7 +75,7 @@ export function login(username, password) {
 				return history.push({
 					pathname: '/confirmation',
 					state: { email: response.result.email }
-				})	
+				})
 			}
 			console.log(response)
 			dispatch(setUser(response.data_user))			
