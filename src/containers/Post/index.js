@@ -8,6 +8,7 @@ import { postTrade } from './actions'
 import { getUser } from './../Header/selectors'
 import PropTypes from 'prop-types'
 import { convertMoneyString } from './../../services/helper'
+import currenciesService from '../../services/currencies'
 
 import './style.scss'
 import FormInputMoney from './../../components/FormInputMoney'
@@ -15,14 +16,31 @@ import TradeBox from '../../components/TradeBox'
 import Row from '../../components/Row'
 import strings from '../../localizations'
 import history from '../../history'
-import moment from 'moment-timezone'
+// import moment from 'moment-timezone'
 import { getIsInquiry, getIsLiveTransaction } from '../Transaction/selectors'
 import { getTransactions } from '../Transaction/actions'
 
 class Post extends Component {
-	componentWillMount() {
-		this.props.getTransactions(this.props.user.get('id'))
+	constructor(props) {
+		super(props)
+		this.state = {
+			currencies: []
+		}
 	}
+
+	componentWillMount() {
+		this.getCurrencies()	
+		this.props.getTransactions(this.props.user.get('id'))			
+	}
+
+
+	getCurrencies = async() => {
+		await this.props.setInitialState()		
+		const response = await currenciesService.getCurrencies()
+		const currencies = response.result
+		this.setState({ currencies })
+	}
+
 	onStartTrading = async(page = 1) => {
 		await this.props.setAmountNeedInt(convertMoneyString(this.props.amountNeed) || 0)
 		await this.props.setAmountHaveInt(convertMoneyString(this.props.amountHave) || 0)
@@ -31,10 +49,14 @@ class Post extends Component {
 		this.props.getClosestTrade(need, have, this.props.amountNeedInt, this.props.amountHaveInt, page)
 	}
 	onPostTrade = async() => {
-		var zone_name =  moment.tz.guess()
-		var timezone = moment.tz(zone_name)._z.name
-		await this.props.postTrade(this.props.user.get('id'), convertMoneyString(this.props.amountNeed), this.props.chooseNeed.get('currency_alias'),	this.props.rate,	convertMoneyString(this.props.amountHave),	this.props.chooseHave.get('currency_alias'), timezone)
-		this.props.getTransactions(this.props.user.get('id'))		
+		// var zone_name =  moment.tz.guess()
+		// var timezone = moment.tz(zone_name)._z.name
+		// await this.props.postTrade(this.props.user.get('id'), convertMoneyString(this.props.amountNeed), this.props.chooseNeed.get('currency_alias'),	this.props.rate,	convertMoneyString(this.props.amountHave),	this.props.chooseHave.get('currency_alias'), timezone)
+		// this.props.getTransactions(this.props.user.get('id'))
+		history.push({
+			pathname: '/dashboard/tradeconfirmation',
+			state: { type: 'poster' }
+		})
 	}
 	render() {
 		if(this.props.isInquiry || this.props.isLiveTransactions){
@@ -45,19 +67,20 @@ class Post extends Component {
 		return (
 			<div className="container dashboard-container post-container">
 				<FormInputMoney 
-					selectedNeed={ this.props.chooseNeed.get('currency_alias') }
-					selectedHave={ this.props.chooseHave.get('currency_alias') }
+					selectedNeed={ this.props.chooseNeed }
+					selectedHave={ this.props.chooseHave }
 					onSelectNeed={ (chooseNeed) => this.props.setChooseNeed(chooseNeed) }
 					onSelectHave={ (chooseHave) => this.props.setChooseHave(chooseHave) }
 					amountNeed={ this.props.amountNeed }
 					amountHave={ this.props.amountHave }
 					onChangeNeed={ (amountNeed) => this.props.setAmountNeed(amountNeed) }
 					onChangeHave={ (amountHave) => this.props.setAmountHave(amountHave) }
-					convertMoney={ (val, selectedNeed, selectedHave) => this.props.convertMoney(val, selectedNeed, selectedHave) }
+					convertMoney={ (val, selectedNeed, selectedHave, type) => this.props.convertMoney(val, selectedNeed, selectedHave, type) }					
 					onStartTrading={ () => this.onStartTrading() }
 					buttonDisabled={ this.props.loading }
 					setLoading={ (loading) => this.props.setLoading(loading) }
 					theme='secondary'
+					currencies={ this.state.currencies }					
 					buttonText={ strings.search } 
 				/>
 				{
@@ -78,6 +101,7 @@ class Post extends Component {
 					onStartTrading={ (page) => this.onStartTrading(page) }
 					createPost= { this.onPostTrade }		
 					onTradeClick={ () => history.push('/dashboard/tradeconfirmation') }							
+					currencies={ this.state.currencies }					
 					theme='secondary'
 				/>
 			</div>
@@ -150,7 +174,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setChooseHave: (chooseHave) => dispatch(actions.setChooseHave(chooseHave)),
 	getClosestTrade: (need, have, amount, transfer, page) => dispatch(actions.getClosestTrade(need, have, amount, transfer, page)),
 	setLoading: (loading) => dispatch(actions.setLoading(loading)),
-	convertMoney: (val, selectedNeed, selectedHave) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave)),
+	convertMoney: (val, selectedNeed, selectedHave, type) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave, type)),
 	tradeSelected: (selectedTrades, trade) => dispatch(actions.tradeSelected(selectedTrades, trade)),
 	removeTrade: (selectedTrades, index) => dispatch(actions.removeTrade(selectedTrades, index)),
 	postTrade: (id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone) => dispatch(postTrade(id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone)),
