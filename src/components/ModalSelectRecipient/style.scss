@@ -1,0 +1,13 @@
+@import '../../styles/variable';
+.msr-wrapper{
+	max-width: 600px;	
+}
+.msr-content{
+	padding: 16px 24px;
+}
+.msr-add-account{
+	background-color: $light;
+	padding: 20px;
+	border-radius: 5px;
+	margin-bottom: 8px;
+}
