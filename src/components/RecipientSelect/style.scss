@@ -1,0 +1,27 @@
+@import '../../styles/variable';
+
+.rs-card{
+	background: white;
+	border: 1px solid #86D9E3;
+	box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.16);
+	border-radius: 5px;
+	padding: 8px;
+	color: $black-semi;
+	.rs-circle{
+		width: 24px;
+		height: 24px;
+		border-radius: 12px;
+		background-color: $gray-80;
+		margin: auto;
+	}
+	transition: 0.3s all ease-in-out;
+}
+
+.rs-card-active{
+	border: 1px solid $primary;
+	background: $primary;
+	color: white;
+	.rs-circle{
+		background-color: white;
+	}
+}
