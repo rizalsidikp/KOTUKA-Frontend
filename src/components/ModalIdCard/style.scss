@@ -1,0 +1,31 @@
+@import '../../styles/variable';
+
+.mic-wrapper{
+	max-width: 550px;
+}
+
+.mic-content{
+	padding: 16px 24px;
+}
+
+.exampleImageInput {
+	cursor: pointer;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	opacity: 1;
+	z-index: 20000;
+}
+
+.mic-image-upload{
+	height: 261px;
+	background-color: $cream;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	border-radius: 10px;
+	margin: 18px 0;
+	border: 1px solid $cream;
+}
