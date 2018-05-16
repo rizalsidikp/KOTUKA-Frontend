@@ -33,7 +33,7 @@ class TradeConfirmation extends Component {
 	constructor(props) {
 		super(props)
 		this.state={
-			collapse : 4,
+			collapse : 1,
 			checked: 'myself',
 			modalRecipient: false,
 			first_n_midle_name: 'Rizal',
@@ -154,26 +154,6 @@ class TradeConfirmation extends Component {
 
 	render() {	
 		const options = chunkArray(this.props.purpose, 'text_purpose', 'text_purpose', '')
-		// let you_will_get = 0, you_transfer = 0
-		// if(this.props.selectedTrade.length > 0){
-		// 	you_will_get = this.props.selectedTrade[0].have_amount
-		// 	if(this.props.selectedTrade[0].have_currency === 'IDR'){
-		// 		you_will_get = Math.round(you_will_get)
-		// 		you_will_get = accounting.formatMoney(you_will_get,'', 0, ',')
-		// 	}else{
-		// 		you_will_get = Math.round(you_will_get * 100) / 100
-		// 		you_will_get = accounting.formatMoney(you_will_get,'', 2, ',')
-		// 	}
-		// 	you_transfer = this.props.selectedTrade[0].need_amount
-		// 	if(this.props.selectedTrade[0].need_currency === 'IDR'){
-		// 		you_transfer = Math.round(you_transfer)
-		// 		you_transfer = accounting.formatMoney(you_transfer,'', 0, ',')
-		// 	}else{
-		// 		you_transfer = Math.round(you_transfer * 100) / 100
-		// 		you_transfer = accounting.formatMoney(you_transfer,'', 2, ',')
-		// 	}
-		// }
-		
 		if(!this.props.location.state){
 			return <Redirect to="/" />
 		}
@@ -191,6 +171,10 @@ class TradeConfirmation extends Component {
 				<Row className="justify-content-center">
 					<div className="col col-md-8">
 						<label className="font14 text-secondary clickable">{ strings.cancel }</label>
+
+
+
+
 						{/*	step 1 form input money	*/}
 						<Step
 							active={ collapse === 1 }
@@ -256,6 +240,17 @@ class TradeConfirmation extends Component {
 								</div>
 							</Row>
 						</Step>
+
+
+
+
+
+
+
+
+
+
+						
 						{/* {input recipient} */}
 						<Step
 							active={ collapse === 2 }
@@ -290,6 +285,12 @@ class TradeConfirmation extends Component {
 								<div className="font14 text-black-semi">{ '77218210022' }</div>
 							</div>
 						</Step>
+
+
+
+
+
+
 						{/* {purpose} */}
 						<Step
 							active={ collapse === 3 }
@@ -309,6 +310,19 @@ class TradeConfirmation extends Component {
 								options={ options }
 							/>						
 						</Step>
+
+
+
+
+
+
+
+
+
+
+
+
+
 						{/* {review} */}
 						<Step
 							active={ collapse === 4 }
