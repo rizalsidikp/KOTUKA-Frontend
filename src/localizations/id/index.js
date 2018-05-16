@@ -105,6 +105,18 @@ export default {
 	recipient_detail: 'Recipient Detail',
 	amount_to_convert: 'Amount to convert',
 	cancel_trade: 'Cancel Trade',
-	confirm_and_continue: 'Confirm and Continue'
+	confirm_and_continue: 'Confirm and Continue',
+	transfer_mehtod: 'Transfer Method',
+	select_bank: 'Select Bank',
+	kotuka_acc_detail: 'Kotuka\'s Account Detail',
+	to: 'To',
+	time_limit: 'Time Limit',
+	the_money: 'The money must sent from an acount in your name',
+	have_sent_money: 'I have sent the money',
+	will_send_money_later: 'I will send the money later',
+	identify_verification: 'Identity Verification',
+	for_security_reason: 'For security reason, we need to verify your identity. Please upload your ID-Card.',
+	upload_id_card: 'UPLOAD ID-CARD',
+	verify_my_identity: 'Verify My Identity'
 }
 
