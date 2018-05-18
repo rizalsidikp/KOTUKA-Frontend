@@ -10,6 +10,7 @@ const INITIAL_STATE = fromJS({
 		createdAt: '',
 		email: '',
 		first_and_middle_name: '',
+		identification_photo: null,
 		id: '',
 		last_name: '',
 		phone: '',
@@ -40,6 +41,9 @@ export default (state = INITIAL_STATE, action) => {
 			.setIn(['user', 'trans_count'], action.payload.user.trans_count)
 			.setIn(['user', 'updatedAt'], action.payload.user.updatedAt)
 			.setIn(['user', 'verified'], action.payload.user.verified)
+			.setIn(['user', 'identification_photo'], action.payload.user.identification_photo)
+	case constants.SET_ID_CARD:
+		return state.setIn(['user', 'identification_photo'], action.payload.identification_photo)
 	default: return state
 	}
 }

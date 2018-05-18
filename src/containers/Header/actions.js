@@ -17,6 +17,11 @@ export function setUser(user) {
 }
 
 
+export function setIdCard(identification_photo) {
+	return { type: constants.SET_ID_CARD, payload: { identification_photo } }
+}
+
+
 export function loginWithGoogle() {
 	return async(dispatch) => {
 		dispatch(setLoading(true))
@@ -33,6 +38,7 @@ export function loginWithGoogle() {
 			dispatch(setUser(userResponse.data_user))
 			setHtmlStorage('accessToken', userResponse.token, 1500)
 			setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
+			console.log(userResponse.data_user)
 			history.push('/dashboard/post')
 		} catch (error) {
 			console.log(error)
