@@ -76,7 +76,7 @@ export default {
    * @param {Sring} url '/path/to/endpoint'
    * @param {Object} data
   */
-	postData: (url, data = {}) => {
+	postData: (url, data = {}, customConfig = {}) => {
 		const token = localStorage.getItem('accessToken')
 		api.defaults.headers.Authorization = `jwt ${token}`
 		api.defaults.headers['Content-Type'] = 'multipart/form-data'
@@ -90,7 +90,7 @@ export default {
 				formData.append(key, data[key])
 		})
 		return api.post(url, formData, {
-			baseURL: config.BASE_URL,
+			...customConfig
 		}).then(response => Promise.resolve(response.data))
 			.catch(err => Promise.reject(err))
 	},

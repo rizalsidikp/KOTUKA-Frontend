@@ -201,15 +201,19 @@ export function getCostFromCurrency(list = [], currency){
 
 
 export function censoredText(text){
-	let textArr = text.split(' ')
+	let textArr = text.trim().split(' ')
 	let res = []
-	textArr.forEach( (t) => {
-		let length = t.length
-		let r = t[0] + '*'.repeat(length - 1)
-		res.push(r)
-	} )
+	if(textArr.length > 0 && textArr[0] !== ''){
+		textArr.forEach( (t) => {
+			let length = t.length
+			let r = t[0] + '*'.repeat(length - 1)
+			res.push(r)
+		} )
+		return res.join(' ')
+	}else{
+		return ''
+	}
 
-	return res.join(' ')
 }
 
 export function formatMoney(money, currency) {
