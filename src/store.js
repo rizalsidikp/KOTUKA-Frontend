@@ -10,6 +10,7 @@ import PostReducer from './containers/Post/reducer'
 import TradeConfirmationReducer from './containers/TradeConfirmation/reducer'
 import TransactionReducer from './containers/Transaction/reducer'
 import RecipientReducer from './containers/Recipient/reducer'
+import PaymentTradeReducer from './containers/PaymentTrade/reducer'
 
 const rootReducer = {
 	headerReducer: HeaderReducer,
@@ -17,7 +18,8 @@ const rootReducer = {
 	postReducer: PostReducer,
 	tradeConfirmationReducer: TradeConfirmationReducer,
 	transactionReducer: TransactionReducer,
-	recipientReducer: RecipientReducer
+	recipientReducer: RecipientReducer,
+	paymentTradeReducer: PaymentTradeReducer,
 }
 
 const Immutable = require('immutable')
