@@ -14,7 +14,7 @@ import Loading from '../Loading'
 
 class TradeBox extends Component {
 	render() {
-		const { theme = 'white' } = this.props
+		const { theme = 'white', anonymous = false } = this.props
 		if(!this.props.isSearching){
 			return null
 		}
@@ -61,7 +61,7 @@ class TradeBox extends Component {
 												data={ trade }
 												onSelectTrade={ (trade) => this.props.onSelectTrade(trade) }
 												disabled={ this.props.selectedTrades && this.props.selectedTrades.length > 0 }
-												anonymous
+												anonymous={ anonymous || (trade ? trade.anonymous : false) }												
 											/>
 										)
 									})
@@ -92,7 +92,7 @@ class TradeBox extends Component {
 											data={ trade }
 											onRemoveTrade={ () => this.props.onRemoveTrade(tradeIndex) }
 											remove
-											anonymous
+											anonymous={ anonymous || trade.anonymous }
 										/>
 									)
 								})
@@ -144,6 +144,7 @@ TradeBox.propTypes = {
 	onRemoveTrade: PropTypes.func,
 	createPost: PropTypes.func,
 	isSearching: PropTypes.bool,
+	anonymous: PropTypes.bool,
 	loading: PropTypes.bool,
 	detailPage: PropTypes.object,
 	onStartTrading: PropTypes.func,
