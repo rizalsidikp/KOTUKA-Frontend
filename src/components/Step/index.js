@@ -35,13 +35,13 @@ class Step extends Component {
 								{
 									theme === 'bottom' &&
 									<div className="col col-md-5">
-										<button className="button-sm button-secondary-white full-width">{ strings.cancel_trade }</button>
+										<button disabled={ this.props.loading } className="button-sm button-secondary-white full-width">{ strings.cancel_trade }</button>
 									</div>
 								}
 								{
 									theme === 'bottom' &&
 									<div className="col col-md-5">
-										<button className="button-sm button-yellow full-width">{ strings.confirm_and_continue }</button>
+										<button disabled={ this.props.loading } className="button-sm button-yellow full-width" onClick={  this.props.onConfirmClick }>{ strings.confirm_and_continue }</button>
 									</div>
 								}
 							</Row>
@@ -74,10 +74,12 @@ Step.propTypes = {
 	title: PropTypes.string,
 	theme: PropTypes.string,
 	active: PropTypes.bool,
+	loading: PropTypes.bool,
 	pass: PropTypes.bool,
 	onNextClick: PropTypes.func,
 	onEditClick: PropTypes.func,
-	disabledNext: PropTypes.bool
+	onConfirmClick: PropTypes.func,
+	disabledNext: PropTypes.bool,
 }
 
 export default Step
