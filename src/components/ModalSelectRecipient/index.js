@@ -17,7 +17,7 @@ class ModalSelectRecipient extends Component {
 		this.state={
 			email_address: '',
 			question: '',
-			add_account: true,
+			add_account: false,
 		}
 	}
 	render() {
@@ -30,12 +30,13 @@ class ModalSelectRecipient extends Component {
 					</h2>
 					<hr />
 					{
-						this.props.recipients && this.props.recipients.length > 1 ?
+						this.props.recipients && this.props.recipients.length > 0 ?
 							this.props.recipients.map((recipient, index) => {
 								return(
 									<SelectRecipientCard
 										key={ index }
 										data={ recipient }
+										onClick={ () => this.props.onSelectedRecipient(recipient) }
 									/>
 								)
 							})
@@ -100,7 +101,8 @@ class ModalSelectRecipient extends Component {
 ModalSelectRecipient.propTypes = {
 	open: PropTypes.bool,
 	onClose: PropTypes.func,
-	recipients: PropTypes.array
+	onSelectedRecipient: PropTypes.func,
+	recipients: PropTypes.any
 }
 
 export default ModalSelectRecipient
