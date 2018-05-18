@@ -85,7 +85,8 @@ class Home  extends Component {
 							isSearching={ this.props.isSearching }
 							detailPage={ this.props.detailPage }
 							currencies={ this.state.currencies }							
-							onStartTrading={ (page) => this.onStartTrading(page) }		
+							onStartTrading={ (page) => this.onStartTrading(page) }
+							anonymous
 						/>
 					</div>
 				</div>
