@@ -46,13 +46,14 @@ export function getTransactions(id){
 				}else{
 					dispatch(setIsInquiry(false))
 				}
-				if(response.result.transaction && response.result.transaction.length > 0 ){
-					if(response.result.transaction[0].transaction_status === 'ON_PROGRESS'){
+				if(response.result.transactions && response.result.transactions.length > 0 ){
+					console.log('ajkdsadsa')
+					if(response.result.transactions[0].transaction_status === 'ON_PROGRESS'){
 						firebase
 							.auth()
 							.signInWithCustomToken(localStorage.getItem('firebaseToken'))
 							.then(() => {
-								const resp = firebase.database().ref(`transaction/${ response.result.transaction[0].id }`)
+								const resp = firebase.database().ref(`transaction/${ response.result.transactions[0].id }`)
 								resp.on('value', async(val) => {
 									await dispatch(setLiveTransaction(val.val()))
 									dispatch(setIsLiveTransaction(true))
@@ -67,10 +68,9 @@ export function getTransactions(id){
 					}else{
 						dispatch(setIsLiveTransaction(false))						
 					}
-					dispatch(setTransactions(response.result.transaction))
+					dispatch(setTransactions(response.result.transactions))
 				}else{
 					dispatch(setIsLiveTransaction(false))					
-					dispatch(setLiveTransaction(null))
 					dispatch(setTransactions([]))
 				}
 			}

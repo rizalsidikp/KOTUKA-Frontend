@@ -13,6 +13,9 @@ const INITIAL_STATE = fromJS({
 		have_currency: '',
 		status: '',
 		deadline_post: '',
+		id_purpose: 0,
+		id_recipient: 0,
+		total_amount_transfer: '0.00'
 	},
 	isInquiry: false,
 	isLiveTransaction: false,
@@ -42,6 +45,9 @@ export default (state = INITIAL_STATE, action) => {
 			.setIn(['inquiry', 'have_currency'], action.payload.inquiry.have_currency || '')
 			.setIn(['inquiry', 'status'], action.payload.inquiry.status || '')
 			.setIn(['inquiry', 'deadline_post'], action.payload.inquiry.deadline_post || '')
+			.setIn(['inquiry', 'id_purpose'], action.payload.inquiry.id_purpose || 0)
+			.setIn(['inquiry', 'id_recipient'], action.payload.inquiry.id_recipient || 0)
+			.setIn(['inquiry', 'total_amount_transfer'], action.payload.inquiry.total_amount_transfer || '0.00')
 	case constants.IS_INQUIRY:
 		return state.set('isInquiry', action.payload.isInquiry)
 	case constants.SET_LIVE_TRANSACTION:

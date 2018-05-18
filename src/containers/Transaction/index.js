@@ -44,12 +44,15 @@ class Transaction extends Component {
 						{
 							this.props.isInquiry &&
 							<TransactionCard 
-								status="Waiting for picker"
+								status={ this.props.inquiry.get('status') }
 								need_currency={ this.props.inquiry.get('need_currency') }
 								have_currency={ this.props.inquiry.get('have_currency') }
 								will_get={ this.props.inquiry.get('need_amount') }
 								have_transfer={ this.props.inquiry.get('have_amount') }
 								currencies={ this.state.currencies }
+								deadline_post={ this.props.inquiry.get('deadline_post') }
+								id={ this.props.inquiry.get('id') }
+								isInquiry
 							/>
 						}
 						<div>ini yg live</div>
