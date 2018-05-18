@@ -117,5 +117,8 @@ export default {
 	identify_verification: 'Identity Verification',
 	for_security_reason: 'For security reason, we need to verify your identity. Please upload your ID-Card.',
 	upload_id_card: 'UPLOAD ID-CARD',
-	verify_my_identity: 'Verify My Identity'
+	verify_my_identity: 'Verify My Identity',
+	currency: 'Currency',
+	uniq_code: 'Unique Code',
+	pick: 'Pick'	
 }
