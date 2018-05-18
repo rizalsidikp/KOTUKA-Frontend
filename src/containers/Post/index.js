@@ -49,10 +49,6 @@ class Post extends Component {
 		this.props.getClosestTrade(need, have, this.props.amountNeedInt, this.props.amountHaveInt, page)
 	}
 	onPostTrade = async() => {
-		// var zone_name =  moment.tz.guess()
-		// var timezone = moment.tz(zone_name)._z.name
-		// await this.props.postTrade(this.props.user.get('id'), convertMoneyString(this.props.amountNeed), this.props.chooseNeed.get('currency_alias'),	this.props.rate,	convertMoneyString(this.props.amountHave),	this.props.chooseHave.get('currency_alias'), timezone)
-		// this.props.getTransactions(this.props.user.get('id'))
 		history.push({
 			pathname: '/dashboard/tradeconfirmation',
 			state: { type: 'poster' }
@@ -100,7 +96,12 @@ class Post extends Component {
 					detailPage={ this.props.detailPage }
 					onStartTrading={ (page) => this.onStartTrading(page) }
 					createPost= { this.onPostTrade }		
-					onTradeClick={ () => history.push('/dashboard/tradeconfirmation') }							
+					onTradeClick={ () => {
+						history.push({
+							pathname: '/dashboard/pickconfirmation',
+							state: { type: 'poster' }
+						})
+					} }							
 					currencies={ this.state.currencies }					
 					theme='secondary'
 				/>
@@ -178,7 +179,7 @@ const mapDispatchToProps = (dispatch) => ({
 	tradeSelected: (selectedTrades, trade) => dispatch(actions.tradeSelected(selectedTrades, trade)),
 	removeTrade: (selectedTrades, index) => dispatch(actions.removeTrade(selectedTrades, index)),
 	postTrade: (id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone) => dispatch(postTrade(id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone)),
-	getTransactions: (id) => dispatch(getTransactions(id))	
+	getTransactions: (id) => dispatch(getTransactions(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)
