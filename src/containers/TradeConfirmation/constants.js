@@ -1,2 +1,5 @@
 export const SET_PURPOSE = 'src/containers/TradeConfirmation/SET_PURPOSE'
 export const SET_SELECTED_PURPOSE = 'src/containers/TradeConfirmation/SET_SELECTED_PURPOSE'
+export const SET_LOADING = 'src/containers/TradeConfirmation/SET_LOADING'
+export const SET_INITIAL_STATE = 'src/containers/TradeConfirmation/SET_INITIAL_STATE'
+export const SET_POST_TRADE = 'src/containers/TradeConfirmation/SET_POST_TRADE'

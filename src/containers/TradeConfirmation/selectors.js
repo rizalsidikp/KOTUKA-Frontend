@@ -11,3 +11,8 @@ export const getSelectedPurpose = () => createSelector(
 	selectTrade(),
 	state => state.get('selectedPurpose')
 )
+
+export const getLoading = () => createSelector(
+	selectTrade(),
+	state => state.get('loading')
+)

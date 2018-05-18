@@ -3,6 +3,18 @@ import purposeService from './../../services/purpose'
 import { setHtmlStorage } from '../../services/helper'
 import tradingService from './../../services/trading'
 
+import { setIdCard } from './../Header/actions'
+
+import history from './../../history'
+
+
+export function setLoading(loading) {
+	return { type: constants.SET_LOADING, payload: { loading } }
+}
+
+export function setInitialState() {
+	return { type: constants.SET_INITIAL_STATE }
+}
 
 export function setPurrpose(purpose) {
 	return { type: constants.SET_PURPOSE, payload: { purpose } }
@@ -24,22 +36,60 @@ export function getPurpose(){
 	}
 }
 
-export function pickTrade(
-	id_user, need_amount, need_currency, 
-	currency_rate, have_amount, have_currency, 
-	payment_detail, trade_purpose, total_amount_transfer,
-	account_info, first_and_middle_name, last_name,
-	description, trade_with, timezone) {
-	return async () => {
-		const payload = {
-			id_user, need_amount, need_currency,
-			currency_rate, have_amount, have_currency,
-			payment_detail, trade_purpose, total_amount_transfer,
-			account_info, first_and_middle_name, last_name,
-			description, trade_with, timezone
+
+//post trade
+export function postTrade(payload) {
+	return async(dispatch) => {
+		dispatch(setLoading(true))
+		try {
+			const params = {
+				amount: payload.have_amount,
+				currency: payload.have_currency,
+				preview: false
+			}
+			const resTotal = await tradingService.getTotalPayment(params)
+			await setHtmlStorage('accessToken', resTotal.token, 1500)		
+			console.log(resTotal)	
+
+			payload = {
+				...payload,
+				total_amount_transfer: resTotal.result.total
+			}
+			const response = await tradingService.postTrade(payload)
+			setHtmlStorage('accessToken', response.token, 1500)
+			dispatch(setLoading(false))
+			console.log(response)
+			return history.replace({
+				pathname: '/dashboard/paymenttrade',
+				state: { payment: response.result.id }
+			})
+		} catch (error) {
+			console.log(error)
 		}
-		const response = await tradingService.postTrade(payload)
-		setHtmlStorage('accessToken', response.token, 1500)
-		console.log('picker response', response)
+		dispatch(setLoading(false))
+	}
+}
+
+
+export function uploadIdCard(payload) {
+	console.log(payload)
+	return async(dispatch) => {
+		dispatch(setLoading(true))
+		try{
+			const response = await tradingService.uploadIdCard(payload)
+			console.log(response)
+			if(response.image){
+				dispatch(setIdCard(response.image.url))
+				dispatch(setLoading(false))
+				return true
+			}else{
+				dispatch(setLoading(false))
+				return false
+			}
+		} catch (error) {
+			console.log(error)
+			dispatch(setLoading(false))
+			return false
+		}
 	}
 }

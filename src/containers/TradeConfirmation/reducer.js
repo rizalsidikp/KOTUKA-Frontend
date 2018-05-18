@@ -2,6 +2,7 @@ import * as constants from './constants'
 import { fromJS } from 'immutable'
 
 const INITIAL_STATE = fromJS({
+	loading: false,
 	purpose: [],
 	selectedPurpose: {
 		id: 1,
@@ -12,6 +13,8 @@ const INITIAL_STATE = fromJS({
 
 export default (state = INITIAL_STATE, action) => {
 	switch(action.type) {
+	case constants.SET_LOADING:
+		return state.set('loading',  action.payload.loading)
 	case constants.SET_PURPOSE:
 		return state.set('purpose',  action.payload.purpose)
 	case constants.SET_SELECTED_PURPOSE:
