@@ -10,6 +10,8 @@ export default {
 	FIREBASE_STORAGE_BUCKET: 'kotuka-e4895.appspot.com',
 	FIREBASE_MESSAGING_SENDER_ID: '421723079940',
 	// BASE_URL: 'http://192.168.1.4:3000/',
+	// BASE_URL_IMAGE: 'http://192.168.1.4:3005/',
 	BASE_URL: 'https://kotuka-server.herokuapp.com/',
+	BASE_URL_IMAGE: 'https://kotuka-image-server.herokuapp.com/',
 	FLAG_VERSION: 1
 }
