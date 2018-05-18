@@ -16,10 +16,12 @@ class ModalRecipient extends Component {
 	constructor(props){
 		super(props)
 		this.state={
-			myself: true,
+			myself: false,
 			bank_account: '',
 			sort_code: '',
-			country: 'IDR',
+			iban: '',
+			bank_name: '',
+			currency: 'IDR',
 			first_and_middle_name: '',
 			last_name: '',
 			description: '',
@@ -30,7 +32,10 @@ class ModalRecipient extends Component {
 	onAddRecipient = () => {
 		let account_info = {
 			account_no: this.state.bank_account,
-			iban: this.state.sort_code,	
+			sort_code: this.state.sort_code,
+			iban: this.state.iban,
+			bank_name: this.state.bank_name,
+			currency: this.state.currency
 		}
 		account_info = JSON.stringify(account_info)
 		const payload = {
@@ -70,7 +75,7 @@ class ModalRecipient extends Component {
 	}
 
 	onSelectChange = (val) => {
-		this.setState({ country: val.value })
+		this.setState({ currency: val.value })
 	}
 
 	renderItem = (props) => {
@@ -96,11 +101,11 @@ class ModalRecipient extends Component {
 					<LabelInput name='bank_account' disabled={ this.state.myself } label={ strings.first_n_midle_name } placeholder={ strings.first_and_middle_name } value={ this.state.first_and_middle_name } onChange={ (e) => this.setState({ first_and_middle_name: e.target.value }) } />
 					<LabelInput name='bank_account' disabled={ this.state.myself } label={ strings.last_name } placeholder={ strings.last_name } value={ this.state.last_name } onChange={ (e) => this.setState({ last_name: e.target.value }) } />
 					
-					<label className="font16 text-secondary full-width no-margin font-weight-semi-bold">{ strings.country }</label>					
+					<label className="font16 text-secondary full-width no-margin font-weight-semi-bold">{ strings.currency }</label>					
 					<Select
 						className="li-input-select"
 						name="form-field-name"
-						value={ this.state.country }
+						value={ this.state.currency }
 						clearable={ false }
 						onChange={ this.onSelectChange }
 						autosize={ false }
