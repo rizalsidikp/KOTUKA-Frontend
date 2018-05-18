@@ -71,6 +71,13 @@ class TransactionCard extends Component {
 										status={ inquiry.status }
 										name={ inquiry.User.first_and_middle_name }
 										deadline={ inquiry.deadline_post }
+										onClickPayNow={ () => {
+											history.push({
+												pathname: '/dashboard/paymenttrade',
+												state: { payment: inquiry.id }
+											})
+										}
+										}
 									/>
 								)
 							})
