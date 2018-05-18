@@ -11,7 +11,7 @@ export const myself = [
 	{
 		id: 'sortCode',
 		Header: 'Sort Code',
-		accessor: d => d.account_info.iban
+		accessor: d => d.account_info.sort_code
 	},
 	{
 		Header: 'Description',
@@ -44,7 +44,7 @@ export const someone_else = [
 	{
 		id: 'sortCode',
 		Header: 'Sort Code',
-		accessor: d => d.account_info.iban
+		accessor: d => d.account_info.sort_code
 	},
 	{
 		Header: 'Description',
