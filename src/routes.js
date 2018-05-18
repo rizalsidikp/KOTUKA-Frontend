@@ -17,6 +17,7 @@ const ForgotPassword = props => <Async load={ import('./containers/ForgotPasswor
 const EmailForgot = props => <Async load={ import('./containers/EmailForgot') } componentProps={ props }/>
 const ResetPassword = props => <Async load={ import('./containers/ResetPassword') } componentProps={ props }/>
 const PaymentTrade = props => <Async load={ import('./containers/PaymentTrade') } componentProps={ props }/>
+const PickConfirmation = props => <Async load={ import('./containers/PickConfirmation') } componentProps={ props }/>
 
 // auth check
 import AuthCheck from './authcheck'
@@ -48,7 +49,8 @@ class Routes extends Component {
 					<div className="position-relative">
 						<Route path='/dashboard/post' component={ Post } />             
 						<Route path='/dashboard/transaction' component={ Transaction } />             
-						<Route path='/dashboard/tradeconfirmation' component={ TradeConfirmation } />             
+						<Route path='/dashboard/tradeconfirmation' component={ TradeConfirmation } />         
+						<Route path='/dashboard/pickconfirmation' component={ PickConfirmation } />         
 						<Route path='/dashboard/recipient' component={ Recipient } />  
 						<Route path='/dashboard/paymenttrade' component={ PaymentTrade } />  
 						<img src={ CircleBig } className="circle-big" />    
