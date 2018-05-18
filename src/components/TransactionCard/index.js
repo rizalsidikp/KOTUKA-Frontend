@@ -9,6 +9,8 @@ import InquiryBox from '../InquiryBox'
 import getSymbolFromCurrency from 'currency-symbol-map'
 import { getFlagFromCurrency } from '../../services/helper'
 
+import history from './../../history'
+
 
 class TransactionCard extends Component {
 	render() {
@@ -30,7 +32,7 @@ class TransactionCard extends Component {
 			have_transfer = accounting.formatMoney(have_transfer,'', 2, ',')
 		}
 
-		const { live = false } = this.props
+		const { live = false, isInquiry = false } = this.props
 
 		return (
 			<Row className='tran-c-row'>
@@ -42,6 +44,23 @@ class TransactionCard extends Component {
 					</div>
 					<div className="font12 text-gray">{ strings.transaction_status }</div>
 					<span className='font16 text-black-semi font-weight-semi-bold'>{ this.props.status }</span>
+					{
+						isInquiry ? 
+							<InquiryBox 
+								status={ this.props.status }
+								name={ '' }
+								deadline={ this.props.deadline_post }
+								isInquiry
+								onClickPayNow={ () => {
+									history.push({
+										pathname: '/dashboard/paymenttrade',
+										state: { payment: this.props.id }
+									})
+								}
+								}
+							/>
+							:null
+					}
 					{
 						live ?
 							this.props.inquiries.map((inquiry, index) => {
@@ -57,14 +76,6 @@ class TransactionCard extends Component {
 							})
 							:null
 					}
-					{/*<InquiryBox 
-						status="completed"
-						name="Chelsea London"
-					/>
-					<InquiryBox 
-						status="waiting"
-						name="Thompson"
-					/> */}
 				</div>
 				<div className='col d-flex flex-column align-items-end'>
 					<span className="font12 text-secondary font-weight-bold">{ strings.will_get }</span>
@@ -84,10 +95,13 @@ TransactionCard.propTypes = {
 	have_currency: PropTypes.string,
 	will_get: PropTypes.string,
 	have_transfer: PropTypes.string,
+	deadline_post: PropTypes.string,
 	inquiries: PropTypes.array,
 	currencies: PropTypes.array,
 	live: PropTypes.bool,
-	id_user: PropTypes.number
+	isInquiry: PropTypes.bool,
+	id_user: PropTypes.number,
+	id: PropTypes.number
 }
 
 export default TransactionCard
