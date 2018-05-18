@@ -6,8 +6,8 @@ class RecipientSelect extends Component {
 	render() {
 		const { title = '', onClick = () => {}, active = false } = this.props
 		return (
-			<div className={ 'col col-md-4 '.concat(active ? '' : 'clickable') } onClick={ onClick }>
-				<div className={ 'text-center font14 font-weight-bold rs-card '.concat(active ? 'rs-card-active' : '') }>
+			<div className={ 'col col-md-4 ' }>
+				<div className={ 'text-center font14 font-weight-bold rs-card '.concat(active ? 'rs-card-active' : 'clickable') } onClick={ onClick }>
 					<div>
 						<div className="rs-circle" />
 						{ title }
