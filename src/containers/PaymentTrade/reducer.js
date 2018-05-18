@@ -1,0 +1,49 @@
+import * as constants from './constants'
+import { fromJS } from 'immutable'
+
+const INITIAL_STATE = fromJS({
+	loading: false,
+	inquiry: {
+		id: 0,
+		id_user: 0,
+		need_amount: '0.00',
+		need_currency: '',
+		currency_rate: '0.00',
+		have_amount: '0.00',
+		have_currency: '',
+		status: '',
+		//blum
+		payment_detail: {	},
+		trans_role: '',
+		//
+		deadline_post: '',
+		id_purpose: 0,
+		id_recipient: 0,
+		total_amount_transfer: '0.00'
+	},
+})
+
+export default (state = INITIAL_STATE, action) => {
+	switch(action.type) {
+	case constants.SET_LOADING:
+		return state.set('loading',  action.payload.loading)
+	case constants.SET_INITIAL_STATE: 
+		return INITIAL_STATE
+	case constants.SET_INQUIRY:
+		return state.setIn(['inquiry', 'id'], action.payload.inquiry.id || 0)
+			.setIn(['inquiry', 'id_user'], action.payload.inquiry.id_user || 0)
+			.setIn(['inquiry', 'need_amount'], action.payload.inquiry.need_amount || '0.00')
+			.setIn(['inquiry', 'need_currency'], action.payload.inquiry.need_currency || '')
+			.setIn(['inquiry', 'currency_rate'], action.payload.inquiry.currency_rate || '0.00')
+			.setIn(['inquiry', 'have_amount'], action.payload.inquiry.have_amount || '0.00')
+			.setIn(['inquiry', 'have_currency'], action.payload.inquiry.have_currency || '')
+			.setIn(['inquiry', 'status'], action.payload.inquiry.status || '')
+			.setIn(['inquiry', 'payment_detail'], action.payload.inquiry.payment_detail || {})
+			.setIn(['inquiry', 'trans_role'], action.payload.inquiry.trans_role || '')
+			.setIn(['inquiry', 'deadline_post'], action.payload.inquiry.deadline_post || '')
+			.setIn(['inquiry', 'id_purpose'], action.payload.inquiry.id_purpose || 0)
+			.setIn(['inquiry', 'id_recipient'], action.payload.inquiry.id_recipient || 0)
+			.setIn(['inquiry', 'total_amount_transfer'], action.payload.inquiry.total_amount_transfer || '0.00')
+	default: return state
+	}
+}
