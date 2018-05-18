@@ -26,7 +26,7 @@ class ModalIdCard extends Component {
 							</div>
 						}
 					</div>
-					<button disabled={ this.props.imagePreviewUrl === '' } className="button button-primary full-width">{ strings.verify_my_identity }</button>
+					<button disabled={ this.props.imagePreviewUrl === '' || this.props.loading } className="button button-primary full-width" onClick={ this.props.onSendImage }>{ strings.verify_my_identity }</button>
 				</div>
 			</Modal>
 		)
@@ -35,8 +35,10 @@ class ModalIdCard extends Component {
 
 ModalIdCard.propTypes = {
 	open: PropTypes.bool,
+	loading: PropTypes.bool,
 	onClose: PropTypes.func,
 	onButtonClick: PropTypes.func,
+	onSendImage: PropTypes.func,
 	recipients: PropTypes.array,
 	imagePreviewUrl: PropTypes.string
 }
