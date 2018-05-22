@@ -24,6 +24,7 @@ import AuthCheck from './authcheck'
 import AuthBackCheck from './authbackcheck'
 
 import { CircleBig } from 'images'
+import Alert from './containers/Alert'
 
 
 
@@ -73,14 +74,17 @@ class Routes extends Component {
 				<Route path="/forgotpassword" component={ ForgotPassword } />
 				<Route path="/forgotpasswordemail" component={ EmailForgot } />
 				<Route path="/resetpassword" component={ ResetPassword } />
+				{/* alert */}
+				<Alert />
 			</div>
 		)
 	}
 }
 
 Routes.propTypes = {
-	location: PropTypes.object
+	location: PropTypes.object,
 }
+
 
 
 export default Routes
