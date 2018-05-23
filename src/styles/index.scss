@@ -56,6 +56,7 @@ body {
 	padding-bottom: 12px;
 }
 
+
 .horizontal-padding{
 	padding-left: 15px;
 	padding-right: 15px;
@@ -131,6 +132,11 @@ i {
 //styling for datepicker
 .react-datepicker-wrapper, .react-datepicker__input-container{
 	width: 100%;
+}
+
+// modal
+.mic-content{
+	padding: 16px 24px;
 }
 
 .font10 {
