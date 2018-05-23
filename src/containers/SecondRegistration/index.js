@@ -17,13 +17,20 @@ class SecondRegistration extends Component {
 						<div className="col col-md-12 text-center">
 							<img src={ Logo } className="sr-logo" />
 						</div>
-						<div className="col col-md-6 background-secondary-light sr-form">
-							<h1 className="font20 text-primary font-weight-bold">{ strings.lets_complete_your_profile }</h1>
-							<LabelInput name='first_midle_name' label={ strings.first_n_midle_name } placeholder={ strings.first_n_midle_name } /> 
-							<LabelInput name='last_name' label={ strings.last_name } placeholder={ strings.last_name } /> 
-							<LabelInput name='phone' label={ strings.phone } placeholder={ strings.phone } /> 
-							<LabelInput type='date' name='birthdate' label={ strings.birthdate } placeholder={ strings.birthdate } />
-							<LabelInput type='textarea' name='address' label={ strings.address } placeholder={ strings.address } />
+						<div className="col col-md-4 sr-card">
+							<div className="background-secondary sr-title">
+								<h1 className="font24 text-white font-weight-bold">{ strings.before_we_move } , <br /> { strings.lets_complete_your_profile }</h1>
+							</div>
+							<div className="sr-form text-center">
+								<div className="sr-photo-profile mx-auto clickable" />
+								<label className="mx-auto font16 text-primary font-weight-semi-bold clickable">{ strings.upload }</label>
+								<LabelInput name='first_midle_name' label={ strings.first_n_midle_name } placeholder={ strings.first_n_midle_name } /> 
+								<LabelInput name='last_name' label={ strings.last_name } placeholder={ strings.last_name } /> 
+								<LabelInput name='phone' label={ strings.phone } placeholder={ strings.phone } /> 
+								<LabelInput type='date' name='birthdate' label={ strings.birthdate } placeholder={ strings.birthdate } />
+								<LabelInput type='textarea' name='address' label={ strings.address } placeholder={ strings.address } />
+								<button className="button button-primary full-width">{ strings.complete_my_profile }</button>
+							</div>
 						</div>
 					</Row>
 				</div>
