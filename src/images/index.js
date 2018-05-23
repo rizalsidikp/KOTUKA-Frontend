@@ -1,3 +1,7 @@
 export const Logo = require('./logo.png')
 export const LogoCircle = require('./logo-circle.png')
 export const CircleBig = require('./circle-big.png')
+export const AlertSuccess = require('./alert-success.png')
+export const AlertInfo = require('./alert-info.png')
+export const AlertDanger = require('./alert-danger.png')
+export const Close = require('./close.png')
