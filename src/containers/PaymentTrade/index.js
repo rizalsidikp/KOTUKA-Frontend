@@ -54,7 +54,6 @@ class PaymentTrade extends Component {
 	
 	render() {
 		const kotuka_fee = convertMoneyString(this.props.inquiry.get('total_amount_transfer')) - convertMoneyString(this.props.inquiry.get('have_amount'))
-		console.log(kotuka_fee)
 		if(!this.props.location.state){
 			return <Redirect to="/" />
 		}
