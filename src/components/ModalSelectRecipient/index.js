@@ -50,7 +50,6 @@ class ModalSelectRecipient extends Component {
 									<Row className="no-margin">
 										<div className="col col-md-9 text-left">
 											<LabelInput
-												labelClassName="text-black-semi"
 												name="first_and_middle_name" 
 												placeholder={ strings.first_n_midle_name } 
 												label={ strings.first_n_midle_name } 
@@ -58,7 +57,6 @@ class ModalSelectRecipient extends Component {
 												onChange={ (e) => this.setState({ first_n_midle_name: e.target.value }) }
 											/>
 											<LabelInput
-												labelClassName="text-black-semi" 
 												name="last_name" 
 												placeholder={ strings.last_name } 
 												label={ strings.last_name } 
@@ -66,7 +64,6 @@ class ModalSelectRecipient extends Component {
 												onChange={ (e) => this.setState({ last_name: e.target.value }) }
 											/>
 											<LabelInput
-												labelClassName="text-black-semi" 
 												name="account_no" 
 												placeholder={ strings.account_no } 
 												label={ strings.account_no } 
@@ -74,7 +71,6 @@ class ModalSelectRecipient extends Component {
 												onChange={ (e) => this.setState({ account_no: e.target.value }) }
 											/>
 											<LabelInput
-												labelClassName="text-black-semi" 
 												name="description" 
 												placeholder={ strings.description } 
 												label={ strings.description } 
