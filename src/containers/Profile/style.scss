@@ -1,0 +1,31 @@
+@import '../../styles/variable';
+
+.usr-image{
+	width: 128px;
+	min-width: 128px;
+	height: 128px;
+	min-height: 128px;
+	border-radius: 50%;
+	background-color: $cream;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+	border: 1px solid $cream;
+}
+
+.usr-name{
+	padding: 12px 24px;
+}
+
+.usr-lvl{
+	margin-top: 5px !important;
+}
+
+.usr-hr{
+	border-top: 4px solid $cream;
+}
+
+.usr-row{
+	margin-bottom: 24px;
+	margin-top: 24px;
+}
