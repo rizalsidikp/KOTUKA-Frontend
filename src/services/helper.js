@@ -7,14 +7,16 @@ import accounting from 'accounting'
  *  Set local storage item with time stamp
  */
 export function setHtmlStorage(name, value, expires) {
-	// Set default expiration to 1 hour if undefined or null
-	if (expires === undefined || expires === 'null') { expires = 3600}
-	// Schedule when the token should be expired
-	const date = new Date()
-	const schedule = Math.round((date.setSeconds(date.getSeconds() + expires)) / 1000)
-	// Set the actual value as well as the time
-	localStorage.setItem(name, value)
-	localStorage.setItem(`${name}_time`, schedule)
+	if(value){
+		// Set default expiration to 1 hour if undefined or null
+		if (expires === undefined || expires === 'null') { expires = 3600}
+		// Schedule when the token should be expired
+		const date = new Date()
+		const schedule = Math.round((date.setSeconds(date.getSeconds() + expires)) / 1000)
+		// Set the actual value as well as the time
+		localStorage.setItem(name, value)
+		localStorage.setItem(`${name}_time`, schedule)
+	}
 }
 
 /**
@@ -225,4 +227,19 @@ export function formatMoney(money, currency) {
 		money = accounting.formatMoney(money,'', 2, ',')
 	}
 	return money
+}
+
+
+export function mySelfRecipientList( list = [] ) {
+	const listMySelf = list.filter((l) => {
+		return l.myself
+	})
+	return listMySelf
+}
+
+export function someoneElseRecipientList( list = [] ) {
+	const listMySelf = list.filter((l) => {
+		return !l.myself && l.Recipient.charity_name === null
+	})
+	return listMySelf
 }
