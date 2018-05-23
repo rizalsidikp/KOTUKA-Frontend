@@ -47,6 +47,9 @@ class TradeConfirmation extends Component {
 			recipient: {
 				type: ''
 			},
+			payment_method: {
+
+			},
 			// upload identification photo
 			modalUploadIdCard: false,
 			imagePreviewUrl: '',
@@ -288,7 +291,7 @@ class TradeConfirmation extends Component {
 							onEditClick={ () => this.setState({ collapse : 2 }) }							
 							title={ strings.recipient }
 							pass={ collapse > 2 }
-							disabledNext={ this.state.selectedRecipient === '' }				
+							disabledNext={ this.state.recipient.type === '' }				
 							renderOnComplete={ this.renderStepTwoComplete() }
 						>
 							<label className="font14 font-weight-bold text-black-semi">{ strings.who_are_you_sending_money_to }</label>
@@ -314,7 +317,7 @@ class TradeConfirmation extends Component {
 								<div className="p_line">
 									<div className="font16 font-weight-bold text-primary">{ strings.bank_account }</div>
 									<div className="font14 text-black-semi">{ this.state.recipient.first_and_middle_name + ' ' + this.state.recipient.last_name }</div>
-									<div className="font14 text-black-semi">{ this.state.recipient.account_info.account_no }</div>
+									<div className="font14 text-black-semi">{ this.state.recipient.account_no }</div>
 								</div>
 							}
 						</Step>
@@ -345,6 +348,40 @@ class TradeConfirmation extends Component {
 						</Step>
 
 
+						{/* { Transfer Method } */}
+						<Step
+							active={ collapse === 4 }
+							onNextClick={ () => this.setState({ collapse: this.state.collapse + 1 }) }												
+							onEditClick={ () => this.setState({ collapse : 4 }) }							
+							title={ strings.transfer_mehtod }
+							pass={ collapse > 4 }
+							disabledNext={ this.state.selectedRecipient === '' }				
+							renderOnComplete={ this.renderStepTwoComplete() }
+						>
+							<label className="font14 font-weight-bold text-black-semi">{ strings.how_you_want_transfer }</label>
+							<Row className="sr-row">
+								<RecipientSelect
+									title={ strings.manual_transfer }
+									active={ this.state.recipient.type === 'myself' }
+									onClick={ () => this.setState({ selectedRecipient: 'myself', modalRecipient: true }) }
+								/>
+								<RecipientSelect
+									title={ strings.va_transfer }
+									active={ this.state.recipient.type === 'else' }
+									onClick={ () => this.setState({ selectedRecipient: 'else', modalRecipient: true }) }
+								/>
+							</Row>
+							{
+								this.state.recipient.hasOwnProperty('id') &&
+								<div className="p_line">
+									<div className="font16 font-weight-bold text-primary">{ strings.bank_account }</div>
+									<div className="font14 text-black-semi">{ this.state.recipient.first_and_middle_name + ' ' + this.state.recipient.last_name }</div>
+									<div className="font14 text-black-semi">{ this.state.recipient.account_no }</div>
+								</div>
+							}
+						</Step>
+
+
 
 
 
@@ -358,7 +395,7 @@ class TradeConfirmation extends Component {
 
 						{/* {review} */}
 						<Step
-							active={ collapse === 4 }
+							active={ collapse === 5 }
 							title={ strings.review }
 							theme="bottom"
 							onConfirmClick={ this.checkIdentification }
