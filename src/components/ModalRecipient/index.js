@@ -21,7 +21,7 @@ class ModalRecipient extends Component {
 			sort_code: '',
 			iban: '',
 			bank_name: '',
-			currency: 'IDR',
+			currency: null,
 			first_and_middle_name: '',
 			last_name: '',
 			description: '',
@@ -30,19 +30,16 @@ class ModalRecipient extends Component {
 	}
 
 	onAddRecipient = () => {
-		let account_info = {
+		const payload = {
+			myself: this.state.myself,
+			first_and_middle_name: this.state.first_and_middle_name,
+			last_name: this.state.last_name,
+			description: this.state.description,
 			account_no: this.state.bank_account,
 			sort_code: this.state.sort_code,
 			iban: this.state.iban,
 			bank_name: this.state.bank_name,
-			currency: this.state.currency
-		}
-		account_info = JSON.stringify(account_info)
-		const payload = {
-			account_info,
-			first_and_middle_name: this.state.first_and_middle_name,
-			last_name: this.state.last_name,
-			description: this.state.description
+			id_currency: this.state.currency.id
 		}
 		this.props.addAccount(payload)
 	}
@@ -55,7 +52,7 @@ class ModalRecipient extends Component {
 	getCurrencies = async() => {
 		const response = await currenciesService.getCurrencies()
 		const currencies = response.result
-		this.setState({ currencies })
+		this.setState({ currencies, currency: currencies[0] })
 	}
 	
 	setType = (myself) => {
@@ -75,7 +72,7 @@ class ModalRecipient extends Component {
 	}
 
 	onSelectChange = (val) => {
-		this.setState({ currency: val.value })
+		this.setState({ currency: val })
 	}
 
 	renderItem = (props) => {
@@ -105,7 +102,7 @@ class ModalRecipient extends Component {
 					<Select
 						className="li-input-select"
 						name="form-field-name"
-						value={ this.state.currency }
+						value={ this.state.currency ? this.state.currency.currency_alias : '' }
 						clearable={ false }
 						onChange={ this.onSelectChange }
 						autosize={ false }
@@ -117,7 +114,7 @@ class ModalRecipient extends Component {
 					<LabelInput name='bank_account' label={ strings.bank_account } placeholder={ strings.bank_account } value={ this.state.bank_account } onChange={ (e) => this.setState({ bank_account: e.target.value }) } />
 					<LabelInput name='email' label={ strings.sort_code } placeholder={ strings.sort_code } value={ this.state.sort_code } onChange={ (e) => this.setState({ sort_code: e.target.value }) } />								
 					<LabelInput name='email' label={ strings.description } placeholder={ strings.description } value={ this.state.description } onChange={ (e) => this.setState({ description: e.target.value }) } />								
-					<button className="button button-secondary full-width modal-button" onClick={ this.onAddRecipient }>{ strings.add }</button>					
+					<button disabled={ this.props.loading } className="button button-secondary full-width modal-button" onClick={ this.onAddRecipient }>{ strings.add }</button>					
 				</div>
 			</Modal>
 		)
@@ -130,6 +127,7 @@ ModalRecipient.propTypes = {
 	last_name: PropTypes.string,
 	onClose: PropTypes.func,
 	addAccount: PropTypes.func,
+	loading: PropTypes.bool,
 }
 
 export default ModalRecipient
