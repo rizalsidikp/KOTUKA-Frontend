@@ -47,7 +47,6 @@ export function getTransactions(id){
 					dispatch(setIsInquiry(false))
 				}
 				if(response.result.transactions && response.result.transactions.length > 0 ){
-					console.log('ajkdsadsa')
 					if(response.result.transactions[0].transaction_status === 'ON_PROGRESS'){
 						firebase
 							.auth()
