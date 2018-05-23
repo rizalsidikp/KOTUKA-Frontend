@@ -70,6 +70,7 @@ export function setRate(rate) {
 	return { type: constants.SET_RATE, payload: { rate } }
 }
 
+
 export function getClosestTrade(need, have, amount, transfer, page) {
 	return async(dispatch) => {
 		dispatch(setLoading(true))
