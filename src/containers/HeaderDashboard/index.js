@@ -39,6 +39,9 @@ class HeaderDashboard extends Component {
 						<div className={ 'hd-button '.concat(this.props.activePage === 'recipient' ? 'hd-button-active' : '') } onClick={ () => this.linkTo('/dashboard/recipient') }>
 							{strings.recipient}
 						</div>
+						<div className={ 'hd-button '.concat(this.props.activePage === 'profile' ? 'hd-button-active' : '') } onClick={ () => this.linkTo('/dashboard/profile') }>
+							{strings.profile}
+						</div>
 					</div>
 					<div className="col col-md-auto d-flex align-items-center clickable" onClick={ this.props.logout }>
 						<div className='hd-image' style={{ backgroundImage: `url('${ this.props.user.get('avatar') }')` }} /><i className='down hd-arrow' />
