@@ -11,10 +11,10 @@ class LabelInput extends Component {
 	render() {
 		const { name='', label = '', placeholder = 'Placeholder..', value = '', type = 'text', onChange = () => {}, disabled = false, noLabel = false, labelClassName=''  } = this.props
 		return (
-			<div className="d-block">
+			<div className="d-block text-left">
 				{
 					!noLabel &&
-					<label className={ 'font16 text-secondary full-width no-margin font-weight-semi-bold '.concat(labelClassName) }>{ label }</label>
+					<label className={ 'font16 text-black-semi full-width no-margin font-weight-semi-bold '.concat(labelClassName) }>{ label }</label>
 				}
 				{
 					type === 'textarea' ?
