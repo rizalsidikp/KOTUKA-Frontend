@@ -30,8 +30,8 @@ class Confirmation extends Component {
 						<div className="col col-md-5 mx-auto card reset-card">
 							<h1 className="font24 text-black-semi font-weight-bold no-margin">{ strings.reset_password }</h1>
 							<hr />
-							<LabelInput type="password" labelClassName='text-black' name="new_password" label={ strings.your_new_password } placeholder={ strings.password } value={ this.state.password } onChange={ (e) => this.setState({ password: e.target.value }) } />
-							<LabelInput type="password" labelClassName='text-black' name="confirm_new_password" label={ strings.confirm_new_password } placeholder={ strings.password } value={ this.state.c_password } onChange={ (e) => this.setState({ c_password: e.target.value }) } />
+							<LabelInput type="password" name="new_password" label={ strings.your_new_password } placeholder={ strings.password } value={ this.state.password } onChange={ (e) => this.setState({ password: e.target.value }) } />
+							<LabelInput type="password" name="confirm_new_password" label={ strings.confirm_new_password } placeholder={ strings.password } value={ this.state.c_password } onChange={ (e) => this.setState({ c_password: e.target.value }) } />
 							<button className="button button-primary">{ strings.reset }</button>
 						</div>
 					</Row>
