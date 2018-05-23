@@ -131,7 +131,7 @@ Home.propTypes = {
 	convertMoney: PropTypes.func,
 	setLoading: PropTypes.func,
 	tradeSelected: PropTypes.func,
-	removeTrade: PropTypes.func
+	removeTrade: PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -147,7 +147,7 @@ const mapStateToProps = createStructuredSelector({
 	detailPage: selectors.getDetailPage(),
 	isSearching: selectors.getIsSearching(),
 	isGettingTrade: selectors.getIsGettingTrade(),
-	rate: selectors.getRate()
+	rate: selectors.getRate(),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -162,7 +162,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setLoading: (loading) => dispatch(actions.setLoading(loading)),
 	convertMoney: (val, selectedNeed, selectedHave, type) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave, type)),
 	tradeSelected: (selectedTrades, trade) => dispatch(actions.tradeSelected(selectedTrades, trade)),
-	removeTrade: (selectedTrades, index) => dispatch(actions.removeTrade(selectedTrades, index))
+	removeTrade: (selectedTrades, index) => dispatch(actions.removeTrade(selectedTrades, index)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
