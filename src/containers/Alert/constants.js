@@ -1,0 +1,1 @@
+export const SET_ALERT = 'src/containers/Alert/SET_ALERT'
