@@ -9,7 +9,7 @@ class TradeLevel extends Component {
 	render() {
 		const level = this.props.level <= 0 ? 0 : this.props.level <= 3 ? 1 : this.props.level <= 6 ? 2 : 3
 		return (
-			<Row className={ 'no-margin justify-content-end font12 tl-p '.concat(level === 1 ? 'text-primary-dark' : level === 2 ? 'text-primary' : level === 3 ? 'text-secondary' : 'text-gray-80') }>
+			<Row className={ 'no-margin justify-content-end font12 tl-p '.concat(level === 1 ? 'text-primary-dark' : level === 2 ? 'text-primary' : level === 3 ? 'text-secondary' : 'text-gray-80', ' ', this.props.className) }>
 				<div className="tl-text font-weight-bold">{
 					level === 1 ? strings.tolerable : level === 2 ? strings.fair : level === 3 ? strings.fast : ''
 				} { level !== 0 && strings.trader}</div>
@@ -22,7 +22,8 @@ class TradeLevel extends Component {
 }
 
 TradeLevel.propTypes = {
-	level: PropTypes.number
+	level: PropTypes.number,
+	className: PropTypes.string
 }
 
 export default TradeLevel
