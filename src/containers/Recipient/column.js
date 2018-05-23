@@ -6,12 +6,12 @@ export const myself = [
 	{
 		id: 'bankAccount',
 		Header: 'Bank account',
-		accessor: d => d.account_info.account_no
+		accessor: d => d.Recipient.account_no
 	},
 	{
 		id: 'sortCode',
 		Header: 'Sort Code',
-		accessor: d => d.account_info.sort_code
+		accessor: d => d.Recipient.sort_code
 	},
 	{
 		Header: 'Description',
@@ -39,12 +39,12 @@ export const someone_else = [
 	{
 		id: 'bankAccount',
 		Header: 'Bank account',
-		accessor: d => d.account_info.account_no
+		accessor: d => d.Recipient.account_no
 	},
 	{
 		id: 'sortCode',
 		Header: 'Sort Code',
-		accessor: d => d.account_info.sort_code
+		accessor: d => d.Recipient.sort_code
 	},
 	{
 		Header: 'Description',

@@ -17,6 +17,7 @@ import './style.scss'
 import { myself, someone_else } from './column'
 
 import { getUser } from '../Header/selectors'
+import { mySelfRecipientList, someoneElseRecipientList } from '../../services/helper'
 
 class Recipient extends Component {
 	constructor(props) {
@@ -30,20 +31,23 @@ class Recipient extends Component {
 		this.props.getRecipients(this.props.user.get('id'))
 	}
 
-	addAccount = (payload) => {
+	addAccount = async (payload) => {
 		payload = {
 			id_user: this.props.user.get('id'),
 			...payload
 		}
-		this.props.addRecipient(payload)
+		await this.props.addRecipient(payload)
+		this.setState({ modalRecipient: false })
 	}
 
 	deleteAccount = (id) => {
-		this.props.deleteRecipient(id)
+		this.props.deleteRecipient(id, this.props.user.get('id'))
 	}
 	
 	render() {
 		let mySelf = myself, someoneElse = someone_else
+		const myselfList = mySelfRecipientList(this.props.recipients)
+		const someoneList = someoneElseRecipientList(this.props.recipients)
 		return (
 			<Row className="justify-content-center dashboard-container">
 				<div className="col col-md-8">
@@ -52,7 +56,7 @@ class Recipient extends Component {
 					</div>
 					<h2 className="font20 text-secondary font-weight-semi-bold rec-h2">My Self</h2>
 					<ReactTable
-						data={ this.props.recipients }
+						data={ myselfList }
 						columns={ mySelf }
 						defaultPageSize={ 5	}
 						showPageJump={ false }
@@ -72,7 +76,7 @@ class Recipient extends Component {
 					/>
 					<h2 className="font20 text-secondary font-weight-semi-bold rec-h2">Someone Else</h2>
 					<ReactTable
-						data={ this.props.recipients }
+						data={ someoneList }
 						columns={ someoneElse }
 						defaultPageSize={ 5	}
 						showPageJump={ false }
@@ -96,6 +100,7 @@ class Recipient extends Component {
 					first_and_middle_name={ this.props.user.get('first_and_middle_name') }
 					last_name={ this.props.user.get('last_name') }
 					addAccount={ (payload) => this.addAccount(payload) }
+					loading={ this.props.loading }
 				/>
 			</Row>
 		)
@@ -123,7 +128,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setInitialState: () => dispatch(actions.setInitialState()),
 	getRecipients: (id) => dispatch(actions.getRecipients(id)),
 	addRecipient: (payload) => dispatch(actions.addReipient(payload)),
-	deleteRecipient: (id) => dispatch(actions.deleteRecipient(id))
+	deleteRecipient: (id, id_user) => dispatch(actions.deleteRecipient(id, id_user))
 })
 
 export default connect (mapStateToProps, mapDispatchToProps)(Recipient)

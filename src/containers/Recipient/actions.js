@@ -1,6 +1,7 @@
 import * as constants from './constants'
 import recipientService from './../../services/recipient'
 import { setHtmlStorage } from '../../services/helper'
+import { setAlertStatus } from '../Alert/actions'
  
 
 export function setLoading(loading) {
@@ -20,6 +21,7 @@ export function getRecipients(id) {
 		try {
 			const response = await recipientService.getRecipients(id)
 			setHtmlStorage('accessToken', response.token, 1500)
+			console.log(response)
 			if(response.result){
 				dispatch(setRecipients(response.result))
 			}else{
@@ -32,26 +34,32 @@ export function getRecipients(id) {
 }
 
 export function addReipient(payload){
-	return async() => {
+	return async(dispatch) => {
+		dispatch(setLoading(true))
 		try {
 			const response = await recipientService.addRecipient(payload)
-			setHtmlStorage('accessToken', response.token, 1500)			
-			console.log(response)
+			setHtmlStorage('accessToken', response.token, 1500)	
+			await dispatch(getRecipients(payload.id_user))
+			dispatch(setAlertStatus(true))
 		} catch (error) {
 			console.log(error)
 		}
+		dispatch(setLoading(false))		
 	}
 }
 
 
-export function deleteRecipient(id){
-	return async() => {
+export function deleteRecipient(id, id_user){
+	return async(dispatch) => {
+		dispatch(setLoading(true))		
 		try {
 			const response = await recipientService.deleteRecipient(id)
 			setHtmlStorage('accessToken', response.token, 1500)			
-			console.log(response)
+			await dispatch(getRecipients(id_user))			
+			dispatch(setAlertStatus(true))
 		} catch (error) {
 			console.log(error)
 		}
+		dispatch(setLoading(false))		
 	}
 }
