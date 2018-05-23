@@ -6,6 +6,7 @@ import tradingService from './../../services/trading'
 import { setIdCard } from './../Header/actions'
 
 import history from './../../history'
+import { setAlertStatus } from '../Alert/actions'
 
 
 export function setLoading(loading) {
@@ -29,7 +30,7 @@ export function getPurpose(){
 		try {
 			const response = await purposeService.getPurpose()
 			setHtmlStorage('accessToken', response.token, 1500)
-			dispatch(setPurrpose(response.result))		
+			dispatch(setPurrpose(response.result))
 		} catch (error) {
 			console.log(error)
 		}
@@ -49,8 +50,6 @@ export function postTrade(payload) {
 			}
 			const resTotal = await tradingService.getTotalPayment(params)
 			await setHtmlStorage('accessToken', resTotal.token, 1500)		
-			console.log(resTotal)	
-
 			payload = {
 				...payload,
 				total_amount_transfer: resTotal.result.total
@@ -59,6 +58,7 @@ export function postTrade(payload) {
 			setHtmlStorage('accessToken', response.token, 1500)
 			dispatch(setLoading(false))
 			console.log(response)
+			dispatch(setAlertStatus(true))
 			return history.replace({
 				pathname: '/dashboard/paymenttrade',
 				state: { payment: response.result.id }
