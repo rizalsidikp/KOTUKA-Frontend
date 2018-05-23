@@ -11,6 +11,9 @@ import TransactionCard from '../../components/TransactionCard'
 import { getUser } from '../Header/selectors'
 import currenciesService from './../../services/currencies'
 
+import { getAlert } from '../Alert/selectors'
+import { setAlertStatus } from '../Alert/actions'
+
 class Transaction extends Component {
 
 	constructor(props){
@@ -105,7 +108,9 @@ Transaction.propTypes = {
 	getTransactions: PropTypes.func,
 	isInquiry: PropTypes.bool,
 	isLiveTransaction: PropTypes.bool,
-	liveTransaction: PropTypes.object
+	alert: PropTypes.bool,
+	liveTransaction: PropTypes.object,
+	setAlertStatus: PropTypes.func
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -116,10 +121,12 @@ const mapStateToProps = createStructuredSelector({
 	transactions: selectors.getTransactions(),
 	liveTransaction: selectors.getLiveTransaction(),
 	user: getUser(),
+	alert: getAlert()	
 })
 
 const mapDispatchToProps = (dispatch) => ({
-	getTransactions: (id) => dispatch(actions.getTransactions(id))
+	getTransactions: (id) => dispatch(actions.getTransactions(id)),
+	setAlertStatus: (alert) => dispatch(setAlertStatus(alert))	
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transaction)
