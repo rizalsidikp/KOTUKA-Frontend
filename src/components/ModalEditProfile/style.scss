@@ -1,0 +1,24 @@
+@import '../../styles/variable';
+
+.mep-wrapper{
+	max-width: 768px;
+	overflow: visible;
+}
+
+.mep-photo-profile{
+	width: 128px;
+	height: 128px;
+	background-color: $cream;
+	border-radius: 50%;
+	margin-bottom: 8px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.mep-num{
+	max-width: 125px;
+}
+.mep-btn{
+	margin-left: 24px;
+}
