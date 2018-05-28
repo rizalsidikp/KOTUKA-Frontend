@@ -104,16 +104,24 @@ export function validatePhoneNumber(phoneNumber) {
  * 
  * @return {Array}
 */
-export function chunkArray(list = [], titleKey, valueKey, imageKey) {
+export function chunkArray(list = [], titleKey, valueKey, imageKey, isArray = false) {
 	list.sort(compare)
 	return list.reduce((carry, data, index) => {
+		let tKey = '', vKey = ''
+		if(isArray){
+			tKey = '+' + data[titleKey][0]
+			vKey = '+' + data[valueKey][0]
+		}else{
+			tKey = data[titleKey]
+			vKey = data[valueKey]
+		}
 		carry.push({
 			label:
 			<div className="Select-value">
 				<img className="select-logo" src={ data[imageKey] } />
-				<span className="text-black font-weight-bold">{ data[titleKey] }</span>
+				<span className="text-black font-weight-bold">{ tKey }</span>
 			</div>,
-			value: data[valueKey],
+			value: vKey,
 			image: data[imageKey],
 			...data,
 			index
