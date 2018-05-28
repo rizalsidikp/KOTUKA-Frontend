@@ -21,7 +21,11 @@ class LabelInput extends Component {
 						<textarea name={ name } placeholder={ placeholder } value={ value } onChange={ onChange } className="li-input resize-none" rows={ 4 }></textarea>
 						:
 						type === 'date' ?
-							<DatePicker className="li-input" name={ name } placeholder={ placeholder } selected={ moment() } onChange={ onChange } />
+							<DatePicker className="li-input" name={ name } placeholder={ placeholder } selected={ value } onChange={ onChange } 
+								showMonthDropdown
+								showYearDropdown
+								dropdownMode="select"
+							/>
 							:
 							<input name={ name } className="li-input" type={ type } placeholder={ placeholder } value={ value } onChange={ onChange } disabled={ disabled } />
 				}
@@ -34,7 +38,10 @@ LabelInput.propTypes = {
 	label: PropTypes.string,
 	placeholder: PropTypes.string,
 	labelClassName: PropTypes.string,
-	value: PropTypes.string,
+	value: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.object
+	]),
 	type: PropTypes.string,
 	onChange: PropTypes.func,
 	name: PropTypes.string,
