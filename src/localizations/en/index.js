@@ -136,5 +136,7 @@ export default {
 	settings: 'Settings',
 	change_password: 'Change Password',
 	email: 'Email',
-	change: 'Change'
+	change: 'Change',
+	edit_profile: 'Edit Profile',
+	postalCode: 'Postal Code'
 }
