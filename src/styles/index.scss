@@ -65,8 +65,21 @@ body {
 //logo select
 .select-logo{
 	height: 20px;
+	width: 30px;
 	margin-right: 8px;
 	margin-top: -4px;
+}
+.li-input-select{
+	width: 100%;
+	border-radius: 10px;
+	font-size: 16px;
+	margin-bottom: 10px;
+	&:focus{
+		outline: 0;
+	}
+	.Select-control{
+		border-radius: 10px;
+	}
 }
 
 //dashboard container
@@ -91,6 +104,11 @@ i {
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
+}
+
+.usr-row{
+	margin-bottom: 24px;
+	margin-top: 24px;
 }
 
 .right {
