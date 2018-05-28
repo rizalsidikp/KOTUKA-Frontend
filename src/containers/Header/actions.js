@@ -13,6 +13,7 @@ export function setInitialState() {
 }
 
 export function setUser(user) {
+	user.address = JSON.parse(user.address)
 	return { type: constants.SET_USER, payload: { user } }
 }
 
@@ -38,6 +39,11 @@ export function loginWithGoogle() {
 			dispatch(setUser(userResponse.data_user))
 			setHtmlStorage('accessToken', userResponse.token, 1500)
 			setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
+			if(userResponse.data_user.address === null || userResponse.data_user.phone === null){
+				localStorage.setItem('secondRegistration', 'true')
+			}else{
+				localStorage.removeItem('secondRegistration')
+			}
 			console.log(userResponse.data_user)
 			history.push('/dashboard/post')
 		} catch (error) {
