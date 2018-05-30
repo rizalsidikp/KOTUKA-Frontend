@@ -44,12 +44,7 @@ class PaymentTrade extends Component {
 	}
 
 	onClickSend = async() => {
-		try {
-			const response = await tradingService.sentMoney(this.props.inquiry.get('id'))
-			console.log(response)
-		} catch (error) {
-			console.log(error)
-		}
+			this.props.sentMoney(this.props.inquiry.get('id'))
 	}
 	
 	render() {
@@ -159,19 +154,32 @@ class PaymentTrade extends Component {
 									<div className="col col-md-6">
 										<LabelValue
 											label={ strings.to }
-											value={ 'Kotuka' }
+											value={ this.props.inquiry.get('payment_detail').paymentInfo ? this.props.inquiry.get('payment_detail').paymentInfo.account_name : ''  }
 										/>
 									</div>
 									<div className="col col-md-6">
-										<LabelValue
-											label={ strings.account_no }
-											value={ '1234567890' }
-										/>
+										{
+											this.props.inquiry.get('payment_detail').payment_type === 'manual_transfer' ?
+												<div>
+													<LabelValue
+														label={ strings.account_no }
+														value={ this.props.inquiry.get('payment_detail').paymentInfo.account_detail.bank_account }
+													/>
+													{
+														this.props.inquiry.get('payment_detail').paymentInfo.account_detail.sort_code &&
+														<LabelValue
+															label={ strings.sort_code }
+															value={ this.props.inquiry.get('payment_detail').paymentInfo.account_detail.sort_code }
+														/>
+													}
+												</div>
+												: null
+										}
 									</div>
 									<div className="col col-md-6">
 										<LabelValue
-											label={ strings.account_no }
-											value={ '1234567890' }
+											label={ strings.total_transfer }
+											value={ formatMoney(this.props.inquiry.get('total_amount_transfer'), this.props.inquiry.get('have_currency')) }
 											valueClassName="font20 font-weight-bold"
 										/>
 									</div>
@@ -184,8 +192,8 @@ class PaymentTrade extends Component {
 									</div>
 								</Row>
 								<div className="font12 text-gray">{ strings.the_money } ({ this.props.user.get('first_and_middle_name') + ' ' + this.props.user.get('last_name') })</div>
-								<button className="button button-yellow" onClick={ this.onClickSend } >{ strings.have_sent_money }</button>
-								<button className="button button-secondary-white" onClick={ () => history.replace('/dashboard/transaction') }>{ strings.will_send_money_later }</button>
+								<button disabled={ this.props.loading } className="button button-yellow" onClick={ this.onClickSend } >{ strings.have_sent_money }</button>
+								<button disabled={ this.props.loading } className="button button-secondary-white" onClick={ () => history.replace('/dashboard/transaction') }>{ strings.will_send_money_later }</button>
 							</div>
 					}
 				</Row>
@@ -197,6 +205,7 @@ class PaymentTrade extends Component {
 PaymentTrade.propTypes = {
 	location: PropTypes.object,
 	getInquiry: PropTypes.func,
+	sentMoney: PropTypes.func,
 	user: PropTypes.object,
 	loading: PropTypes.bool,
 	inquiry: PropTypes.object
@@ -209,7 +218,8 @@ const mapStateToProps = createStructuredSelector({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-	getInquiry: (id) => dispatch(actions.getInquiry(id))
+	getInquiry: (id) => dispatch(actions.getInquiry(id)),
+	sentMoney: (id) => dispatch(actions.sentMoney(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentTrade)

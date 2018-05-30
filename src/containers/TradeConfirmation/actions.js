@@ -25,6 +25,10 @@ export function setSelectedPurpose(selectedPurpose) {
 	return { type: constants.SET_SELECTED_PURPOSE, payload: { selectedPurpose } }
 }
 
+export function setAccounts(accounts) {
+	return { type: constants.SET_ACCOUNTS, payload: { accounts } }
+}
+
 export function getPurpose(){
 	return async(dispatch) => {
 		try {
@@ -93,3 +97,16 @@ export function uploadIdCard(payload) {
 		}
 	}
 }
+
+export function getAccounts(){
+	return async(dispatch) => {
+		try {
+			const response = await purposeService.getAccounts()
+			setHtmlStorage('accessToken', response.token, 1500)
+			dispatch(setAccounts(response.result))
+		} catch (error) {
+			console.log(error)
+		}
+	}
+}
+

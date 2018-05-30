@@ -84,6 +84,9 @@ class FormInputMoney extends Component {
 							onKeyPress={ this.validateKey }
 							onChange={ (e) => this.onChangeMoney(e.target.value, 'need') }
 							currencies={ this.props.currencies }
+							invalidMin={ this.props.invalidMinNeed }
+							invalidMax={ this.props.invalidMaxNeed }
+							data={ this.props.selectedNeed }							
 						/>
 					</div>
 					{
@@ -99,11 +102,14 @@ class FormInputMoney extends Component {
 							label={ strings.you_have_to_transfer }
 							theme={ theme }
 							value={ this.props.amountHave }
-							selected={ this.props.selectedHave.get('currency_alias') }							
+							selected={ this.props.selectedHave.get('currency_alias') }
 							onSelectChange={ (val) => this.onChangeSelected(val, 'have') }
 							onKeyPress={ this.validateKey }							
 							onChange={ (e) => this.onChangeMoney(e.target.value, 'have') }
-							currencies={ this.props.currencies }							
+							currencies={ this.props.currencies }
+							invalidMin={ this.props.invalidMinHave }
+							invalidMax={ this.props.invalidMaxHave }
+							data={ this.props.selectedHave }
 						/>
 					</div>
 				</Row>
@@ -135,7 +141,11 @@ FormInputMoney.propTypes = {
 	buttonDisabled: PropTypes.bool,
 	setLoading: PropTypes.func,
 	buttonText: PropTypes.string,
-	currencies: PropTypes.array
+	currencies: PropTypes.array,
+	invalidMinHave: PropTypes.bool,
+	invalidMaxHave: PropTypes.bool,
+	invalidMinNeed: PropTypes.bool,
+	invalidMaxNeed: PropTypes.bool,
 }
 
 export default FormInputMoney

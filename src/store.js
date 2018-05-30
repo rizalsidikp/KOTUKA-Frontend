@@ -13,6 +13,7 @@ import RecipientReducer from './containers/Recipient/reducer'
 import PaymentTradeReducer from './containers/PaymentTrade/reducer'
 import AlertReducer from './containers/Alert/reducer'
 import ProfileReducer from './containers/Profile/reducer'
+import PromptReducer from './containers/Prompt/reducer'
 
 const rootReducer = {
 	headerReducer: HeaderReducer,
@@ -23,7 +24,8 @@ const rootReducer = {
 	recipientReducer: RecipientReducer,
 	paymentTradeReducer: PaymentTradeReducer,
 	alertReducer: AlertReducer,
-	profileReducer: ProfileReducer
+	profileReducer: ProfileReducer,
+	promptReducer: PromptReducer
 }
 
 const Immutable = require('immutable')

@@ -16,7 +16,7 @@ import strings from '../../localizations'
 import CopyRight from '../../components/CopyRight'
 import LabelInput from '../../components/LabelInput'
 import HeaderDashboard from './../HeaderDashboard'
-import { statusHtmlStorage, chunkArray } from '../../services/helper'
+import { statusHtmlStorage, chunkArray, validateVocalLetter, validateNumber, validateLength } from '../../services/helper'
 import TitleWithHr from '../../components/TitleWithHr'
 import Select from 'react-select-plus/lib/Select'
 
@@ -29,11 +29,19 @@ class SecondRegistration extends Component {
 			first_and_middle_name: '',
 			last_name: '',
 			birthdate: moment(),
-			phone_code: '+62',
+			phone_code: '',
 			phone: '',
-			origin_country: 'Indonesia',
+			origin_country: '',
 			post_code: '',
-			address: ''
+			address: '',
+			//invalid
+			first_and_middle_name_invalid: false,
+			last_name_invalid: false,
+			phone_code_invalid: false,
+			phone_invalid: false,
+			origin_country_invalid: false,
+			post_code_invalid: false,
+			address_invalid: false,
 		}
 	}
 	componentWillMount() {
@@ -76,14 +84,22 @@ class SecondRegistration extends Component {
 		)
 	}
 	onSelectCountry = (val) => {
-		this.setState({ origin_country: val.value })
+		this.setState({ origin_country: val.value, origin_country_invalid: false })
 	}
 
 	onSelectPhoneCode = (val) => {
-		this.setState({ phone_code: val.value })
+		this.setState({ phone_code: val.value, phone_code_invalid: false })
 	}
 
-	onUpdateUser = () => {
+	handleChange = (e) => {
+		this.setState({ [e.target.name] : e.target.value, [e.target.name + '_invalid'] : false });
+	}
+
+	handleBirthDate = (birthdate) => {
+		this.setState({ birthdate });
+	}
+
+	onUpdateUser = async () => {
 		const {
 			first_and_middle_name,
 			last_name,
@@ -94,6 +110,24 @@ class SecondRegistration extends Component {
 			post_code,
 			address,
 		} = this.state
+
+		//validation
+		let errorValidation = false
+		await this.setState({
+			first_and_middle_name_invalid: !validateVocalLetter(first_and_middle_name),
+			last_name_invalid: !validateVocalLetter(last_name),
+			phone_code_invalid: phone_code === '',
+			phone_invalid: !validateNumber(phone),
+			origin_country_invalid: origin_country === '',
+			post_code_invalid: !validateLength(post_code),
+			address_invalid: !validateVocalLetter(address),
+		})
+		errorValidation = this.state.first_and_middle_name_invalid || this.state.last_name_invalid || this.state.phone_code_invalid || this.state.phone_invalid || this.state.origin_country_invalid || this.state.post_code_invalid || this.state.address_invalid 
+		if(errorValidation){
+			return true
+		}
+		//validation
+
 		let addressJ = {
 			origin_country,
 			post_code,
@@ -108,7 +142,15 @@ class SecondRegistration extends Component {
 			phone,
 			address: addressJ
 		}
-		this.props.updateUser(payload, this.props.user.get('id'))
+		let photoPayload = null
+		if(this.state.photo){
+			console.log('addaaa')
+			photoPayload = {
+				avatar: this.state.photo,
+				id: this.props.user.get('id')
+			}
+		}
+		this.props.updateUser(payload, this.props.user.get('id'), photoPayload)
 	}
 
 	render() {
@@ -128,6 +170,14 @@ class SecondRegistration extends Component {
 			origin_country,
 			post_code,
 			address,
+			//invalid
+			first_and_middle_name_invalid,
+			last_name_invalid,
+			phone_code_invalid,
+			phone_invalid,
+			origin_country_invalid,
+			post_code_invalid,
+			address_invalid,
 		} = this.state
 		const options = chunkArray(this.props.countries, 'name', 'name', 'flag')		
 		const optionsNum = chunkArray(this.props.countries, 'callingCodes', 'callingCodes', 'flag', true)
@@ -150,16 +200,23 @@ class SecondRegistration extends Component {
 								</div>
 								<Row>
 									<div className="col col-md-6">
-										<LabelInput name='first_midle_name' label={ strings.first_n_midle_name } placeholder={ strings.first_n_midle_name } value={ first_and_middle_name } onChange={ (e) => this.setState({ first_and_middle_name : e.target.value }) } /> 
-										<LabelInput type='date' name='birthdate' label={ strings.birthdate } placeholder={ strings.birthdate } value={ birthdate } onChange={ (birthdate) => this.setState({ birthdate })  } />										
+										<LabelInput invalid={ first_and_middle_name_invalid } invalidMessage={ strings.wrong_vocal_letter } name='first_and_middle_name' label={ strings.first_n_midle_name } placeholder={ strings.first_n_midle_name } value={ first_and_middle_name } onChange={ this.handleChange } /> 
 									</div>
 									<div className="col col-md-6">
-										<LabelInput name='last_name' label={ strings.last_name } placeholder={ strings.last_name } value={ last_name } onChange={ (e) => this.setState({ last_name : e.target.value }) } /> 
+										<LabelInput invalid={ last_name_invalid } invalidMessage={ strings.wrong_vocal_letter } name='last_name' label={ strings.last_name } placeholder={ strings.last_name } value={ last_name } onChange={ this.handleChange } /> 
+									</div>
+
+									<div className="col col-md-6">
+										<LabelInput type='date' name='birthdate' label={ strings.birthdate } placeholder={ strings.birthdate } value={ birthdate } onChange={ this.handleBirthDate  } />										
+									</div>
+
+
+									<div className="col col-md-6">
 										<label className="font16 text-black-semi full-width no-margin font-weight-semi-bold">{ strings.phone }</label>						
 										<Row>
 											<div className="col col-md-auto no-right-padding">
 												<Select
-													className="li-input-select sr-num"
+													className={'li-input-select sr-num '.concat(phone_code_invalid || phone_invalid ? 'sr-no-margin' : '')}
 													name="form-field-name"
 													value={ phone_code }
 													clearable={ false }
@@ -170,10 +227,17 @@ class SecondRegistration extends Component {
 												/>
 											</div>
 											<div className="col">
-												<LabelInput noLabel name='phone' label={ strings.phone } placeholder={ strings.phone } value={ phone } onChange={ (e) => this.setState({ phone : e.target.value }) } /> 											
+												<LabelInput invalid={ phone_invalid } noLabel name='phone' label={ strings.phone } placeholder={ strings.phone } value={ phone } onChange={ this.handleChange } /> 											
 											</div>
 										</Row>
+										{
+											phone_code_invalid || phone_invalid ?
+											<label className="font14 text-red font-weight-semi-bold li-invalid">{ strings.wrong_phone }</label>			
+											:null								
+										}
 									</div>
+
+
 									<div className="col col-md-12">
 										<TitleWithHr
 											className="font24"
@@ -183,7 +247,7 @@ class SecondRegistration extends Component {
 									<div className="col col-md-6">
 										<label className="font16 text-black-semi full-width no-margin font-weight-semi-bold">{ strings.country }</label>						
 										<Select
-											className="li-input-select"
+											className={'li-input-select '.concat(origin_country_invalid ? 'sr-no-margin' : '')}
 											name="form-field-name"
 											value={ origin_country }
 											clearable={ false }
@@ -192,15 +256,19 @@ class SecondRegistration extends Component {
 											options={ options }
 											valueRenderer={ (props) => this.renderItem(props) }
 										/>
-										<LabelInput name="postalCode" label={ strings.postalCode } placeholder={ strings.postalCode } value={ post_code } onChange={ (e) => this.setState({ post_code: e.target.value }) } />							
+										{
+											origin_country_invalid &&
+											<label className="font14 text-red font-weight-semi-bold li-invalid">{ strings.wrong_select }</label>											
+										}
+										<LabelInput invalid={ post_code_invalid } invalidMessage={ strings.wrong_postal_code } name="post_code" label={ strings.postalCode } placeholder={ strings.postalCode } value={ post_code } onChange={ this.handleChange } />							
 									</div>
 									<div className="col col-md-6">
-										<LabelInput type='textarea' name='address' label={ strings.address } placeholder={ strings.address } value={ address } onChange={ (e) => this.setState({ address : e.target.value }) } />										
+										<LabelInput invalid={ address_invalid } invalidMessage={ strings.wrong_vocal_letter }  type='textarea' name='address' label={ strings.address } placeholder={ strings.address } value={ address } onChange={ this.handleChange } />										
 									</div>
 									<div className="col col-md-6">
 									</div>
 									<div className="col col-md-16">
-										<button className="button button-primary full-width" onClick={ this.onUpdateUser }>{ strings.complete_my_profile }</button>
+										<button disabled={ this.props.loading } className="button button-primary full-width" onClick={ this.onUpdateUser }>{ strings.complete_my_profile }</button>
 									</div>				
 								</Row>
 							</div>
@@ -240,7 +308,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = (dispatch) => ({
 	getUser: (id) => dispatch(actions.getUser(id)),
 	getCountries: () => dispatch(actions.getCountries()),
-	updateUser: (payload, id) => dispatch(actions.updateProfile(payload, id))
+	updateUser: (payload, id, photoPayload) => dispatch(actions.updateProfile(payload, id, photoPayload))
 })
 
 export default connect (mapStateToProps, mapDispatchToProps) (SecondRegistration)

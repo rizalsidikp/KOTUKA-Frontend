@@ -4,7 +4,7 @@ import Row from '../Row'
 
 import Select from 'react-select-plus'
 
-import { chunkArray } from './../../services/helper'
+import { chunkArray, formatMoney } from './../../services/helper'
 
 import './style.scss'
 
@@ -48,6 +48,14 @@ class InputMoney extends Component {
 						<input className={ 'im-money '.concat(theme === 'secondary' ? 'background-secondary-light' : '') } value={ value } disabled={ disabled } onChange={ onChange } onKeyPress={ onKeyPress } />
 					</div>
 				</Row>
+				{
+					this.props.invalidMin &&
+					<label className="font14 text-red font-weight-semi-bold">Minimum Exchange = { this.props.data.get('currency_symbol') + ' ' + formatMoney(this.props.data.get('min_exchange'), selected) }</label>
+				}
+				{
+					this.props.invalidMax &&
+					<label className="font14 text-red font-weight-semi-bold">Maximum Exchange = { this.props.data.get('currency_symbol') + ' ' + formatMoney(this.props.data.get('max_exchange'), selected) }</label>
+				}
 			</div>	
 		)
 	}
@@ -62,7 +70,10 @@ InputMoney.propTypes = {
 	onKeyPress: PropTypes.func,
 	onSelectChange: PropTypes.func,
 	selected: PropTypes.string,
-	currencies: PropTypes.array
+	currencies: PropTypes.array,
+	data: PropTypes.object,
+	invalidMin: PropTypes.bool,
+	invalidMax: PropTypes.bool
 }
 
 export default InputMoney

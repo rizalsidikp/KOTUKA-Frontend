@@ -174,7 +174,7 @@ class TradeConfirmation extends Component {
 	onSendImage = async() => {
 		const payload = {
 			identification: this.state.file, 
-			id_user: this.props.user.get('id')
+			id: this.props.user.get('id')
 		}
 		const res = await this.props.uploadIdCard(payload)
 		if(res){
@@ -196,7 +196,7 @@ class TradeConfirmation extends Component {
 
 		let currency_symbol = getSymbolFromCurrency(this.props.selectedTrade[0].need_currency)
 		let fixed_cost = formatMoney(getCostFromCurrency(this.state.currencies, this.props.selectedTrade[0].need_currency), this.props.selectedTrade[0].need_currency)
-		let cost = (convertMoneyString(this.props.selectedTrade[0].need_amount) * 0.05 / 100) + convertMoneyString(fixed_cost)
+		let cost = (convertMoneyString(this.props.selectedTrade[0].need_amount) * 0.5 / 100) + convertMoneyString(fixed_cost)
 		let total_transfer = convertMoneyString(this.props.selectedTrade[0].need_amount) + cost
 
 		return (

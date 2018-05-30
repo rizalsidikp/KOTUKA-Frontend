@@ -15,6 +15,15 @@ class ModalHelp extends Component {
 			question: ''
 		}
 	}
+
+	sendEmail = () => {
+		const payload = {
+			email: this.state.email_address,
+			message: this.state.question
+		}
+		this.props.onClick(payload)
+	}
+
 	render() {
 		return (
 			<Modal open={ this.props.open } onClose={ this.props.onClose }>
@@ -22,7 +31,7 @@ class ModalHelp extends Component {
 				<div className="ml-content">
 					<LabelInput name='bank_account' label={ strings.email_address } placeholder={ strings.email_address } value={ this.state.email_address } onChange={ (e) => this.setState({ email_address: e.target.value }) } />
 					<LabelInput type="textarea" name='bank_account' label={ strings.question } placeholder={ strings.question } value={ this.state.question } onChange={ (e) => this.setState({ question: e.target.value }) } />
-					<button className="button button-secondary full-width modal-button">{ strings.send }</button>					
+					<button disabled={ this.props.loading } className="button button-secondary full-width modal-button" onClick={ this.sendEmail }>{ strings.send }</button>					
 				</div>
 			</Modal>
 		)
@@ -31,7 +40,9 @@ class ModalHelp extends Component {
 
 ModalHelp.propTypes = {
 	open: PropTypes.bool,
-	onClose: PropTypes.func
+	loading: PropTypes.bool,
+	onClose: PropTypes.func,
+	onClick: PropTypes.func
 }
 
 export default ModalHelp

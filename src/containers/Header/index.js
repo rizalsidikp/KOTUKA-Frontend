@@ -45,6 +45,11 @@ class Header extends Component {
 		await this.props.register(username, password)
 	}
 
+	sendEmail = async(payload) => {
+		await this.props.sendEmail(payload)
+		this.setState({ modalHelp: false })
+	}
+
 
 	render() {
 		return (
@@ -55,9 +60,9 @@ class Header extends Component {
 							<img src={ Logo } />
 						</div>
 						<div className="col d-flex align-items-center justify-content-center">
-							<div className="header-button">
+							{/* <div className="header-button">
 								{strings.english}
-							</div>
+							</div> */}
 							<div className="header-button">
 								{strings.about}
 							</div>
@@ -90,10 +95,15 @@ class Header extends Component {
 							this.onLogin(username, password)
 						}
 					} }
+					invalid={ this.props.invalid }
+					invalidMessage={ this.props.invalidMessage }
+					setInvalid={ (invalid, invalidMessage) => this.props.setInvalid(invalid, invalidMessage) }
 				/>
 				<ModalHelp
 					open={ this.state.modalHelp }
 					onClose={ () => this.setState({ modalHelp: false }) }
+					loading={ this.props.loading }
+					onClick={ (payload) => this.sendEmail(payload) }
 				/>
 			</div>	
 		)
@@ -107,11 +117,17 @@ Header.propTypes = {
 	loginWithGoogle: PropTypes.func,
 	login: PropTypes.func,
 	register: PropTypes.func,
-	setLoading: PropTypes.func
+	setLoading: PropTypes.func,
+	sendEmail: PropTypes.func,
+	invalid: PropTypes.bool,
+	invalidMessage: PropTypes.string,
+	setInvalid: PropTypes.func
 }
 
 const mapStateToProps = createStructuredSelector({
-	loading: selectors.getLoading()
+	loading: selectors.getLoading(),
+	invalid: selectors.getInvalid(),
+	invalidMessage: selectors.getInvalidMessage()
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -120,7 +136,9 @@ const mapDispatchToProps = (dispatch) => ({
 	loginWithFacebook: () => dispatch(actions.loginWithFacebook()),
 	login: (username, password) => dispatch(actions.login(username, password)),
 	register: (username, password) => dispatch(actions.register(username, password)), 
-	setLoading: (loading) => dispatch(actions.setLoading(loading))
+	setLoading: (loading) => dispatch(actions.setLoading(loading)),
+	sendEmail: (payload) => dispatch(actions.sendEmail(payload)),
+	setInvalid: (invalid, invalidMessage) => dispatch(actions.setInvalid(invalid, invalidMessage))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

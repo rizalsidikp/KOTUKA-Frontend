@@ -16,7 +16,7 @@ const INITIAL_STATE = fromJS({
 		id: 4,
 		max_exchange: '4000000.00',
 		min_exchange: '500000.00',
-		percentage: '0.05',
+		percentage: '0.5',
 	},
 	chooseHave: {
 		country_flag: 'https://www.geoips.com/assets/img/flag/128/gb.png',
@@ -27,7 +27,7 @@ const INITIAL_STATE = fromJS({
 		id: 3,
 		max_exchange: '200.00',
 		min_exchange: '25.00',
-		percentage: '0.05',
+		percentage: '0.5',
 	},
 	selectedTrades: [],
 	closestTrade: [],

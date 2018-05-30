@@ -4,6 +4,7 @@ import { fromJS } from 'immutable'
 const INITIAL_STATE = fromJS({
 	loading: false,
 	purpose: [],
+	accounts: [],
 	selectedPurpose: {
 		id: 1,
 		teks_purpose: 'Mengirim uang ke rumah untuk keluarga',
@@ -17,6 +18,8 @@ export default (state = INITIAL_STATE, action) => {
 		return state.set('loading',  action.payload.loading)
 	case constants.SET_PURPOSE:
 		return state.set('purpose',  action.payload.purpose)
+	case constants.SET_ACCOUNTS:
+		return state.set('accounts',  action.payload.accounts)
 	case constants.SET_SELECTED_PURPOSE:
 		return state.setIn(['selectedPurpose', 'id'], action.payload.selectedPurpose.id)
 			.setIn(['selectedPurpose', 'teks_purpose'], action.payload.selectedPurpose.teks_purpose)

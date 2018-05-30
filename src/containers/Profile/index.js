@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Row from '../../components/Row'
+import moment from 'moment'
 
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -25,12 +26,20 @@ class Profile extends Component {
 			modalEditProfile: false,
 			imagePreviewUrl: '',
 			file: null,
+			profileUrl: '',
+			photo: null,
 		}
 	}
 	componentWillMount() {
 		this.props.getCountries()
-		this.props.getUser(this.props.user.get('id'))
+		this.getUser()
 	}
+	
+	getUser = async() => {
+		await this.props.getUser(this.props.user.get('id'))
+		this.setState({ profileUrl: this.props.user.get('avatar') })
+	}
+
 	handleImageChange = (e) => {
 		e.preventDefault()
 		let reader = new FileReader()
@@ -42,6 +51,38 @@ class Profile extends Component {
 			})
 		}
 		reader.readAsDataURL(file)
+	}
+	handleProfileChange = (e) => {
+		e.preventDefault()
+		let reader = new FileReader()
+		let file = e.target.files[0]
+		reader.onloadend = () => {
+			this.setState({
+				photo: file,
+				profileUrl: reader.result
+			})
+		}
+		reader.readAsDataURL(file)
+	}
+	updateProfile = async(payload, id) => {
+		let photoPayload = null
+		if(this.state.photo){
+			photoPayload = {
+				avatar: this.state.photo,
+				id
+			}
+		}
+		await this.props.updateUser(payload, id, photoPayload)
+		this.setState({ modalEditProfile: false })
+	}
+
+	updatePassword = async(payload) => {
+		payload = {
+			...payload,
+			id: this.props.user.get('id')
+		}
+		await this.props.updatePassword(payload)
+		this.setState({ modalChangePassword: false })
 	}
 	render() {
 		const { user } = this.props
@@ -59,7 +100,7 @@ class Profile extends Component {
 			},
 			{
 				key: strings.birthdate,
-				value: this.props.user.get('birthdate')
+				value: moment(this.props.user.get('birthday')).format('DD MMMM YYYY')
 			},
 		]
 		const contactInfo = [
@@ -69,7 +110,7 @@ class Profile extends Component {
 			},
 			{
 				key: strings.phone,
-				value: this.props.user.get('phone')
+				value: this.props.user.get('phone_code') + ' ' + this.props.user.get('phone')
 			}
 		]
 
@@ -87,7 +128,6 @@ class Profile extends Component {
 				value: this.props.user.get('address').get('address')
 			}
 		]
-		console.log(this.props.user.get('address'))
 		return (
 			<div className="container dashboard-container">
 				<Row className="justify-content-center">
@@ -159,11 +199,18 @@ class Profile extends Component {
 				<ModalChangePassword 
 					open={ this.state.modalChangePassword }
 					onClose={ () => this.setState({ modalChangePassword: false }) }
+					loading={ this.props.loading }
+					onClick={ (payload) => this.updatePassword(payload) }
 				/>
 				<ModalEditProfile
 					open={ this.state.modalEditProfile }
 					countries={ this.props.countries }
 					onClose={ () => this.setState({ modalEditProfile: false }) }
+					user={ this.props.user }
+					updateUser={ (payload, id) => this.updateProfile(payload, id) }
+					loading={ this.props.loading }
+					profileUrl={ this.state.profileUrl }		
+					onImgClick = { () => this.uploadImgProfile.click() }
 				/>
 				<ModalIdCard
 					open={ this.state.modalUploadIdCard }
@@ -181,6 +228,14 @@ class Profile extends Component {
 					onChange={ (e) => this.handleImageChange(e) }
 					className="d-none"
 				/>
+				<input 
+					id="file"
+					type="file"
+					accept="image/*"
+					ref={ (ref) => this.uploadImgProfile = ref }
+					onChange={ (e) => this.handleProfileChange(e) }
+					className="d-none"
+				/>
 			</div>
 		)
 	}
@@ -191,7 +246,9 @@ Profile.propTypes = {
 	countries: PropTypes.any,
 	user: PropTypes.object,
 	getUser: PropTypes.func,
+	updateUser: PropTypes.func,
 	getCountries: PropTypes.func,
+	updatePassword: PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -202,7 +259,9 @@ const mapStateToProps = createStructuredSelector({
 
 const mapDispatchToProps = (dispatch) => ({
 	getUser: (id) => dispatch(actions.getUser(id)),
-	getCountries: () => dispatch(actions.getCountries())
+	getCountries: () => dispatch(actions.getCountries()),
+	updateUser: (payload, id, photoPayload) => dispatch(actions.updateProfile(payload, id, photoPayload)),
+	updatePassword: (payload) => dispatch(actions.updatePassword(payload))
 })
 
 export default connect (mapStateToProps, mapDispatchToProps)(Profile)

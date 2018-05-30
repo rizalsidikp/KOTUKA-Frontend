@@ -6,9 +6,9 @@ import Modal from '../Modal'
 import './style.scss'
 import strings from '../../localizations'
 import SelectRecipientCard from '../SelectRecipientCard'
-import LabelInput from '../LabelInput'
-import Row from '../Row'
-import { Collapse } from 'react-collapse'
+// import LabelInput from '../LabelInput'
+// import Row from '../Row'
+// import { Collapse } from 'react-collapse'
 
 
 class ModalSelectRecipient extends Component {
@@ -43,7 +43,7 @@ class ModalSelectRecipient extends Component {
 							:
 							null
 					}
-					<div className="msr-add-account text-center">
+					{/* <div className="msr-add-account text-center">
 						<Collapse isOpened={ true }>					
 							{
 								this.state.add_account ? 
@@ -87,7 +87,7 @@ class ModalSelectRecipient extends Component {
 									<button className="button-sm button-secondary-white" onClick={ () => this.setState({ add_account: true }) }>{ strings.add_account }</button>
 							}
 						</Collapse>
-					</div>
+					</div> */}
 				</div>
 			</Modal>
 		)

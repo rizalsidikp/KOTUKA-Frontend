@@ -50,6 +50,7 @@ class Recipient extends Component {
 		const someoneList = someoneElseRecipientList(this.props.recipients)
 		return (
 			<Row className="justify-content-center dashboard-container">
+				<div className="triangle" />
 				<div className="col col-md-8">
 					<div className="text-right">
 						<button className="button button-secondary" onClick={ () => this.setState({ modalRecipient: true }) }>+ { strings.add }</button>

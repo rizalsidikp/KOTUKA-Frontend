@@ -15,10 +15,7 @@ class LabelValue extends Component {
 
 LabelValue.propTypes = {
 	label: PropTypes.string,
-	value: PropTypes.oneOfType([
-		PropTypes.string,
-		PropTypes.object
-	]),
+	value: PropTypes.any,
 	labelClassName: PropTypes.string,
 	valueClassName: PropTypes.string,
 }

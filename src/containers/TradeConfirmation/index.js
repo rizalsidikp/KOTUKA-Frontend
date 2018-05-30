@@ -21,7 +21,7 @@ import strings from '../../localizations'
 // import LabelInput from '../../components/LabelInput'
 // import RadioButton from '../../components/RadioButton'
 // import ModalRecipient from '../../components/ModalRecipient'
-import { chunkArray, convertMoneyString, formatMoney } from '../../services/helper'
+import { chunkArray, convertMoneyString, formatMoney, bankFilter } from '../../services/helper'
 import * as homeSelectors from '../Home/selectors'
 import * as homeActions from '../Home/actions'
 import { getUser } from '../Header/selectors'
@@ -32,6 +32,7 @@ import { getRecipients } from '../Recipient/actions'
 import * as recipientSelectors from '../Recipient/selectors'
 import history from './../../history'
 import ModalIdCard from '../../components/ModalIdCard'
+import Bank from '../../components/Bank'
 
 
 class TradeConfirmation extends Component {
@@ -47,13 +48,13 @@ class TradeConfirmation extends Component {
 			recipient: {
 				type: ''
 			},
-			payment_method: {
-
-			},
+			payment: '',
+			bank_name: '',
 			// upload identification photo
 			modalUploadIdCard: false,
 			imagePreviewUrl: '',
 			file: null,
+			paymentInfo: null
 		}
 	}
 	componentWillMount() {
@@ -61,6 +62,7 @@ class TradeConfirmation extends Component {
 		this.props.getPurpose()
 		this.props.getRecipients(this.props.user.get('id'))
 		this.props.setLoading(false)
+		this.props.getAccounts()
 	}
 
 	getCurrencies = async() => {
@@ -119,6 +121,15 @@ class TradeConfirmation extends Component {
 		)
 	}
 
+	renderStepFourComplete = () => {
+		return(
+			<div className="d-flex font14 text-primary font-weight-bold align-items-center">
+				<div className="tc-circle-recipient" />
+				{ strings.transfer_with + ' ' + this.state.bank_name }
+			</div>
+		)
+	}
+
 	onSelectedRecipient = (recipient) => {
 		recipient = {
 			...recipient,
@@ -139,8 +150,10 @@ class TradeConfirmation extends Component {
 		var zone_name =  moment.tz.guess()
 		var timezone = moment.tz(zone_name)._z.name
 		let payment_detail = {
-			payment_type : 'manual_transfer',
-			gross_amount: convertMoneyString(this.props.amountHave)
+			payment_type : this.state.payment,
+			gross_amount: convertMoneyString(this.props.amountHave),
+			bank_name: this.state.bank_name,
+			paymentInfo: this.state.paymentInfo
 		}
 		payment_detail = JSON.stringify(payment_detail)
 		const payload = {
@@ -175,7 +188,7 @@ class TradeConfirmation extends Component {
 	onSendImage = async() => {
 		const payload = {
 			identification: this.state.file, 
-			id_user: this.props.user.get('id')
+			id: this.props.user.get('id')
 		}
 		const res = await this.props.uploadIdCard(payload)
 		if(res){
@@ -196,8 +209,16 @@ class TradeConfirmation extends Component {
 
 		let currency_symbol = this.props.chooseHave.get('currency_symbol')
 		let fixed_cost = formatMoney(this.props.chooseHave.get('fixed_cost'), this.props.chooseHave.get('currency_alias'))
-		let cost = (convertMoneyString(this.props.amountHave) * 0.05 / 100) + convertMoneyString(fixed_cost)
+		let cost = (convertMoneyString(this.props.amountHave) * parseFloat(this.props.chooseHave.get('percentage')) / 100) + convertMoneyString(fixed_cost)
 		let total_transfer = convertMoneyString(this.props.amountHave) + cost
+
+		const invalidMinHave = convertMoneyString(this.props.amountHave) < parseFloat(this.props.chooseHave.get('min_exchange'))
+		const invalidMaxHave = convertMoneyString(this.props.amountHave) > parseFloat(this.props.chooseHave.get('max_exchange'))
+		const invalidMinNeed = convertMoneyString(this.props.amountNeed) < parseFloat(this.props.chooseNeed.get('min_exchange'))
+		const invalidMaxNeed = convertMoneyString(this.props.amountNeed) > parseFloat(this.props.chooseNeed.get('max_exchange'))
+
+		const bank = bankFilter(this.props.accounts, this.props.chooseHave.get('currency_alias'))
+
 
 		return (
 			<div className="container dashboard-container">
@@ -215,6 +236,7 @@ class TradeConfirmation extends Component {
 							theme="top"
 							title={ strings.create_post }
 							pass={ collapse > 1 }
+							disabledNext={ invalidMaxHave || invalidMaxNeed || invalidMinHave || invalidMinNeed || this.props.amountNeed === '' || this.props.amountHave === '' }							
 							renderOnComplete={ this.renderStepOneComplete(
 								this.props.chooseNeed,
 								this.props.amountNeed,
@@ -237,6 +259,10 @@ class TradeConfirmation extends Component {
 								buttonDisabled={ this.props.homeLoading }
 								setLoading={ (loading) => this.props.setHomeLoading(loading) }
 								currencies={ this.state.currencies }
+								invalidMinHave={ invalidMinHave }
+								invalidMaxHave={ invalidMaxHave }
+								invalidMinNeed={ invalidMinNeed }
+								invalidMaxNeed={ invalidMaxNeed }
 							/>
 							<Row className="no-margin">
 								<div className="col p_line">
@@ -246,7 +272,7 @@ class TradeConfirmation extends Component {
 										{ this.props.homeLoading ? '...' : formatMoney(cost, this.props.chooseHave.get('currency_alias')) }
 									</label>
 									<label className="font12 font-weight-bold full-width no-margin text-secondary">
-										{ strings.fee_percent } 
+										{ parseFloat(this.props.chooseHave.get('percentage')).toString() + strings.fee_percent } 
 										{ currency_symbol + ' ' }
 										{ fixed_cost }
 									</label>
@@ -291,7 +317,7 @@ class TradeConfirmation extends Component {
 							onEditClick={ () => this.setState({ collapse : 2 }) }							
 							title={ strings.recipient }
 							pass={ collapse > 2 }
-							disabledNext={ this.state.recipient.type === '' }				
+							disabledNext={ this.state.recipient.type === '' }		
 							renderOnComplete={ this.renderStepTwoComplete() }
 						>
 							<label className="font14 font-weight-bold text-black-semi">{ strings.who_are_you_sending_money_to }</label>
@@ -317,7 +343,7 @@ class TradeConfirmation extends Component {
 								<div className="p_line">
 									<div className="font16 font-weight-bold text-primary">{ strings.bank_account }</div>
 									<div className="font14 text-black-semi">{ this.state.recipient.first_and_middle_name + ' ' + this.state.recipient.last_name }</div>
-									<div className="font14 text-black-semi">{ this.state.recipient.account_no }</div>
+									<div className="font14 text-black-semi">{ this.state.recipient.Recipient ? this.state.recipient.Recipient.account_no : '' }</div>
 								</div>
 							}
 						</Step>
@@ -355,30 +381,19 @@ class TradeConfirmation extends Component {
 							onEditClick={ () => this.setState({ collapse : 4 }) }							
 							title={ strings.transfer_mehtod }
 							pass={ collapse > 4 }
-							disabledNext={ this.state.selectedRecipient === '' }				
-							renderOnComplete={ this.renderStepTwoComplete() }
+							renderOnComplete={ this.renderStepFourComplete() }
+							disabledNext={ this.state.payment === '' }
 						>
 							<label className="font14 font-weight-bold text-black-semi">{ strings.how_you_want_transfer }</label>
-							<Row className="sr-row">
-								<RecipientSelect
-									title={ strings.manual_transfer }
-									active={ this.state.recipient.type === 'myself' }
-									onClick={ () => this.setState({ selectedRecipient: 'myself', modalRecipient: true }) }
-								/>
-								<RecipientSelect
-									title={ strings.va_transfer }
-									active={ this.state.recipient.type === 'else' }
-									onClick={ () => this.setState({ selectedRecipient: 'else', modalRecipient: true }) }
-								/>
+							<Row className="sr-row no-margin">
+								{
+									bank.map((b, idx) => {
+										return(
+											<Bank key={ idx } img={ b.bank_image } onClick={ () => this.setState({ payment: b.transfer_type, bank_name: b.bank_name, paymentInfo: b }) } selected={ this.state.payment === b.transfer_type } />
+										)
+									})
+								}
 							</Row>
-							{
-								this.state.recipient.hasOwnProperty('id') &&
-								<div className="p_line">
-									<div className="font16 font-weight-bold text-primary">{ strings.bank_account }</div>
-									<div className="font14 text-black-semi">{ this.state.recipient.first_and_middle_name + ' ' + this.state.recipient.last_name }</div>
-									<div className="font14 text-black-semi">{ this.state.recipient.account_no }</div>
-								</div>
-							}
 						</Step>
 
 
@@ -401,6 +416,7 @@ class TradeConfirmation extends Component {
 							onConfirmClick={ this.checkIdentification }
 							loading={ this.props.loading }
 						>
+							{/* transfer detail */}
 							<label className="font16 font-weight-semi-bold text-black-semi">{ strings.transfer_detail }</label>	
 							<div className="tc-white-row no-margin">
 								<table className="p_line full-width">
@@ -453,6 +469,32 @@ class TradeConfirmation extends Component {
 									</tbody>
 								</table>
 							</div>
+
+							{/* recipient detail */}
+							<label className="font16 font-weight-semi-bold text-black-semi">{ strings.recipient_detail }</label>	
+							<div className="tc-white-row no-margin">
+								<table className="p_line full-width">
+									<tbody>
+										{/* {name} */}
+										<tr>
+											<td className="tc-td font14 text-black-semi">{ strings.name }</td>
+											<td className="tc-td font16 text-primary text-right">
+												{ this.state.recipient.first_and_middle_name + ' ' + this.state.recipient.last_name }
+											</td>
+										</tr>
+										{/* {account no} */}
+										<tr>
+											<td className="tc-td font14 text-black-semi">{ strings.account_no }</td>
+											<td className="tc-td font16 text-primary text-right">
+												{ this.state.recipient.Recipient ? this.state.recipient.Recipient.account_no : '' }
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+
+
 						</Step>
 					</div>
 				</Row>
@@ -485,6 +527,7 @@ class TradeConfirmation extends Component {
 
 TradeConfirmation.propTypes = {
 	purpose: PropTypes.any,
+	accounts: PropTypes.any,
 	selectedPurpose: PropTypes.object,
 	user: PropTypes.object,
 	location: PropTypes.object,
@@ -502,6 +545,7 @@ TradeConfirmation.propTypes = {
 	recipients: PropTypes.any,
 	//funct
 	getPurpose: PropTypes.func,
+	getAccounts: PropTypes.func,
 	setSelectedPurpose: PropTypes.func,
 	pickTrade: PropTypes.func,
 	postTrade: PropTypes.func,
@@ -520,6 +564,7 @@ TradeConfirmation.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
 	purpose: selectors.getPurpose(),
+	accounts: selectors.getAccounts(),
 	selectedPurpose: selectors.getSelectedPurpose(),
 	user: getUser(),
 	loading: selectors.getLoading(),
@@ -562,6 +607,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setChooseHave: (chooseHave) => dispatch(homeActions.setChooseHave(chooseHave)),	
 	convertMoney: (val, selectedNeed, selectedHave, type) => dispatch(homeActions.convertMoney(val, selectedNeed, selectedHave, type)),	
 	getRecipients: (id) => dispatch(getRecipients(id)),
+	getAccounts: () => dispatch(actions.getAccounts())
 
 })
 

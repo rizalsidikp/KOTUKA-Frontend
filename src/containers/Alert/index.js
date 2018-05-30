@@ -7,26 +7,26 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
 import './style.scss'
-import { AlertSuccess, Close } from '../../images'
+import { AlertSuccess, AlertDanger, Close } from '../../images'
 
 class Alert extends Component {
 
 	componentWillMount(){
-		this.props.setAlert(this.props.open)
+		this.props.setAlert(this.props.open, this.props.theme, this.props.message)
 	}
 
 	onClose = () => {
-		this.props.setAlert(false)
+		this.props.setAlert(false, this.props.theme, this.props.message)
 	}
 
 	render() {
 		return (
-			<div className={ 'alert-wrapper '.concat(this.props.open ? 'alert-wrapper-open ' : '', 'alert-green')  } onClick={ this.onClose }>
+			<div className={ 'alert-wrapper '.concat(this.props.open ? 'alert-wrapper-open ' : '', this.props.theme === 'danger' ? 'alert-red' : 'alert-green')  } onClick={ this.onClose }>
 				<div>
-					<img src={ AlertSuccess } className="alert-image" />
+					<img src={ this.props.theme === 'danger' ? AlertDanger : AlertSuccess } className="alert-image" />
 				</div>
 				<div className="alert-text full-width">
-					Success! Thank you for completing your profile.
+					{ this.props.message }
 				</div>
 				<div>
 					<img src={ Close } className="alert-close" onClick={ this.onClose } />
@@ -39,14 +39,18 @@ class Alert extends Component {
 Alert.propTypes = {
 	open: PropTypes.bool,
 	setAlert: PropTypes.func,
+	theme: PropTypes.string,
+	message: PropTypes.string,
 }
 
 const mapStateToProps = createStructuredSelector({
-	open: selectors.getAlert()
+	open: selectors.getAlert(),
+	theme: selectors.getTheme(),
+	message: selectors.getMessage()
 })
 
 const mapDispatchToProps = (dispatch) => ({
-	setAlert : (alert) => dispatch(actions.setAlertStatus(alert))
+	setAlert : (alert, theme, message) => dispatch(actions.setAlertStatus(alert, theme, message))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Alert)

@@ -31,3 +31,9 @@ export const getTransactions = () => createSelector(
 	selectTransaction(),
 	state => state.get('transactions')
 )
+
+
+export const getStatuses = () => createSelector(
+	selectTransaction(),
+	state => state.get('statuses')
+)

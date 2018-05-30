@@ -12,12 +12,16 @@ class Modal extends Component {
 			this.props.onClose()
 		}
 	}
+
+	// componentWillUpdate() {
+	// 	if(this.props.open){
+	// 		document.body.style.overflowY = 'hidden'
+	// 	}else{
+	// 		document.body.style.overflowY = 'auto'
+	// 	}
+	// }
+
 	render() {
-		if(this.props.open){
-			document.body.style.overflowY = 'hidden'
-		}else{
-			document.body.style.overflowY = 'auto'
-		}
 		return (
 			<div>
 				<div className={ 'modal-wrapper '.concat(this.props.open ? 'modal-wrapper-open' : '') } onClick={ this.onClose }>

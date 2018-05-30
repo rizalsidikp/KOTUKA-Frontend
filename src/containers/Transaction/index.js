@@ -27,6 +27,7 @@ class Transaction extends Component {
 		// firebaseService.getLiveTransaction()
 		this.getTransactions()
 		this.getCurrencies()
+		this.props.getStatuses()
 	}
 
 	getCurrencies = async() => {
@@ -51,11 +52,12 @@ class Transaction extends Component {
 								need_currency={ this.props.inquiry.get('need_currency') }
 								have_currency={ this.props.inquiry.get('have_currency') }
 								will_get={ this.props.inquiry.get('need_amount') }
-								have_transfer={ this.props.inquiry.get('have_amount') }
+								have_transfer={ this.props.inquiry.get('total_amount_transfer') }
 								currencies={ this.state.currencies }
 								deadline_post={ this.props.inquiry.get('deadline_post') }
 								id={ this.props.inquiry.get('id') }
 								isInquiry
+								statuses={ this.props.statuses }
 							/>
 						}
 						<div>ini yg live</div>
@@ -67,7 +69,7 @@ class Transaction extends Component {
 								need_currency={ this.props.transactions[0].Inquiries[0].need_currency }
 								have_currency={ this.props.transactions[0].Inquiries[0].have_currency }
 								will_get={ this.props.transactions[0].Inquiries[0].need_amount }
-								have_transfer={ this.props.transactions[0].Inquiries[0].have_amount }
+								have_transfer={ this.props.transactions[0].Inquiries[0].total_amount_transfer }
 								inquiries={ this.props.liveTransaction.get('Inquiries') }
 								id_user={ this.props.user.get('id') }
 								currencies={ this.state.currencies }
@@ -87,7 +89,7 @@ class Transaction extends Component {
 										need_currency={ transaction.Inquiries[0].need_currency }
 										have_currency={ transaction.Inquiries[0].have_currency }
 										will_get={ transaction.Inquiries[0].need_amount }
-										have_transfer={ transaction.Inquiries[0].have_amount }
+										have_transfer={ transaction.Inquiries[0].total_amount_transfer }
 										currencies={ this.state.currencies }										
 									/>
 								)
@@ -104,13 +106,15 @@ Transaction.propTypes = {
 	loading: PropTypes.bool,
 	inquiry: PropTypes.object,
 	transactions: PropTypes.any,
+	statuses: PropTypes.any,
 	user: PropTypes.object,
 	getTransactions: PropTypes.func,
 	isInquiry: PropTypes.bool,
 	isLiveTransaction: PropTypes.bool,
 	alert: PropTypes.bool,
 	liveTransaction: PropTypes.object,
-	setAlertStatus: PropTypes.func
+	setAlertStatus: PropTypes.func,
+	getStatuses: PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -121,12 +125,14 @@ const mapStateToProps = createStructuredSelector({
 	transactions: selectors.getTransactions(),
 	liveTransaction: selectors.getLiveTransaction(),
 	user: getUser(),
-	alert: getAlert()	
+	alert: getAlert(),
+	statuses: selectors.getStatuses()
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	getTransactions: (id) => dispatch(actions.getTransactions(id)),
-	setAlertStatus: (alert) => dispatch(setAlertStatus(alert))	
+	setAlertStatus: (alert) => dispatch(setAlertStatus(alert)),
+	getStatuses: () => dispatch(actions.getStatuses()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transaction)

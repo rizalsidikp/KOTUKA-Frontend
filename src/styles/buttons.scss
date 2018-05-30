@@ -93,6 +93,20 @@
 	}
 }
 
+.button-danger{
+	background-color: $red;
+	&:hover{
+		background-color: $red-hover;		
+	}
+	&:active{
+		background-color: $red-active;
+	}
+	&:disabled{
+		background-color: $secondary-disabled;
+	}
+}
+
+
 .button-black{
 	background-color: $black-button;
 	color: $black-bold;

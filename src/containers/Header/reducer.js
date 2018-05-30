@@ -22,7 +22,9 @@ const INITIAL_STATE = fromJS({
 		response: 0,
 		trans_count: 0,
 		updatedAt: '',
-		verified: ''
+		verified: '',
+		invalid: false,
+		invalidMessage: ''
 	}
 })
 
@@ -44,6 +46,7 @@ export default (state = INITIAL_STATE, action) => {
 			.setIn(['user', 'id'], action.payload.user.id || 0)
 			.setIn(['user', 'last_name'], action.payload.user.last_name || '')
 			.setIn(['user', 'phone'], action.payload.user.phone || '')
+			.setIn(['user', 'phone_code'], action.payload.user.phone_code || '')
 			.setIn(['user', 'response'], action.payload.user.response || 0)
 			.setIn(['user', 'trans_count'], action.payload.user.trans_count || 0)
 			.setIn(['user', 'updatedAt'], action.payload.user.updatedAt || '')
@@ -51,6 +54,9 @@ export default (state = INITIAL_STATE, action) => {
 			.setIn(['user', 'identification_photo'], action.payload.user.identification_photo || null)
 	case constants.SET_ID_CARD:
 		return state.setIn(['user', 'identification_photo'], action.payload.identification_photo)
+	case constants.SET_INVALID:
+		return state.set('invalid', action.payload.invalid)
+			.set('invalidMessage', action.payload.invalidMessage)
 	default: return state
 	}
 }

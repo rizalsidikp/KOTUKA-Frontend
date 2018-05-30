@@ -68,7 +68,12 @@ export function validateEmail(email) {
  * @return {Boolean}
 */
 export function validateVocalLetter(inputString, length = 3) {
-	return inputString.length >= length && (/[aiueoAIUEO]/).test(inputString.trim())
+	return inputString.trim().length >= length && (/[aiueoAIUEO]/).test(inputString.trim())
+}
+
+
+export function validateLength(inputString, length = 3) {
+	return inputString.trim().length >= length
 }
 
 
@@ -81,7 +86,7 @@ export function validateVocalLetter(inputString, length = 3) {
 * @return {Boolean}
 */
 export function validateNumber(inputNumber, length = 3) {
-	return (/^[0-9]+$/).test(inputNumber.trim()) && inputNumber.length >= length
+	return (/^[0-9]+$/).test(inputNumber.trim()) && inputNumber.trim().length >= length
 }
 
 
@@ -118,7 +123,10 @@ export function chunkArray(list = [], titleKey, valueKey, imageKey, isArray = fa
 		carry.push({
 			label:
 			<div className="Select-value">
-				<img className="select-logo" src={ data[imageKey] } />
+				{
+					data[imageKey] &&
+					<img className="select-logo" src={ data[imageKey] } />
+				}
 				<span className="text-black font-weight-bold">{ tKey }</span>
 			</div>,
 			value: vKey,
@@ -238,6 +246,17 @@ export function formatMoney(money, currency) {
 }
 
 
+export function statusAlias(list = [], statusType) {
+	let status_alias = ''
+	list.forEach(status => {
+		if(status.status_type === statusType){
+			status_alias = status.status_alias
+		}
+	})
+	return status_alias
+}
+
+
 export function mySelfRecipientList( list = [] ) {
 	const listMySelf = list.filter((l) => {
 		return l.myself
@@ -250,4 +269,12 @@ export function someoneElseRecipientList( list = [] ) {
 		return !l.myself && l.Recipient.charity_name === null
 	})
 	return listMySelf
+}
+
+export function bankFilter( list = [], currency ) {
+	const bankFilter = list.filter((l) => {
+		return l.account_currency === currency
+	})
+
+	return bankFilter
 }

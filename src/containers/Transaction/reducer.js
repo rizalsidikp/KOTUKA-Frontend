@@ -26,7 +26,8 @@ const INITIAL_STATE = fromJS({
 		referrer_code: '',
 		transaction_status: '',
 		Inquiries: []
-	}
+	},
+	statuses: []
 })
 
 export default (state = INITIAL_STATE, action) => {
@@ -60,6 +61,8 @@ export default (state = INITIAL_STATE, action) => {
 		return state.set('isLiveTransaction', action.payload.isLiveTransaction)
 	case constants.SET_TRANSACTION:
 		return state.set('transactions', action.payload.transactions)
+	case constants.SET_STATUSES:
+		return state.set('statuses', action.payload.statuses)
 	default: return state
 	}
 }

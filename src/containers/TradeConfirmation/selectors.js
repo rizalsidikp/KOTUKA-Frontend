@@ -16,3 +16,9 @@ export const getLoading = () => createSelector(
 	selectTrade(),
 	state => state.get('loading')
 )
+
+
+export const getAccounts = () => createSelector(
+	selectTrade(),
+	state => state.get('accounts')
+)

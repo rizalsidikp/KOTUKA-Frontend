@@ -47,5 +47,6 @@ export default {
 	
 	login: (username, password) => api.post('users/signin', { username, password }),
 	exLogin: (payload) => api.post('users/exaccount', { ...payload }),
-	register: (payload) => api.post('users/signup', { ...payload })
+	register: (payload) => api.post('users/signup', { ...payload }),
+	sendEmail: (payload) => api.post('users/helprequest', { ...payload }),
 }

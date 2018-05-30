@@ -7,7 +7,7 @@ import Row from '../Row'
 import strings from '../../localizations'
 import InquiryBox from '../InquiryBox'
 import getSymbolFromCurrency from 'currency-symbol-map'
-import { getFlagFromCurrency } from '../../services/helper'
+import { getFlagFromCurrency, statusAlias } from '../../services/helper'
 
 import history from './../../history'
 
@@ -33,7 +33,6 @@ class TransactionCard extends Component {
 		}
 
 		const { live = false, isInquiry = false } = this.props
-
 		return (
 			<Row className='tran-c-row'>
 				<div className='col col-md-auto'>
@@ -43,9 +42,9 @@ class TransactionCard extends Component {
 						<img src={ getFlagFromCurrency(this.props.currencies, this.props.have_currency) } className="tran-c-img" /><span className="font20 text-secondary font-weight-bold">{ this.props.have_currency }</span>
 					</div>
 					<div className="font12 text-gray">{ strings.transaction_status }</div>
-					<span className='font16 text-black-semi font-weight-semi-bold'>{ this.props.status }</span>
+					<span className='font16 text-black-semi font-weight-semi-bold'>{ statusAlias(this.props.statuses, this.props.status) }</span>
 					{
-						isInquiry ? 
+						isInquiry && this.props.status === 'PENDING' ? 
 							<InquiryBox 
 								status={ this.props.status }
 								name={ '' }
@@ -61,7 +60,7 @@ class TransactionCard extends Component {
 							/>
 							:null
 					}
-					{
+					{/* {
 						live ?
 							this.props.inquiries.map((inquiry, index) => {
 								return(
@@ -82,7 +81,7 @@ class TransactionCard extends Component {
 								)
 							})
 							:null
-					}
+					} */}
 				</div>
 				<div className='col d-flex flex-column align-items-end'>
 					<span className="font12 text-secondary font-weight-bold">{ strings.will_get }</span>
@@ -98,6 +97,7 @@ class TransactionCard extends Component {
 
 TransactionCard.propTypes = {
 	status: PropTypes.string,
+	statuses: PropTypes.statuses,
 	need_currency: PropTypes.string,
 	have_currency: PropTypes.string,
 	will_get: PropTypes.string,

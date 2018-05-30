@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 
 import DatePicker from 'react-datepicker'
 
-import moment from 'moment'
-
 import './style.scss'
 
 class LabelInput extends Component {
@@ -18,16 +16,21 @@ class LabelInput extends Component {
 				}
 				{
 					type === 'textarea' ?
-						<textarea name={ name } placeholder={ placeholder } value={ value } onChange={ onChange } className="li-input resize-none" rows={ 4 }></textarea>
+						<textarea name={ name } placeholder={ placeholder } value={ value } onChange={ onChange } disabled={ disabled } className={ 'li-input resize-none '.concat(this.props.invalid ? 'li-no-margin ' : '' ) } rows={ 4 }></textarea>
 						:
 						type === 'date' ?
-							<DatePicker className="li-input" name={ name } placeholder={ placeholder } selected={ value } onChange={ onChange } 
+							<DatePicker className="li-input" name={ name } placeholder={ placeholder } selected={ value } onChange={ onChange } disabled={ disabled }
 								showMonthDropdown
 								showYearDropdown
 								dropdownMode="select"
+								readOnly
 							/>
 							:
-							<input name={ name } className="li-input" type={ type } placeholder={ placeholder } value={ value } onChange={ onChange } disabled={ disabled } />
+							<input name={ name } className={ 'li-input '.concat(this.props.invalid ? 'li-no-margin ' : '' ) } type={ type } placeholder={ placeholder } value={ value } onChange={ onChange } disabled={ disabled } />
+				}
+				{
+					this.props.invalid &&
+					<label className="font14 text-red font-weight-semi-bold li-invalid">{ this.props.invalidMessage }</label>
 				}
 			</div>	
 		)
@@ -47,6 +50,8 @@ LabelInput.propTypes = {
 	name: PropTypes.string,
 	disabled: PropTypes.bool,
 	noLabel: PropTypes.bool,
+	invalid: PropTypes.bool,
+	invalidMessage: PropTypes.string
 }
 
 export default LabelInput

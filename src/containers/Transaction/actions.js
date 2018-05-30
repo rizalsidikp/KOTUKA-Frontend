@@ -32,14 +32,18 @@ export function setTransactions(transactions) {
 	return { type: constants.SET_TRANSACTION, payload: { transactions } }
 }
 
+export function setStatuses(statuses) {
+	return { type: constants.SET_STATUSES, payload: { statuses } }
+}
+
 export function getTransactions(id){
 	return async(dispatch) => {
 		dispatch(setLoading(true))
 		try {
 			const response = await transactionService.getTransactions(id)
 			console.log(response)
-			setHtmlStorage('accessToken', response.token, 1500)
 			if(response.result){
+				setHtmlStorage('accessToken', response.token, 1500)
 				if(response.result.inquiry){
 					dispatch(setIsInquiry(true))
 					dispatch(setInquiry(response.result.inquiry))
@@ -77,6 +81,22 @@ export function getTransactions(id){
 				dispatch(setIsInquiry(false))
 				dispatch(setIsLiveTransaction(false))					
 				dispatch(setTransactions([]))
+			}
+		} catch (error) {
+			console.log(error)
+		}
+		dispatch(setLoading(false))
+	}
+}
+
+export function getStatuses(){
+	return async(dispatch) => {
+		dispatch(setLoading(true))
+		try {
+			const response = await transactionService.getStatuses()
+			if(response.result){
+				setHtmlStorage('accessToken', response.token, 1500)
+				dispatch(setStatuses(response.result))
 			}
 		} catch (error) {
 			console.log(error)

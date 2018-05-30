@@ -3,6 +3,8 @@ import auth from './../../services/auth'
 import { setHtmlStorage } from './../../services/helper'
 import history from './../../history'
 import moment from 'moment'
+import { setAlertStatus } from '../Alert/actions'
+import strings from '../../localizations'
 
 export function setLoading(loading) {
 	return { type: constants.SET_LOADING, payload: { loading } }
@@ -20,6 +22,10 @@ export function setUser(user) {
 
 export function setIdCard(identification_photo) {
 	return { type: constants.SET_ID_CARD, payload: { identification_photo } }
+}
+
+export function setInvalid(invalid, invalidMessage) {
+	return { type: constants.SET_INVALID, payload: { invalid, invalidMessage } }
 }
 
 
@@ -89,15 +95,20 @@ export function login(username, password) {
 					state: { email: response.result.email }
 				})
 			}
-			console.log(response)
-			dispatch(setUser(response.data_user))			
-			setHtmlStorage('accessToken', response.token, 1500)
-			setHtmlStorage('firebaseToken', response.rtDB, 1500)
-			return history.push('/dashboard/post')			
+			if(response.result){
+				dispatch(setUser(response.data_user))
+				setHtmlStorage('accessToken', response.token, 1500)
+				setHtmlStorage('firebaseToken', response.rtDB, 1500)
+				return history.push('/dashboard/post')			
+			}else{
+				dispatch(setLoading(false))		
+				return dispatch(setInvalid(true, strings.login_invalid))
+			}
 		} catch (error) {
 			console.log(error)
+			dispatch(setLoading(false))		
+			return dispatch(setInvalid(true, strings.wrong))
 		}
-		dispatch(setLoading(false))		
 	}
 }
 
@@ -145,4 +156,19 @@ function userSplitName(name) {
 		resultName.first_and_middle_name = name
 	}
 	return resultName
+}
+
+export function sendEmail(payload) {
+	return async(dispatch) => {
+		dispatch(setLoading(true))
+		try {
+			const response = await auth.sendEmail(payload)
+			console.log(response)
+			dispatch(setAlertStatus(true, 'success', strings.success_send_email))
+		} catch (error) {
+			console.log(error)
+			dispatch(setAlertStatus(true, 'danger', strings.fail_send_email))			
+		}
+		dispatch(setLoading(false))		
+	}
 }
