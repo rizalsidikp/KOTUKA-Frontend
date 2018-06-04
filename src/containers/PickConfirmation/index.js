@@ -15,7 +15,7 @@ import Step from '../../components/Step'
 
 import './style.scss'
 import strings from '../../localizations'
-import { chunkArray, convertMoneyString, formatMoney, getCostFromCurrency, getFlagFromCurrency } from '../../services/helper'
+import { chunkArray, convertMoneyString, formatMoney, getCostFromCurrency, getFlagFromCurrency, bankFilter, getPercentFromCurrency } from '../../services/helper'
 import * as homeSelectors from '../Home/selectors'
 import * as homeActions from '../Home/actions'
 import { getUser } from '../Header/selectors'
@@ -27,6 +27,7 @@ import history from './../../history'
 import ModalIdCard from '../../components/ModalIdCard'
 import TradeCard from '../../components/TradeCard'
 import getSymbolFromCurrency from 'currency-symbol-map'
+import Bank from '../../components/Bank'
 
 
 
@@ -43,6 +44,13 @@ class TradeConfirmation extends Component {
 			recipient: {
 				type: ''
 			},
+			payment: '',
+			bank_name: '',
+			// upload identification photo
+			modalUploadIdCard: false,
+			imagePreviewUrl: '',
+			file: null,
+			paymentInfo: null
 		}
 	}
 	componentWillMount() {
@@ -50,6 +58,7 @@ class TradeConfirmation extends Component {
 		this.props.getPurpose()
 		this.props.getRecipients(this.props.user.get('id'))
 		this.props.setLoading(false)
+		this.props.getAccounts()		
 	}
 
 	getCurrencies = async() => {
@@ -64,8 +73,10 @@ class TradeConfirmation extends Component {
 		const zone_name =  moment.tz.guess()
 		const timezone = moment.tz(zone_name)._z.name
 		let payment_detail = {
-			payment_type : 'manual_transfer',
-			gross_amount: have_amount
+			payment_type : this.state.payment,
+			gross_amount: have_amount,
+			bank_name: this.state.bank_name,
+			paymentInfo: this.state.paymentInfo,
 		}
 
 		let trade_with = []
@@ -142,6 +153,15 @@ class TradeConfirmation extends Component {
 		)
 	}
 
+	renderStepFourComplete = () => {
+		return(
+			<div className="d-flex font14 text-primary font-weight-bold align-items-center">
+				<div className="tc-circle-recipient" />
+				{ strings.transfer_with + ' ' + this.state.bank_name }
+			</div>
+		)
+	}
+
 	onSelectedRecipient = (recipient) => {
 		recipient = {
 			...recipient,
@@ -199,6 +219,8 @@ class TradeConfirmation extends Component {
 		let cost = (convertMoneyString(this.props.selectedTrade[0].need_amount) * 0.5 / 100) + convertMoneyString(fixed_cost)
 		let total_transfer = convertMoneyString(this.props.selectedTrade[0].need_amount) + cost
 
+		const bank = bankFilter(this.props.accounts, this.props.selectedTrade[0].need_currency)		
+
 		return (
 			<div className="container dashboard-container">
 				<Row className="justify-content-center">
@@ -245,7 +267,7 @@ class TradeConfirmation extends Component {
 										{ formatMoney(cost, this.props.selectedTrade[0].need_currency) }
 									</label>
 									<label className="font12 font-weight-bold full-width no-margin text-secondary">
-										{ strings.fee_percent } 
+										{ parseFloat(getPercentFromCurrency(this.state.currencies, this.props.selectedTrade[0].need_currency)) + strings.fee_percent } 
 										{ currency_symbol + ' ' }
 										{ fixed_cost }
 									</label>
@@ -309,7 +331,7 @@ class TradeConfirmation extends Component {
 								<div className="p_line">
 									<div className="font16 font-weight-bold text-primary">{ strings.bank_account }</div>
 									<div className="font14 text-black-semi">{ this.state.recipient.first_and_middle_name + ' ' + this.state.recipient.last_name }</div>
-									<div className="font14 text-black-semi">{ this.state.recipient.account_info.account_no }</div>
+									<div className="font14 text-black-semi">{ this.state.recipient.Recipient ? this.state.recipient.Recipient.account_no : '' }</div>
 								</div>
 							}
 						</Step>
@@ -340,6 +362,27 @@ class TradeConfirmation extends Component {
 						</Step>
 
 
+						{/* { Transfer Method } */}
+						<Step
+							active={ collapse === 4 }
+							onNextClick={ () => this.setState({ collapse: this.state.collapse + 1 }) }												
+							onEditClick={ () => this.setState({ collapse : 4 }) }							
+							title={ strings.transfer_mehtod }
+							pass={ collapse > 4 }
+							renderOnComplete={ this.renderStepFourComplete() }
+							disabledNext={ this.state.payment === '' }
+						>
+							<label className="font14 font-weight-bold text-black-semi">{ strings.how_you_want_transfer }</label>
+							<Row className="sr-row no-margin">
+								{
+									bank.map((b, idx) => {
+										return(
+											<Bank key={ idx } img={ b.bank_image } onClick={ () => this.setState({ payment: b.transfer_type, bank_name: b.bank_name, paymentInfo: b }) } selected={ this.state.payment === b.transfer_type } />
+										)
+									})
+								}
+							</Row>
+						</Step>
 
 
 
@@ -353,7 +396,7 @@ class TradeConfirmation extends Component {
 
 						{/* {review} */}
 						<Step
-							active={ collapse === 4 }
+							active={ collapse === 5 }
 							title={ strings.review }
 							theme="bottom"
 							onConfirmClick={ this.checkIdentification }
@@ -419,6 +462,8 @@ class TradeConfirmation extends Component {
 					onClose={ () => this.setState({ modalRecipient: false }) }
 					recipients={ this.props.recipients || [] }
 					onSelectedRecipient={ (recipient) => this.onSelectedRecipient(recipient) }
+					currency={ this.props.selectedTrade[0].have_currency }
+					type={ this.state.selectedRecipient }
 				/>
 				<ModalIdCard
 					open={ this.state.modalUploadIdCard }
@@ -443,6 +488,7 @@ class TradeConfirmation extends Component {
 
 TradeConfirmation.propTypes = {
 	purpose: PropTypes.any,
+	accounts: PropTypes.any,
 	selectedPurpose: PropTypes.object,
 	user: PropTypes.object,
 	location: PropTypes.object,
@@ -460,6 +506,7 @@ TradeConfirmation.propTypes = {
 	recipients: PropTypes.any,
 	//funct
 	getPurpose: PropTypes.func,
+	getAccounts: PropTypes.func,
 	setSelectedPurpose: PropTypes.func,
 	pickTrade: PropTypes.func,
 	postTrade: PropTypes.func,
@@ -478,6 +525,7 @@ TradeConfirmation.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
 	purpose: selectors.getPurpose(),
+	accounts: selectors.getAccounts(),
 	selectedPurpose: selectors.getSelectedPurpose(),
 	user: getUser(),
 	loading: selectors.getLoading(),
@@ -509,7 +557,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setChooseHave: (chooseHave) => dispatch(homeActions.setChooseHave(chooseHave)),	
 	convertMoney: (val, selectedNeed, selectedHave, type) => dispatch(homeActions.convertMoney(val, selectedNeed, selectedHave, type)),	
 	getRecipients: (id) => dispatch(getRecipients(id)),
-
+	getAccounts: () => dispatch(actions.getAccounts())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TradeConfirmation)

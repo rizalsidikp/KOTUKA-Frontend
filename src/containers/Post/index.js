@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import * as selectors from './../Home/selectors'
 import * as actions from './../Home/actions'
-import { getLoading } from './selectors'
-import { postTrade } from './actions'
 import { getUser } from './../Header/selectors'
 import PropTypes from 'prop-types'
 import { convertMoneyString } from './../../services/helper'
@@ -19,6 +17,7 @@ import history from '../../history'
 // import moment from 'moment-timezone'
 import { getIsInquiry, getIsLiveTransaction } from '../Transaction/selectors'
 import { getTransactions } from '../Transaction/actions'
+import { setPrompt } from '../Prompt/actions'
 
 class Post extends Component {
 	constructor(props) {
@@ -49,17 +48,28 @@ class Post extends Component {
 		this.props.getClosestTrade(need, have, this.props.amountNeedInt, this.props.amountHaveInt, page)
 	}
 	onPostTrade = async() => {
-		history.push({
-			pathname: '/dashboard/tradeconfirmation',
-			state: { type: 'poster' }
-		})
-	}
-	render() {
 		if(this.props.isInquiry || this.props.isLiveTransactions){
-			return(
-				<div>Gaboleh Post Coy</div>
-			)
+			this.props.setPrompt(true, strings.upps, strings.cannot_post)
+		}else{
+			history.push({
+				pathname: '/dashboard/tradeconfirmation',
+				state: { type: 'poster' }
+			})
 		}
+	}
+
+	onTradeClick = () => {
+		if(this.props.isInquiry || this.props.isLiveTransactions){
+			console.log('sedang ada post')
+		}else{
+			history.push({
+				pathname: '/dashboard/pickconfirmation',
+				state: { type: 'picker' }
+			})
+		}
+	}
+
+	render() {
 		return (
 			<div className="container dashboard-container post-container">
 				<FormInputMoney 
@@ -96,12 +106,7 @@ class Post extends Component {
 					detailPage={ this.props.detailPage }
 					onStartTrading={ (page) => this.onStartTrading(page) }
 					createPost= { this.onPostTrade }		
-					onTradeClick={ () => {
-						history.push({
-							pathname: '/dashboard/pickconfirmation',
-							state: { type: 'poster' }
-						})
-					} }							
+					onTradeClick={ this.onTradeClick }							
 					currencies={ this.state.currencies }					
 					theme='secondary'
 				/>
@@ -143,6 +148,8 @@ Post.propTypes = {
 	removeTrade: PropTypes.func,
 	postTrade: PropTypes.func,
 	getTransactions: PropTypes.func,
+	getUser: PropTypes.func,
+	setPrompt: PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -159,10 +166,9 @@ const mapStateToProps = createStructuredSelector({
 	isSearching: selectors.getIsSearching(),
 	isGettingTrade: selectors.getIsGettingTrade(),
 	rate: selectors.getRate(),	
-	postLoading: getLoading(),
-	user: getUser(),
 	isInquiry: getIsInquiry(),
-	isLiveTransactions: getIsLiveTransaction()
+	isLiveTransactions: getIsLiveTransaction(),
+	user: getUser()
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -178,8 +184,8 @@ const mapDispatchToProps = (dispatch) => ({
 	convertMoney: (val, selectedNeed, selectedHave, type) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave, type)),
 	tradeSelected: (selectedTrades, trade) => dispatch(actions.tradeSelected(selectedTrades, trade)),
 	removeTrade: (selectedTrades, index) => dispatch(actions.removeTrade(selectedTrades, index)),
-	postTrade: (id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone) => dispatch(postTrade(id_user, need_amount, need_currency, currency_rate, have_amount, have_currency, timezone)),
-	getTransactions: (id) => dispatch(getTransactions(id))
+	getTransactions: (id) => dispatch(getTransactions(id)),
+	setPrompt: (prompt, header, text) => dispatch(setPrompt(prompt, header, text)) 
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Post)

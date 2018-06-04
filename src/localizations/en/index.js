@@ -151,6 +151,7 @@ export default {
 	wrong_phone: 'Phone number is not valid',
 	name: 'Name',
 	transfer_with: 'Transfer with',	
+	success_create_post: 'Success create post',	
 	success_complete_profile: 'Success! Thank you for completing your profile.',
 	success_update_profile: 'Success! Thank you for updating your profile.',
 	success_create_recipient: 'Success create recipient',
@@ -160,5 +161,12 @@ export default {
 	fail_update_profile: 'Failed to update profile' ,
 	fail_create_recipient: 'Failed to create recipient',
 	fail_delete_recipient: 'Failed to delete recipient',
-	fail_send_email: 'Failed to send your question'
+	fail_send_email: 'Failed to send your question',
+	hello: 'Hello',
+	you_need_to_login: 'You need to login, to make a trade.',
+	upps : 'Uppss',
+	cannot_post: 'There is post not finished',
+	va_number: 'VA Number',
+	bill_key: 'Bill Key',
+	biller_code: 'Biller Code'
 }

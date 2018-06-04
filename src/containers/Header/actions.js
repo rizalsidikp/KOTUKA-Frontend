@@ -95,7 +95,8 @@ export function login(username, password) {
 					state: { email: response.result.email }
 				})
 			}
-			if(response.result){
+			console.log(response)
+			if(response.data_user){
 				dispatch(setUser(response.data_user))
 				setHtmlStorage('accessToken', response.token, 1500)
 				setHtmlStorage('firebaseToken', response.rtDB, 1500)

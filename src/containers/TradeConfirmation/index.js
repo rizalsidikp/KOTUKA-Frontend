@@ -503,6 +503,8 @@ class TradeConfirmation extends Component {
 					onClose={ () => this.setState({ modalRecipient: false }) }
 					recipients={ this.props.recipients || [] }
 					onSelectedRecipient={ (recipient) => this.onSelectedRecipient(recipient) }
+					currency={ this.props.chooseNeed.get('currency_alias') }
+					type={ this.state.selectedRecipient }
 				/>
 				<ModalIdCard
 					open={ this.state.modalUploadIdCard }

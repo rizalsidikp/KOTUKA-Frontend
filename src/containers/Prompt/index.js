@@ -11,18 +11,18 @@ import './style.scss'
 
 class Prompt extends Component {
 	componentWillMount() {
-		this.props.setPrompt(false)
+		this.props.setPrompt(false, '', '')
 	}
 	render() {
 		return (
-			<Modal open={ this.props.open } onClose={ () => this.props.setPrompt(false) } contentStyle="mic-wrapper" >
-				<div className="mic-content">			
-					<h2 className="font24 text-secondary font-weight-bold">Hello, </h2>
+			<Modal open={ this.props.open } onClose={ () => this.props.setPrompt(false, this.props.header, this.props.text) } contentStyle="mic-wrapper" >
+				<div className="mic-content">
+					<h2 className="font24 text-secondary font-weight-bold">{this.props.header}, </h2>
 					<div className="font16 text-black-semi font-weight-semi-bold">
-						You need to login, to make a trade.
+						{ this.props.text }
 					</div>
 					<div className="text-right">
-						<button className="button-sm button-primary" onClick={ () => this.props.setPrompt(false) }>OK</button>
+						<button className="button-sm button-primary" onClick={ () => this.props.setPrompt(false, this.props.header, this.props.text) }>OK</button>
 					</div>
 				</div>
 			</Modal>
@@ -33,14 +33,18 @@ class Prompt extends Component {
 Prompt.propTypes = {
 	open: PropTypes.bool,
 	setPrompt: PropTypes.func,
+	header: PropTypes.string,
+	text: PropTypes.string
 }
 
 const mapStateToProps = createStructuredSelector({
-	open: selectors.getPrompt()
+	open: selectors.getPrompt(),
+	header: selectors.getHeader(),
+	text: selectors.getText()
 })
 
 const mapDispatchToProps = (dispatch) => ({
-	setPrompt : (prompt) => dispatch(actions.setPrompt(prompt))
+	setPrompt : (prompt, header, text) => dispatch(actions.setPrompt(prompt, header, text))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Prompt)

@@ -6,6 +6,7 @@ import Modal from '../Modal'
 import './style.scss'
 import strings from '../../localizations'
 import SelectRecipientCard from '../SelectRecipientCard'
+import { mySelfRecipientList, someoneElseRecipientList, recipientCurrency } from '../../services/helper'
 // import LabelInput from '../LabelInput'
 // import Row from '../Row'
 // import { Collapse } from 'react-collapse'
@@ -21,17 +22,27 @@ class ModalSelectRecipient extends Component {
 		}
 	}
 	render() {
+		let recipients = []
+		if(this.props.type === 'myself'){
+			recipients = mySelfRecipientList(this.props.recipients)
+		}else if (this.props.type === 'else') {
+			recipients = someoneElseRecipientList(this.props.recipients)
+		}else{
+			recipients = []
+		}
+		recipients = recipientCurrency(recipients, this.props.currency)
+
 		return (
 			<Modal open={ this.props.open } onClose={ this.props.onClose } contentStyle=" msr-wrapper " >
 				<div className="msr-content">			
 					<h2 className="font24 text-center text-black-semi font-weight-bold">
 						{ strings.select_bank_account + ' ' }
-						<span className="text-primary">({ 'IDR' })</span>
+						<span className="text-primary">({ this.props.currency })</span>
 					</h2>
 					<hr />
 					{
-						this.props.recipients && this.props.recipients.length > 0 ?
-							this.props.recipients.map((recipient, index) => {
+						recipients.length > 0 ?
+							recipients.map((recipient, index) => {
 								return(
 									<SelectRecipientCard
 										key={ index }
@@ -98,7 +109,9 @@ ModalSelectRecipient.propTypes = {
 	open: PropTypes.bool,
 	onClose: PropTypes.func,
 	onSelectedRecipient: PropTypes.func,
-	recipients: PropTypes.any
+	recipients: PropTypes.any,
+	currency: PropTypes.string,
+	type: PropTypes.string,
 }
 
 export default ModalSelectRecipient

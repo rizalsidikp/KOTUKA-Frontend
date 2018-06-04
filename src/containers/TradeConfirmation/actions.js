@@ -7,6 +7,7 @@ import { setIdCard } from './../Header/actions'
 
 import history from './../../history'
 import { setAlertStatus } from '../Alert/actions'
+import strings from '../../localizations'
 
 
 export function setLoading(loading) {
@@ -59,15 +60,17 @@ export function postTrade(payload) {
 				total_amount_transfer: resTotal.result.total
 			}
 			const response = await tradingService.postTrade(payload)
+			console.log(response)
 			setHtmlStorage('accessToken', response.token, 1500)
 			dispatch(setLoading(false))
 			console.log(response)
-			dispatch(setAlertStatus(true))
+			dispatch(setAlertStatus(true, 'success', strings.success_create_post))
 			return history.replace({
 				pathname: '/dashboard/paymenttrade',
 				state: { payment: response.result.id }
 			})
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_create_post))			
 			console.log(error)
 		}
 		dispatch(setLoading(false))

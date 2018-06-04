@@ -97,7 +97,7 @@ class TransactionCard extends Component {
 
 TransactionCard.propTypes = {
 	status: PropTypes.string,
-	statuses: PropTypes.statuses,
+	statuses: PropTypes.any,
 	need_currency: PropTypes.string,
 	have_currency: PropTypes.string,
 	will_get: PropTypes.string,

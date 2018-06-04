@@ -112,7 +112,10 @@ class ModalRecipient extends Component {
 
 
 					<LabelInput name='bank_account' label={ strings.bank_account } placeholder={ strings.bank_account } value={ this.state.bank_account } onChange={ (e) => this.setState({ bank_account: e.target.value }) } />
-					<LabelInput name='email' label={ strings.sort_code } placeholder={ strings.sort_code } value={ this.state.sort_code } onChange={ (e) => this.setState({ sort_code: e.target.value }) } />								
+					{
+						this.state.currency && this.state.currency.currency_alias === 'GBP' &&
+						<LabelInput name='email' label={ strings.sort_code } placeholder={ strings.sort_code } value={ this.state.sort_code } onChange={ (e) => this.setState({ sort_code: e.target.value }) } />								
+					}
 					<LabelInput name='email' label={ strings.description } placeholder={ strings.description } value={ this.state.description } onChange={ (e) => this.setState({ description: e.target.value }) } />								
 					<button disabled={ this.props.loading } className="button button-secondary full-width modal-button" onClick={ this.onAddRecipient }>{ strings.add }</button>					
 				</div>

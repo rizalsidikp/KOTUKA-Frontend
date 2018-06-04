@@ -18,6 +18,7 @@ import Faq from '../../components/Faq'
 import AboutUs from '../../components/AboutUs'
 import Footer from '../../components/Footer'
 import TradeBox from '../../components/TradeBox'
+import { setPrompt } from '../Prompt/actions'
 
 class Home  extends Component {
 
@@ -87,6 +88,8 @@ class Home  extends Component {
 							currencies={ this.state.currencies }							
 							onStartTrading={ (page) => this.onStartTrading(page) }
 							anonymous
+							createPost={ () => this.props.setPrompt(true, strings.hello, strings.you_need_to_login) }							
+							onTradeClick={ () => this.props.setPrompt(true, strings.hello, strings.you_need_to_login) }							
 						/>
 					</div>
 				</div>
@@ -132,6 +135,7 @@ Home.propTypes = {
 	setLoading: PropTypes.func,
 	tradeSelected: PropTypes.func,
 	removeTrade: PropTypes.func,
+	setPrompt: PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -163,6 +167,7 @@ const mapDispatchToProps = (dispatch) => ({
 	convertMoney: (val, selectedNeed, selectedHave, type) => dispatch(actions.convertMoney(val, selectedNeed, selectedHave, type)),
 	tradeSelected: (selectedTrades, trade) => dispatch(actions.tradeSelected(selectedTrades, trade)),
 	removeTrade: (selectedTrades, index) => dispatch(actions.removeTrade(selectedTrades, index)),
+	setPrompt: (prompt, header, text) => dispatch(setPrompt(prompt, header, text)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

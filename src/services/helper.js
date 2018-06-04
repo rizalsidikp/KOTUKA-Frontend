@@ -218,6 +218,17 @@ export function getCostFromCurrency(list = [], currency){
 }
 
 
+export function getPercentFromCurrency(list = [], currency){
+	let fixed_cost = ''
+	list.forEach(curr => {
+		if(curr.currency_alias === currency){
+			fixed_cost = curr.percentage
+		}
+	})
+	return fixed_cost
+}
+
+
 export function censoredText(text){
 	let textArr = text.trim().split(' ')
 	let res = []
@@ -269,6 +280,13 @@ export function someoneElseRecipientList( list = [] ) {
 		return !l.myself && l.Recipient.charity_name === null
 	})
 	return listMySelf
+}
+
+export function recipientCurrency(list = [], currency) {
+	const listRes = list.filter((l) => {
+		return l.Recipient.Currency.currency_alias === currency
+	})
+	return listRes
 }
 
 export function bankFilter( list = [], currency ) {

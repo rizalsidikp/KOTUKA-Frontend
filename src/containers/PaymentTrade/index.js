@@ -17,7 +17,7 @@ import currenciesService from './../../services/currencies'
 import accounting from 'accounting'
 import Countdown from 'react-countdown-now'
 import history from './../../history'
-import tradingService from './../../services/trading'
+// import tradingService from './../../services/trading'
 
 
 
@@ -44,7 +44,7 @@ class PaymentTrade extends Component {
 	}
 
 	onClickSend = async() => {
-			this.props.sentMoney(this.props.inquiry.get('id'))
+		this.props.sentMoney(this.props.inquiry.get('id'))
 	}
 	
 	render() {
@@ -154,7 +154,7 @@ class PaymentTrade extends Component {
 									<div className="col col-md-6">
 										<LabelValue
 											label={ strings.to }
-											value={ this.props.inquiry.get('payment_detail').paymentInfo ? this.props.inquiry.get('payment_detail').paymentInfo.account_name : ''  }
+											value={ this.props.inquiry.get('payment_detail').paymentInfo ? this.props.inquiry.get('payment_detail').paymentInfo.account_name : this.props.inquiry.get('payment_detail').payment_type !== 'manual_transfer' ? this.props.inquiry.get('payment_detail').bank_name  : ''  }
 										/>
 									</div>
 									<div className="col col-md-6">
@@ -170,6 +170,33 @@ class PaymentTrade extends Component {
 														<LabelValue
 															label={ strings.sort_code }
 															value={ this.props.inquiry.get('payment_detail').paymentInfo.account_detail.sort_code }
+														/>
+													}
+												</div>
+												: null
+										}
+										{
+											this.props.inquiry.get('payment_detail').payment_type !== 'manual_transfer' ?
+												<div>
+													{
+														this.props.inquiry.get('payment_detail').va_number &&
+														<LabelValue
+															label={ strings.va_number }
+															value={ this.props.inquiry.get('payment_detail').va_number }
+														/>
+													}
+													{
+														this.props.inquiry.get('payment_detail').bill_key &&
+														<LabelValue
+															label={ strings.bill_key }
+															value={ this.props.inquiry.get('payment_detail').bill_key }
+														/>
+													}
+													{
+														this.props.inquiry.get('payment_detail').biller_code &&
+														<LabelValue
+															label={ strings.biller_code }
+															value={ this.props.inquiry.get('payment_detail').biller_code }
 														/>
 													}
 												</div>
