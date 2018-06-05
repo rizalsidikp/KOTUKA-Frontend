@@ -42,20 +42,23 @@ export function loginWithGoogle() {
 				email: user.email
 			}
 			const userResponse = await auth.exLogin(payload)
-			dispatch(setUser(userResponse.data_user))
-			setHtmlStorage('accessToken', userResponse.token, 1500)
-			setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
-			if(userResponse.data_user.address === null || userResponse.data_user.phone === null){
-				localStorage.setItem('secondRegistration', 'true')
-			}else{
-				localStorage.removeItem('secondRegistration')
+			if(userResponse.data_user){
+				dispatch(setUser(userResponse.data_user))
+				setHtmlStorage('accessToken', userResponse.token, 1500)
+				setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
+				dispatch(setLoading(false))		
+				if(userResponse.data_user.address === null || userResponse.data_user.phone === null){
+					localStorage.setItem('secondRegistration', 'true')
+				}else{
+					localStorage.removeItem('secondRegistration')
+				}
+				return history.push('/dashboard/post')
 			}
-			console.log(userResponse.data_user)
-			history.push('/dashboard/post')
 		} catch (error) {
+			dispatch(setLoading(false))		
 			console.log(error)
+			return dispatch(setInvalid(true, strings.wrong))		
 		}
-		dispatch(setLoading(false))
 	}
 }
 
@@ -73,14 +76,23 @@ export function loginWithFacebook() {
 				email: user.email
 			}
 			const userResponse = await auth.exLogin(payload)
-			dispatch(setUser(userResponse.data_user))			
-			setHtmlStorage('accessToken', userResponse.token, 1500)
-			setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
-			history.push('/dashboard/post')
+			if(userResponse.data_user){
+				dispatch(setUser(userResponse.data_user))			
+				setHtmlStorage('accessToken', userResponse.token, 1500)
+				setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
+				dispatch(setLoading(false))		
+				if(userResponse.data_user.address === null || userResponse.data_user.phone === null){
+					localStorage.setItem('secondRegistration', 'true')
+				}else{
+					localStorage.removeItem('secondRegistration')
+				}
+				return history.push('/dashboard/post')
+			}
 		} catch (error) {
+			dispatch(setLoading(false))		
 			console.log(error)
+			return dispatch(setInvalid(true, strings.wrong))		
 		}
-		dispatch(setLoading(false))		
 	}
 }
 
@@ -95,19 +107,24 @@ export function login(username, password) {
 					state: { email: response.result.email }
 				})
 			}
-			console.log(response)
 			if(response.data_user){
 				dispatch(setUser(response.data_user))
 				setHtmlStorage('accessToken', response.token, 1500)
 				setHtmlStorage('firebaseToken', response.rtDB, 1500)
+				dispatch(setLoading(false))
+				if(response.data_user.address === null || response.data_user.phone === null){
+					localStorage.setItem('secondRegistration', 'true')
+				}else{
+					localStorage.removeItem('secondRegistration')
+				}
 				return history.push('/dashboard/post')			
 			}else{
-				dispatch(setLoading(false))		
+				dispatch(setLoading(false))
 				return dispatch(setInvalid(true, strings.login_invalid))
 			}
 		} catch (error) {
 			console.log(error)
-			dispatch(setLoading(false))		
+			dispatch(setLoading(false))
 			return dispatch(setInvalid(true, strings.wrong))
 		}
 	}
@@ -129,16 +146,20 @@ export function register(email, password) {
 		dispatch(setLoading(true))
 		try {
 			const response = await auth.register({email, password})
-			return history.push({
-				pathname: '/confirmation',
-				state: {
-					email: response.result.email
-				}
-			})			
+			if(response.result){
+				dispatch(setLoading(false))	
+				return history.push({
+					pathname: '/confirmation',
+					state: {
+						email: response.result.email
+					}
+				})			
+			}
 		} catch (error) {
+			dispatch(setLoading(false))	
 			console.log(error)
+			return dispatch(setInvalid(true, strings.wrong))			
 		}
-		dispatch(setLoading(false))		
 	}
 }
 
@@ -164,8 +185,9 @@ export function sendEmail(payload) {
 		dispatch(setLoading(true))
 		try {
 			const response = await auth.sendEmail(payload)
-			console.log(response)
-			dispatch(setAlertStatus(true, 'success', strings.success_send_email))
+			if(response.msg === 'success send'){
+				dispatch(setAlertStatus(true, 'success', strings.success_send_email))
+			}
 		} catch (error) {
 			console.log(error)
 			dispatch(setAlertStatus(true, 'danger', strings.fail_send_email))			

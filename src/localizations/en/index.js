@@ -175,5 +175,6 @@ export default {
 	no: 'No',
 	yes: 'Yes',
 	fail_get_transaction: 'Failed to get Transactions',
-	please_reupload_id_card: 'Please re-upload your ID Card'	
+	please_reupload_id_card: 'Please re-upload your ID Card',
+	fail_login: 'Login Failed'		
 }
