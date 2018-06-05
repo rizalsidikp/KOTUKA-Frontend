@@ -32,9 +32,8 @@ class TransactionCard extends Component {
 			have_transfer = accounting.formatMoney(have_transfer,'', 2, ',')
 		}
 
-		const { live = false, isInquiry = false } = this.props
 		return (
-			<Row className='tran-c-row'>
+			<Row className={ 'tran-c-row '.concat(this.props.status === 'DONE_SETTLEMENT' ? 'tran-c-row-completed' : this.props.status === 'PENDING_EXPIRED' ? 'tran-c-row-failed' : '') }>
 				<div className='col col-md-auto'>
 					<div className="d-flex tran-r-row-flag">
 						<img src={ getFlagFromCurrency(this.props.currencies, this.props.need_currency) } className="tran-c-img" /><span className="font20 text-secondary font-weight-bold">{ this.props.need_currency }</span>
@@ -42,9 +41,14 @@ class TransactionCard extends Component {
 						<img src={ getFlagFromCurrency(this.props.currencies, this.props.have_currency) } className="tran-c-img" /><span className="font20 text-secondary font-weight-bold">{ this.props.have_currency }</span>
 					</div>
 					<div className="font12 text-gray">{ strings.transaction_status }</div>
-					<span className='font16 text-black-semi font-weight-semi-bold'>{ statusAlias(this.props.statuses, this.props.status) }</span>
+					<span className='font16 text-black-semi font-weight-semi-bold'>{
+						this.props.status === 'SETTLEMENT' ?
+							statusAlias(this.props.statuses, this.props.status_poster) 
+							:
+							statusAlias(this.props.statuses, this.props.status) 
+					}</span>
 					{
-						isInquiry && this.props.status === 'PENDING' ? 
+						this.props.status === 'PENDING' ? 
 							<InquiryBox 
 								status={ this.props.status }
 								name={ '' }
@@ -97,6 +101,7 @@ class TransactionCard extends Component {
 
 TransactionCard.propTypes = {
 	status: PropTypes.string,
+	status_poster: PropTypes.string,
 	statuses: PropTypes.any,
 	need_currency: PropTypes.string,
 	have_currency: PropTypes.string,

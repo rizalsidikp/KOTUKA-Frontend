@@ -48,6 +48,7 @@ class Routes extends Component {
 				<div>
 					<HeaderDashboard
 						activePage={ this.props.location.pathname.split('/')[2] }
+						activeSubPage={ this.props.location.pathname.split('/')[3] }
 						location={ this.props.location }
 					/>
 					<div className="position-relative">
@@ -55,7 +56,7 @@ class Routes extends Component {
 						<Route path='/dashboard/transaction' component={ Transaction } />             
 						<Route path='/dashboard/tradeconfirmation' component={ TradeConfirmation } />         
 						<Route path='/dashboard/pickconfirmation' component={ PickConfirmation } />         
-						<Route path='/dashboard/recipient' component={ Recipient } />  
+						<Route path='/dashboard/recipient/:type' component={ Recipient } />  
 						<Route path='/dashboard/paymenttrade' component={ PaymentTrade } />  
 						<Route path='/dashboard/profile' component={ Profile } />  
 						<img src={ CircleBig } className="circle-big" />    
@@ -88,6 +89,7 @@ class Routes extends Component {
 
 Routes.propTypes = {
 	location: PropTypes.object,
+	match: PropTypes.object
 }
 
 

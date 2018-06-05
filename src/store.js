@@ -6,7 +6,6 @@ import thunkMiddleware from 'redux-thunk'
 
 import HeaderReducer from './containers/Header/reducer'
 import HomeReducer from './containers/Home/reducer'
-import PostReducer from './containers/Post/reducer'
 import TradeConfirmationReducer from './containers/TradeConfirmation/reducer'
 import TransactionReducer from './containers/Transaction/reducer'
 import RecipientReducer from './containers/Recipient/reducer'
@@ -18,7 +17,6 @@ import PromptReducer from './containers/Prompt/reducer'
 const rootReducer = {
 	headerReducer: HeaderReducer,
 	homeReducer: HomeReducer,
-	postReducer: PostReducer,
 	tradeConfirmationReducer: TradeConfirmationReducer,
 	transactionReducer: TransactionReducer,
 	recipientReducer: RecipientReducer,

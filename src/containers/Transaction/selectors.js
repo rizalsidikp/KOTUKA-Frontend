@@ -17,19 +17,9 @@ export const getIsInquiry = () => createSelector(
 	state => state.get('isInquiry')
 )
 
-export const getIsLiveTransaction = () => createSelector(
+export const getInquiries = () => createSelector(
 	selectTransaction(),
-	state => state.get('isLiveTransaction')
-)
-
-export const getLiveTransaction = () => createSelector(
-	selectTransaction(),
-	state => state.get('liveTransaction')
-)
-
-export const getTransactions = () => createSelector(
-	selectTransaction(),
-	state => state.get('transactions')
+	state => state.get('inquiries')
 )
 
 

@@ -42,8 +42,9 @@ export function sentMoney(id) {
 		dispatch(setLoading(true))
 		await dispatch(setInitialState())
 		try {
-			const response = await tradingService.sentMoney(id)			
-			if(response.msg === 'challange payment'){
+			const response = await tradingService.sentMoney(id)
+			console.log(response)
+			if(response.msg === 'challenge payment'){
 				setHtmlStorage('accessToken', response.token, 1500)
 				history.replace('/dashboard/transaction')
 			}

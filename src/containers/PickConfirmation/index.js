@@ -96,7 +96,7 @@ class TradeConfirmation extends Component {
 			have_currency: this.props.selectedTrade[0].need_currency,
 			payment_detail: payment_detail,
 			id_purpose: this.props.selectedPurpose.get('id'),
-			id_recipient: this.state.recipient.id,
+			id_recipient: this.state.recipient.id_recipient,
 			trade_with: trade_with,
 			timezone
 		}
@@ -171,7 +171,7 @@ class TradeConfirmation extends Component {
 	}
 
 	checkIdentification = () => {
-		if(this.props.user.get('identification_photo')){
+		if(this.props.user.get('verified_id') !== null && this.props.user.get('verified_id') !== 'invalid'){
 			this.onPickTrade()
 		}else{
 			this.setState({ modalUploadIdCard: true })

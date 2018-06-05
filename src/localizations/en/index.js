@@ -168,5 +168,12 @@ export default {
 	cannot_post: 'There is post not finished',
 	va_number: 'VA Number',
 	bill_key: 'Bill Key',
-	biller_code: 'Biller Code'
+	biller_code: 'Biller Code',
+	id_card_status: 'ID Card Status',
+	wait: 'Wait',
+	delete_recipient: 'Are you sure want delete this recipient?',
+	no: 'No',
+	yes: 'Yes',
+	fail_get_transaction: 'Failed to get Transactions',
+	please_reupload_id_card: 'Please re-upload your ID Card'	
 }

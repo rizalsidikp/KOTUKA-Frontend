@@ -43,6 +43,7 @@ export function addReipient(payload){
 			await dispatch(getRecipients(payload.id_user))
 			dispatch(setAlertStatus(true, 'success', strings.success_create_recipient))
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_create_recipient))
 			console.log(error)
 		}
 		dispatch(setLoading(false))		
@@ -60,6 +61,7 @@ export function deleteRecipient(id, id_user){
 			await dispatch(getRecipients(id_user))			
 			dispatch(setAlertStatus(true, 'success', strings.success_delete_recipient))
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_delete_recipient))			
 			console.log(error)
 		}
 		dispatch(setLoading(false))		

@@ -7,6 +7,13 @@
 	padding: 15px 0;
 	margin: 16px 0;
 }
+.tran-c-row-failed{
+	border-left: 10px solid $red;
+}
+
+.tran-c-row-completed{
+	border-left: 10px solid $green;
+}
 
 .tran-c-line-1{
 	line-height: 1px;

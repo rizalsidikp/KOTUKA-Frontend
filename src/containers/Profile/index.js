@@ -16,6 +16,7 @@ import ProfileTable from '../../components/ProfileTable'
 import ModalChangePassword from '../../components/ModalChangePassword'
 import ModalIdCard from '../../components/ModalIdCard'
 import ModalEditProfile from '../../components/ModalEditProfile'
+import { uploadIdCard } from '../TradeConfirmation/actions'
 
 class Profile extends Component {
 	constructor(props){
@@ -83,6 +84,17 @@ class Profile extends Component {
 		}
 		await this.props.updatePassword(payload)
 		this.setState({ modalChangePassword: false })
+	}
+	onSendImage = async() => {
+		const payload = {
+			identification: this.state.file, 
+			id: this.props.user.get('id')
+		}
+		const res = await this.props.uploadIdCard(payload)
+		if(res){
+			await this.props.getUser(this.props.user.get('id'))
+			this.setState({ modalUploadIdCard: false })
+		}
 	}
 	render() {
 		const { user } = this.props
@@ -182,6 +194,14 @@ class Profile extends Component {
 									data={ contactInfo }
 								/>
 							</div>
+							<div className="col col-md-4">
+								<TitleWithHr
+									className="font24"
+									title={ strings.id_card_status }
+								/>
+								<label className="font16 text-black-semi font-weight-semi-bold">{ this.props.user.get('verified_id') || 'Not Verified' }</label>
+								<label className="font16 text-black-semi font-weight-semi-bold">{ this.props.user.get('verified_id') === 'invalid' ? strings.please_reupload_id_card : '' }</label>
+							</div>
 						</Row>
 						<Row className="usr-row">
 							<div className="col col-md-8">
@@ -249,6 +269,7 @@ Profile.propTypes = {
 	updateUser: PropTypes.func,
 	getCountries: PropTypes.func,
 	updatePassword: PropTypes.func,
+	uploadIdCard: PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -261,7 +282,8 @@ const mapDispatchToProps = (dispatch) => ({
 	getUser: (id) => dispatch(actions.getUser(id)),
 	getCountries: () => dispatch(actions.getCountries()),
 	updateUser: (payload, id, photoPayload) => dispatch(actions.updateProfile(payload, id, photoPayload)),
-	updatePassword: (payload) => dispatch(actions.updatePassword(payload))
+	updatePassword: (payload) => dispatch(actions.updatePassword(payload)),
+	uploadIdCard: (payload) => dispatch(uploadIdCard(payload))
 })
 
 export default connect (mapStateToProps, mapDispatchToProps)(Profile)

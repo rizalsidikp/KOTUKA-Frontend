@@ -24,7 +24,8 @@ const INITIAL_STATE = fromJS({
 		updatedAt: '',
 		verified: '',
 		invalid: false,
-		invalidMessage: ''
+		invalidMessage: '',
+		verified_id: null
 	}
 })
 
@@ -52,6 +53,7 @@ export default (state = INITIAL_STATE, action) => {
 			.setIn(['user', 'updatedAt'], action.payload.user.updatedAt || '')
 			.setIn(['user', 'verified'], action.payload.user.verified || '')
 			.setIn(['user', 'identification_photo'], action.payload.user.identification_photo || null)
+			.setIn(['user', 'verified_id'], action.payload.user.verified_id || null)
 	case constants.SET_ID_CARD:
 		return state.setIn(['user', 'identification_photo'], action.payload.identification_photo)
 	case constants.SET_INVALID:

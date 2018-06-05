@@ -46,51 +46,36 @@ class Transaction extends Component {
 				<Row className="justify-content-center">
 					<div className="col col-md-8">
 						{
-							this.props.isInquiry &&
-							<TransactionCard 
-								status={ this.props.inquiry.get('status') }
-								need_currency={ this.props.inquiry.get('need_currency') }
-								have_currency={ this.props.inquiry.get('have_currency') }
-								will_get={ this.props.inquiry.get('need_amount') }
-								have_transfer={ this.props.inquiry.get('total_amount_transfer') }
-								currencies={ this.state.currencies }
-								deadline_post={ this.props.inquiry.get('deadline_post') }
-								id={ this.props.inquiry.get('id') }
-								isInquiry
-								statuses={ this.props.statuses }
-							/>
+							// this.props.isInquiry &&
+							// <TransactionCard 
+							// 	status={ this.props.inquiry.get('status') }
+							// 	need_currency={ this.props.inquiry.get('need_currency') }
+							// 	have_currency={ this.props.inquiry.get('have_currency') }
+							// 	will_get={ this.props.inquiry.get('need_amount') }
+							// 	have_transfer={ this.props.inquiry.get('total_amount_transfer') }
+							// 	currencies={ this.state.currencies }
+							// 	deadline_post={ this.props.inquiry.get('deadline_post') }
+							// 	id={ this.props.inquiry.get('id') }
+							// 	isInquiry
+							// 	statuses={ this.props.statuses }
+							// />
 						}
-						<div>ini yg live</div>
 						{
-							this.props.isLiveTransaction &&
-							<TransactionCard 
-								status={ this.props.liveTransaction.get('transaction_status') }
-								live
-								need_currency={ this.props.transactions[0].Inquiries[0].need_currency }
-								have_currency={ this.props.transactions[0].Inquiries[0].have_currency }
-								will_get={ this.props.transactions[0].Inquiries[0].need_amount }
-								have_transfer={ this.props.transactions[0].Inquiries[0].total_amount_transfer }
-								inquiries={ this.props.liveTransaction.get('Inquiries') }
-								id_user={ this.props.user.get('id') }
-								currencies={ this.state.currencies }
-							/>
-						}
-						<div>ini yg engga</div>
-						{
-							this.props.transactions && this.props.transactions.length > 0 &&
-							this.props.transactions.map((transaction, index) => {
-								if(this.props.isLiveTransaction && index === 0){
-									return
-								}
+							this.props.inquiries && this.props.inquiries.length > 0 &&
+							this.props.inquiries.map((inquiry, index) => {
 								return(
 									<TransactionCard
 										key={ index }
-										status={ transaction.transaction_status }
-										need_currency={ transaction.Inquiries[0].need_currency }
-										have_currency={ transaction.Inquiries[0].have_currency }
-										will_get={ transaction.Inquiries[0].need_amount }
-										have_transfer={ transaction.Inquiries[0].total_amount_transfer }
-										currencies={ this.state.currencies }										
+										status={ inquiry.status }
+										need_currency={ inquiry.need_currency }
+										have_currency={ inquiry.have_currency }
+										will_get={ inquiry.need_amount }
+										have_transfer={ inquiry.total_amount_transfer }
+										currencies={ this.state.currencies }		
+										deadline_post={ inquiry.deadline_post }										
+										id={ inquiry.id	}
+										status_poster={ inquiry.status_poster }
+										statuses={ this.props.statuses }																							
 									/>
 								)
 							})
@@ -104,15 +89,12 @@ class Transaction extends Component {
 
 Transaction.propTypes = {
 	loading: PropTypes.bool,
-	inquiry: PropTypes.object,
-	transactions: PropTypes.any,
+	inquiries: PropTypes.any,
 	statuses: PropTypes.any,
 	user: PropTypes.object,
 	getTransactions: PropTypes.func,
 	isInquiry: PropTypes.bool,
-	isLiveTransaction: PropTypes.bool,
 	alert: PropTypes.bool,
-	liveTransaction: PropTypes.object,
 	setAlertStatus: PropTypes.func,
 	getStatuses: PropTypes.func,
 }
@@ -120,10 +102,7 @@ Transaction.propTypes = {
 const mapStateToProps = createStructuredSelector({
 	loading: selectors.getLoading(),
 	isInquiry: selectors.getIsInquiry(),
-	inquiry: selectors.getInquiry(),
-	isLiveTransaction: selectors.getIsLiveTransaction(),
-	transactions: selectors.getTransactions(),
-	liveTransaction: selectors.getLiveTransaction(),
+	inquiries: selectors.getInquiries(),
 	user: getUser(),
 	alert: getAlert(),
 	statuses: selectors.getStatuses()

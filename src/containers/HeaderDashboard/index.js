@@ -36,8 +36,23 @@ class HeaderDashboard extends Component {
 						<div className={ 'hd-button '.concat(this.props.activePage === 'transaction' ? 'hd-button-active' : '') } onClick={ () => this.linkTo('/dashboard/transaction') }>
 							{strings.transaction}
 						</div>
-						<div className={ 'hd-button '.concat(this.props.activePage === 'recipient' ? 'hd-button-active' : '') } onClick={ () => this.linkTo('/dashboard/recipient') }>
+						<div className={ 'hd-button '.concat(this.props.activePage === 'recipient' ? 'hd-button-active' : '') } onClick={ () => this.linkTo('/dashboard/recipient/myself') }>
 							{strings.recipient}
+							{
+								this.props.activePage === 'recipient' &&
+								<div className="header-sub">
+									<div className="triangle" />
+									<Row className="header-sub-content align-items-center
+									">
+										<div className={ 'col hd-menu col-md-auto text-secondary-semi '.concat(this.props.activeSubPage === 'myself' ? 'text-white' : 'clickable') } onClick={ () => this.linkTo('/dashboard/recipient/myself') }>
+											{ strings.myself }
+										</div>
+										<div className={ 'col hd-menu col-md-auto text-secondary-semi '.concat(this.props.activeSubPage === 'someoneelse' ? 'text-white' : 'clickable') } onClick={ () => this.linkTo('/dashboard/recipient/someoneelse') }>
+											{ strings.someone_else }
+										</div>
+									</Row>
+								</div>
+							}
 						</div>
 						<div className={ 'hd-button '.concat(this.props.activePage === 'profile' ? 'hd-button-active' : '') } onClick={ () => this.linkTo('/dashboard/profile') }>
 							{strings.profile}
@@ -54,7 +69,9 @@ class HeaderDashboard extends Component {
 
 HeaderDashboard.propTypes = {
 	activePage : PropTypes.string,
+	activeSubPage : PropTypes.string,
 	location: PropTypes.object,
+	params: PropTypes.object,
 	loading: PropTypes.bool,
 	setInitialState: PropTypes.func,
 	loginWithFacebook: PropTypes.func,

@@ -2,13 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import Modal from '../Modal'
-import currenciesService from './../../services/currencies'
 
 import './style.scss'
 import strings from '../../localizations'
 import LabelInput from '../LabelInput'
-import RadioButton from '../RadioButton'
-import Row from '../Row'
+// import RadioButton from '../RadioButton'
+// import Row from '../Row'
 import { chunkArray } from '../../services/helper'
 import Select from 'react-select-plus'
 
@@ -25,13 +24,13 @@ class ModalRecipient extends Component {
 			first_and_middle_name: '',
 			last_name: '',
 			description: '',
-			currencies: []			
+			currencies: []
 		}
 	}
 
 	onAddRecipient = () => {
 		const payload = {
-			myself: this.state.myself,
+			myself: this.props.myself,
 			first_and_middle_name: this.state.first_and_middle_name,
 			last_name: this.state.last_name,
 			description: this.state.description,
@@ -45,14 +44,12 @@ class ModalRecipient extends Component {
 	}
 
 	componentWillMount() {
-		this.setType(this.state.myself)
+		this.setType(this.props.myself)
 		this.getCurrencies()
 	}
 
 	getCurrencies = async() => {
-		const response = await currenciesService.getCurrencies()
-		const currencies = response.result
-		this.setState({ currencies, currency: currencies[0] })
+		this.setState({ currencies: this.props.currencies, currency: this.props.currencies[0] })
 	}
 	
 	setType = (myself) => {
@@ -91,12 +88,12 @@ class ModalRecipient extends Component {
 				<h2 className="ml-header background-secondary font24 text-white font-weight-bold no-margin" >{ strings.add_new_recipient_account }</h2>
 				<div className="ml-content">
 					<label className="font16 text-secondary full-width no-margin font-weight-semi-bold">Type</label>				
-					<Row>
-						<RadioButton label={ strings.myself } name='type' checked={ this.state.myself } onClick={ () => this.setType(true) } />
-						<RadioButton label={ strings.someone_else } name='type' checked={ this.state.myself === false } onClick={ () => this.setType(false) } />
-					</Row>
-					<LabelInput name='bank_account' disabled={ this.state.myself } label={ strings.first_n_midle_name } placeholder={ strings.first_and_middle_name } value={ this.state.first_and_middle_name } onChange={ (e) => this.setState({ first_and_middle_name: e.target.value }) } />
-					<LabelInput name='bank_account' disabled={ this.state.myself } label={ strings.last_name } placeholder={ strings.last_name } value={ this.state.last_name } onChange={ (e) => this.setState({ last_name: e.target.value }) } />
+					{/* <Row>
+						<RadioButton label={ strings.myself } name='type' checked={ this.props.myself } onClick={ () => this.setType(true) } />
+						<RadioButton label={ strings.someone_else } name='type' checked={ this.props.myself === false } onClick={ () => this.setType(false) } />
+					</Row> */}
+					<LabelInput name='bank_account' disabled={ this.props.myself } label={ strings.first_n_midle_name } placeholder={ strings.first_and_middle_name } value={ this.state.first_and_middle_name } onChange={ (e) => this.setState({ first_and_middle_name: e.target.value }) } />
+					<LabelInput name='bank_account' disabled={ this.props.myself } label={ strings.last_name } placeholder={ strings.last_name } value={ this.state.last_name } onChange={ (e) => this.setState({ last_name: e.target.value }) } />
 					
 					<label className="font16 text-secondary full-width no-margin font-weight-semi-bold">{ strings.currency }</label>					
 					<Select
@@ -131,6 +128,8 @@ ModalRecipient.propTypes = {
 	onClose: PropTypes.func,
 	addAccount: PropTypes.func,
 	loading: PropTypes.bool,
+	myself: PropTypes.bool,
+	currencies: PropTypes.array,
 }
 
 export default ModalRecipient

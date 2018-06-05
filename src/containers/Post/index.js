@@ -15,7 +15,7 @@ import Row from '../../components/Row'
 import strings from '../../localizations'
 import history from '../../history'
 // import moment from 'moment-timezone'
-import { getIsInquiry, getIsLiveTransaction } from '../Transaction/selectors'
+import { getIsInquiry } from '../Transaction/selectors'
 import { getTransactions } from '../Transaction/actions'
 import { setPrompt } from '../Prompt/actions'
 
@@ -48,7 +48,7 @@ class Post extends Component {
 		this.props.getClosestTrade(need, have, this.props.amountNeedInt, this.props.amountHaveInt, page)
 	}
 	onPostTrade = async() => {
-		if(this.props.isInquiry || this.props.isLiveTransactions){
+		if(this.props.isInquiry){
 			this.props.setPrompt(true, strings.upps, strings.cannot_post)
 		}else{
 			history.push({
@@ -59,8 +59,8 @@ class Post extends Component {
 	}
 
 	onTradeClick = () => {
-		if(this.props.isInquiry || this.props.isLiveTransactions){
-			console.log('sedang ada post')
+		if(this.props.isInquiry){
+			this.props.setPrompt(true, strings.upps, strings.cannot_post)
 		}else{
 			history.push({
 				pathname: '/dashboard/pickconfirmation',
@@ -109,6 +109,7 @@ class Post extends Component {
 					onTradeClick={ this.onTradeClick }							
 					currencies={ this.state.currencies }					
 					theme='secondary'
+					id_user={ this.props.user.get('id') }
 				/>
 			</div>
 		)
@@ -131,7 +132,6 @@ Post.propTypes = {
 	postLoading: PropTypes.bool,
 	user: PropTypes.object,
 	isInquiry: PropTypes.bool,
-	isLiveTransactions: PropTypes.bool,
 	rate: PropTypes.number,
 	//function
 	setInitialState: PropTypes.func,
@@ -167,7 +167,6 @@ const mapStateToProps = createStructuredSelector({
 	isGettingTrade: selectors.getIsGettingTrade(),
 	rate: selectors.getRate(),	
 	isInquiry: getIsInquiry(),
-	isLiveTransactions: getIsLiveTransaction(),
 	user: getUser()
 })
 

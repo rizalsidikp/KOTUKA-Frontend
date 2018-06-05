@@ -10,6 +10,7 @@
 }
 
 .hd-button{
+	position: relative;
 	font-size: 16px;
 	padding: 0 15px;
 	font-weight: 600;
@@ -38,4 +39,28 @@
 
 .hd-arrow{
 	margin: 0 10px;
+}
+
+.header-sub{
+	position: absolute;
+	left: 50%;
+	min-width: max-content;
+	min-width: -moz-max-content;
+	z-index: 50;
+}
+
+.header-sub-content{
+	position: relative;
+	height: 32px;
+	left: -50%;
+	border-radius: 16px;
+	background-color: $secondary;
+}
+
+.hd-menu{
+	transition: 0.5s all ease;
+	&:hover{
+		transition: 0.5s all ease;
+		color: white;
+	}
 }

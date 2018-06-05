@@ -64,7 +64,11 @@ class TradeCard extends Component {
 								remove ? 
 									<button className="button-xs button-primary align-self-end" onClick={ this.props.onRemoveTrade }>{ strings.remove }</button>
 									:
-									<button className="button-xs button-secondary align-self-end" onClick={ () => this.props.onSelectTrade(data) }>{ strings.select }</button>
+									this.props.data && this.props.data.status_poster === 'PICKED' ?
+										'On Transaction'
+										:
+										this.props.data && this.props.id_user !== this.props.data.id_user &&
+											<button className="button-xs button-secondary align-self-end" onClick={ () => this.props.onSelectTrade(data) }>{ strings.select }</button>
 							}
 						</div>
 					}
@@ -86,6 +90,7 @@ TradeCard.propTypes = {
 	anonymous: PropTypes.bool,
 	onRemoveTrade: PropTypes.func,
 	onSelectTrade: PropTypes.func,
+	id_user: PropTypes.number,
 }
 
 export default TradeCard
