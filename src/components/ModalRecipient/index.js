@@ -28,6 +28,8 @@ class ModalRecipient extends Component {
 		}
 	}
 
+	
+
 	onAddRecipient = () => {
 		const payload = {
 			myself: this.props.myself,
@@ -82,7 +84,7 @@ class ModalRecipient extends Component {
 	}
 
 	render() {
-		const options = chunkArray(this.state.currencies, 'currency_alias', 'currency_alias', 'country_flag')
+		const options = chunkArray(this.props.currencies, 'currency_alias', 'currency_alias', 'country_flag')
 		return (
 			<Modal open={ this.props.open } onClose={ this.props.onClose }>
 				<h2 className="ml-header background-secondary font24 text-white font-weight-bold no-margin" >{ strings.add_new_recipient_account }</h2>

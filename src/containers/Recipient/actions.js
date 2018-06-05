@@ -22,13 +22,15 @@ export function getRecipients(id) {
 		try {
 			const response = await recipientService.getRecipients(id)
 			setHtmlStorage('accessToken', response.token, 1500)
-			console.log(response)
 			if(response.result){
 				dispatch(setRecipients(response.result))
 			}else{
+				dispatch(setAlertStatus(true, 'danger', strings.fail_get_recipient))
 				dispatch(setRecipients([]))
+				console.log('res = ', response)
 			}
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_get_recipient))
 			console.log(error)
 		}
 	}
@@ -39,9 +41,14 @@ export function addReipient(payload){
 		dispatch(setLoading(true))
 		try {
 			const response = await recipientService.addRecipient(payload)
-			setHtmlStorage('accessToken', response.token, 1500)	
-			await dispatch(getRecipients(payload.id_user))
-			dispatch(setAlertStatus(true, 'success', strings.success_create_recipient))
+			if(response.result){
+				setHtmlStorage('accessToken', response.token, 1500)	
+				await dispatch(getRecipients(payload.id_user))
+				dispatch(setAlertStatus(true, 'success', strings.success_create_recipient))
+			}else{
+				dispatch(setAlertStatus(true, 'danger', strings.fail_create_recipient))
+				console.log('res = ', response)
+			}
 		} catch (error) {
 			dispatch(setAlertStatus(true, 'danger', strings.fail_create_recipient))
 			console.log(error)
@@ -56,10 +63,14 @@ export function deleteRecipient(id, id_user){
 		dispatch(setLoading(true))
 		try {
 			const response = await recipientService.deleteRecipient(id)
-			console.log('del res', response )
-			setHtmlStorage('accessToken', response.token, 1500)			
-			await dispatch(getRecipients(id_user))			
-			dispatch(setAlertStatus(true, 'success', strings.success_delete_recipient))
+			if(response.result){
+				setHtmlStorage('accessToken', response.token, 1500)			
+				await dispatch(getRecipients(id_user))			
+				dispatch(setAlertStatus(true, 'success', strings.success_delete_recipient))
+			}else{
+				dispatch(setAlertStatus(true, 'danger', strings.fail_delete_recipient))			
+				console.log('res = ', response )
+			}
 		} catch (error) {
 			dispatch(setAlertStatus(true, 'danger', strings.fail_delete_recipient))			
 			console.log(error)

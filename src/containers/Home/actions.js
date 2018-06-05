@@ -3,6 +3,8 @@ import tradingService from './../../services/trading'
 import fx from 'money'
 import accounting from 'accounting'
 import { convertMoneyString } from '../../services/helper'
+import { setAlertStatus } from '../Alert/actions'
+import strings from '../../localizations'
 
 
 export function setInitialState() {
@@ -90,8 +92,8 @@ export function getClosestTrade(need, have, amount, transfer, page) {
 				total_page: 1,
 				on_page: 1
 			} ))
-			console.log(response.result)			
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_get_closest_trade))
 			console.log(error)
 		}
 		dispatch(isGettingTrade(false))		
@@ -134,42 +136,46 @@ export function convertMoney(val, selectedNeed, selectedHave, type = 'need') {
 		try {
 			let amountNeed = 0, amountHave = 0
 			const response = await tradingService.getRates()
-			fx.rates = response.rates
-			if(type === 'have'){
-				amountHave = parseFloat(val)
-				amountNeed = fx(parseFloat(amountHave)).from(selectedHave).to(selectedNeed)
-				console.log(amountNeed, amountHave)
+			if(response.rates){
+				fx.rates = response.rates
+				if(type === 'have'){
+					amountHave = parseFloat(val)
+					amountNeed = fx(parseFloat(amountHave)).from(selectedHave).to(selectedNeed)
+				}else{
+					amountNeed = parseFloat(val)
+					amountHave = fx(parseFloat(amountNeed)).from(selectedNeed).to(selectedHave)
+				}
+				let rate = fx(1).from(selectedHave).to(selectedNeed)
+				if(selectedHave === 'IDR'){
+					amountHave = Math.round(amountHave)
+					amountHave = accounting.formatMoney(amountHave,'', 0, ',')
+				}else{
+					amountHave = Math.round(amountHave * 100) / 100
+					amountHave = accounting.formatMoney(amountHave,'', 2, ',')
+				}
+				if(selectedNeed === 'IDR'){
+					amountNeed = Math.round(amountNeed)
+					amountNeed = accounting.formatMoney(amountNeed,'', 0, ',')
+					rate = Math.round(rate)
+					rate = accounting.formatMoney(rate,'', 0, ',')
+				}else{
+					amountNeed = Math.round(amountNeed * 100) / 100
+					amountNeed = accounting.formatMoney(amountNeed,'', 2, ',')
+					// rate = Math.round(rate * 100) / 100
+					rate = accounting.formatMoney(rate,'', 10, ',')
+				}
+				amountHave = amountHave.toString()
+				amountNeed = amountNeed.toString()
+				rate = convertMoneyString(rate)
+				dispatch(setAmountNeed(amountNeed))
+				dispatch(setAmountHave(amountHave))
+				dispatch(setRate(rate))
 			}else{
-				amountNeed = parseFloat(val)
-				amountHave = fx(parseFloat(amountNeed)).from(selectedNeed).to(selectedHave)
-				console.log(amountNeed, amountHave)
+				dispatch(setAlertStatus(true, 'danger', strings.fail_get_rate))
+				console.error('res = ', response)
 			}
-			let rate = fx(1).from(selectedHave).to(selectedNeed)
-			if(selectedHave === 'IDR'){
-				amountHave = Math.round(amountHave)
-				amountHave = accounting.formatMoney(amountHave,'', 0, ',')
-			}else{
-				amountHave = Math.round(amountHave * 100) / 100
-				amountHave = accounting.formatMoney(amountHave,'', 2, ',')
-			}
-			if(selectedNeed === 'IDR'){
-				amountNeed = Math.round(amountNeed)
-				amountNeed = accounting.formatMoney(amountNeed,'', 0, ',')
-				rate = Math.round(rate)
-				rate = accounting.formatMoney(rate,'', 0, ',')
-			}else{
-				amountNeed = Math.round(amountNeed * 100) / 100
-				amountNeed = accounting.formatMoney(amountNeed,'', 2, ',')
-				// rate = Math.round(rate * 100) / 100
-				rate = accounting.formatMoney(rate,'', 10, ',')
-			}
-			amountHave = amountHave.toString()
-			amountNeed = amountNeed.toString()
-			rate = convertMoneyString(rate)
-			dispatch(setAmountNeed(amountNeed))
-			dispatch(setAmountHave(amountHave))
-			dispatch(setRate(rate))
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_get_rate))
 			console.error(error)
 		}
 		dispatch(setLoading(false))		

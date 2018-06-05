@@ -53,6 +53,10 @@ export function loginWithGoogle() {
 					localStorage.removeItem('secondRegistration')
 				}
 				return history.push('/dashboard/post')
+			}else{
+				dispatch(setLoading(false))		
+				console.log('res = ', response, userResponse)
+				return dispatch(setInvalid(true, strings.wrong))		
 			}
 		} catch (error) {
 			dispatch(setLoading(false))		
@@ -87,6 +91,10 @@ export function loginWithFacebook() {
 					localStorage.removeItem('secondRegistration')
 				}
 				return history.push('/dashboard/post')
+			}else{
+				dispatch(setLoading(false))		
+				console.log('res = ',response, userResponse)
+				return dispatch(setInvalid(true, strings.wrong))		
 			}
 		} catch (error) {
 			dispatch(setLoading(false))		
@@ -154,6 +162,10 @@ export function register(email, password) {
 						email: response.result.email
 					}
 				})			
+			}else{
+				dispatch(setLoading(false))	
+				console.log('res = ',response)
+				return dispatch(setInvalid(true, strings.wrong))
 			}
 		} catch (error) {
 			dispatch(setLoading(false))	
@@ -187,6 +199,9 @@ export function sendEmail(payload) {
 			const response = await auth.sendEmail(payload)
 			if(response.msg === 'success send'){
 				dispatch(setAlertStatus(true, 'success', strings.success_send_email))
+			}else{
+				console.log('res = ',response)
+				dispatch(setAlertStatus(true, 'danger', strings.fail_send_email))			
 			}
 		} catch (error) {
 			console.log(error)

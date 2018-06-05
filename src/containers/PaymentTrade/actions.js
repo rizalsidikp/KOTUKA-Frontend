@@ -2,6 +2,8 @@ import * as constants from './constants'
 import tradingService from './../../services/trading'
 import { setHtmlStorage } from '../../services/helper'
 import history from './../../history'
+import { setAlertStatus } from '../Alert/actions'
+import strings from '../../localizations'
 
 
 export function setLoading(loading) {
@@ -26,13 +28,18 @@ export function getInquiry(id) {
 		await dispatch(setInitialState())
 		try {
 			const response = await tradingService.getInquiry(id)
-			setHtmlStorage('accessToken', response.token, 1500)			
-			dispatch(setInquiry(response.result))
-			console.log('res', response)
+			if(response.result){
+				setHtmlStorage('accessToken', response.token, 1500)			
+				dispatch(setInquiry(response.result))
+			}else{
+				dispatch(setAlertStatus(true, 'danger', strings.fail_get_inquiry))
+				console.log('res = ', response)
+			}
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_get_inquiry))
 			console.log(error)
 		}
-		dispatch(setLoading(false))	
+		dispatch(setLoading(false))
 	}
 }
 
@@ -47,8 +54,12 @@ export function sentMoney(id) {
 			if(response.msg === 'challenge payment'){
 				setHtmlStorage('accessToken', response.token, 1500)
 				history.replace('/dashboard/transaction')
+			}else{
+				dispatch(setAlertStatus(true, 'danger', strings.fail_sent_money))			
+				console.log('res = ', response)
 			}
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_sent_money))			
 			console.log(error)
 		}
 		dispatch(setLoading(false))	

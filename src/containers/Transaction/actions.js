@@ -30,7 +30,6 @@ export function getTransactions(id){
 		dispatch(setLoading(true))
 		try {
 			const response = await transactionService.getTransactions(id)
-			console.log(response)
 			if(response.result){
 				setHtmlStorage('accessToken', response.token, 1500)
 				if(response.result.posted){
@@ -45,8 +44,8 @@ export function getTransactions(id){
 				}
 			}
 			else{
-				dispatch(setIsInquiry(false))
-				dispatch(setInquiries([]))
+				dispatch(setAlertStatus(true, 'danger', strings.fail_get_transaction))
+				console.log('res = ', response)
 			}
 		} catch (error) {
 			dispatch(setAlertStatus(true, 'danger', strings.fail_get_transaction))			
@@ -64,8 +63,12 @@ export function getStatuses(){
 			if(response.result){
 				setHtmlStorage('accessToken', response.token, 1500)
 				dispatch(setStatuses(response.result))
+			}else{
+				dispatch(setAlertStatus(true, 'danger', strings.fail_get_status))			
+				console.log('res = ', response)
 			}
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_get_status))			
 			console.log(error)
 		}
 		dispatch(setLoading(false))

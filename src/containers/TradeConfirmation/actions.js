@@ -54,21 +54,31 @@ export function postTrade(payload) {
 				preview: false
 			}
 			const resTotal = await tradingService.getTotalPayment(params)
-			await setHtmlStorage('accessToken', resTotal.token, 1500)		
-			payload = {
-				...payload,
-				total_amount_transfer: resTotal.result.total
+			if(resTotal.result){
+				await setHtmlStorage('accessToken', resTotal.token, 1500)		
+				payload = {
+					...payload,
+					total_amount_transfer: resTotal.result.total
+				}
+				const response = await tradingService.postTrade(payload)
+				if(response.result){
+					await setHtmlStorage('accessToken', response.token, 1500)
+					await dispatch(setLoading(false))
+					await dispatch(setAlertStatus(true, 'success', strings.success_create_post))
+					return history.replace({
+						pathname: '/dashboard/paymenttrade',
+						state: { payment: response.result.id }
+					})
+				}else{
+					dispatch(setLoading(false))
+					console.log('res = ', response)
+					return dispatch(setAlertStatus(true, 'danger', strings.fail_create_post))
+				}
+			}else{
+				dispatch(setLoading(false))
+				console.log('res = ', resTotal)
+				return dispatch(setAlertStatus(true, 'danger', strings.fail_get_total_transfer))
 			}
-			const response = await tradingService.postTrade(payload)
-			console.log(response)
-			setHtmlStorage('accessToken', response.token, 1500)
-			dispatch(setLoading(false))
-			console.log(response)
-			dispatch(setAlertStatus(true, 'success', strings.success_create_post))
-			return history.replace({
-				pathname: '/dashboard/paymenttrade',
-				state: { payment: response.result.id }
-			})
 		} catch (error) {
 			dispatch(setAlertStatus(true, 'danger', strings.fail_create_post))			
 			console.log(error)
@@ -78,23 +88,27 @@ export function postTrade(payload) {
 }
 
 
-export function uploadIdCard(payload) {
-	console.log(payload)
+export function uploadIdCard(payload, alert = false) {
 	return async(dispatch) => {
 		dispatch(setLoading(true))
 		try{
 			const response = await tradingService.uploadIdCard(payload)
-			console.log(response)
 			if(response.image){
 				dispatch(setIdCard(response.image.url))
 				dispatch(setLoading(false))
+				if(alert){
+					dispatch(setAlertStatus(true, 'danger', strings.success_upload_id_card))
+				}
 				return true
 			}else{
 				dispatch(setLoading(false))
+				dispatch(setAlertStatus(true, 'danger', strings.fail_upload_id_card))				
+				console.log('res = ', response)
 				return false
 			}
 		} catch (error) {
 			console.log(error)
+			dispatch(setAlertStatus(true, 'danger', strings.fail_upload_id_card))				
 			dispatch(setLoading(false))
 			return false
 		}
@@ -105,9 +119,15 @@ export function getAccounts(){
 	return async(dispatch) => {
 		try {
 			const response = await purposeService.getAccounts()
-			setHtmlStorage('accessToken', response.token, 1500)
-			dispatch(setAccounts(response.result))
+			if(response.result){
+				setHtmlStorage('accessToken', response.token, 1500)
+				dispatch(setAccounts(response.result))
+			}else{
+				dispatch(setAlertStatus(true, 'danger', strings.fail_get_account))				
+				console.log('res = ', response)
+			}
 		} catch (error) {
+			dispatch(setAlertStatus(true, 'danger', strings.fail_get_account))				
 			console.log(error)
 		}
 	}

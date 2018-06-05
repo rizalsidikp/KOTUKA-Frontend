@@ -176,5 +176,21 @@ export default {
 	yes: 'Yes',
 	fail_get_transaction: 'Failed to get Transactions',
 	please_reupload_id_card: 'Please re-upload your ID Card',
-	fail_login: 'Login Failed'		
+	fail_login: 'Login Failed',
+	fail_get_closest_trade: 'Failed to get closest trades',
+	success_update_password: 'Succes update your password',
+	fail_update_password: 'Failed to update your password',
+	fail_get_rate: 'Failed to get rates',	
+	success_send_money: 'Success! Thank you for sending your money',
+	fail_get_inquiry: 'Failed to get inquiry',
+	fail_sent_money: 'Failed to confirm, please try again',
+	fail_get_profile: 'Failed to get your profile',
+	fail_get_country: 'Failed to get countries',
+	fail_update_photo: 'Failed to update photo and profile',
+	fail_get_recipient: 'Failed to get recipients',
+	fail_get_total_transfer: 'Failed to get total amount transfer, please try again',
+	fail_get_account: 'Failed to get accounts',
+	fail_upload_id_card: 'Failed to upload id card',
+	success_upload_id_card: 'Your ID Card succesfully uploaded',
+	fail_get_status: 'Failed to get statuses'
 }
