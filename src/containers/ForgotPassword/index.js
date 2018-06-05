@@ -5,8 +5,8 @@ import Row from '../../components/Row'
 
 import { Logo } from './../../images'
 import strings from '../../localizations'
-import CopyRight from '../../components/CopyRight'
 import LabelInput from '../../components/LabelInput'
+import CopyRight from '../CopyRight'
 
 class Confirmation extends Component {
 

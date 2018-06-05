@@ -97,7 +97,7 @@ export function uploadIdCard(payload, alert = false) {
 				dispatch(setIdCard(response.image.url))
 				dispatch(setLoading(false))
 				if(alert){
-					dispatch(setAlertStatus(true, 'danger', strings.success_upload_id_card))
+					dispatch(setAlertStatus(true, 'success', strings.success_upload_id_card))
 				}
 				return true
 			}else{

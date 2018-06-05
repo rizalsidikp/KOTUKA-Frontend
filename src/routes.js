@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Async from 'react-code-splitting'
 import HeaderDashboard from './containers/HeaderDashboard'
-import CopyRight from './components/CopyRight'
 // auth check
 import AuthCheck from './authcheck'
 import AuthBackCheck from './authbackcheck'
@@ -11,6 +10,7 @@ import AuthBackCheck from './authbackcheck'
 import { CircleBig } from 'images'
 import Alert from './containers/Alert'
 import Prompt from './containers/Prompt'
+import CopyRight from './containers/CopyRight'
 
 const Home = props => <Async load={ import('./containers/Home') } componentProps={ props }/>
 const Header = props => <Async load={ import('./containers/Header') } componentProps={ props }/>

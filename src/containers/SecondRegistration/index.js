@@ -13,12 +13,12 @@ import './style.scss'
 
 // import { Logo } from './../../images'
 import strings from '../../localizations'
-import CopyRight from '../../components/CopyRight'
 import LabelInput from '../../components/LabelInput'
 import HeaderDashboard from './../HeaderDashboard'
 import { statusHtmlStorage, chunkArray, validateVocalLetter, validateNumber, validateLength } from '../../services/helper'
 import TitleWithHr from '../../components/TitleWithHr'
 import Select from 'react-select-plus/lib/Select'
+import CopyRight from '../CopyRight'
 
 class SecondRegistration extends Component {
 	constructor(props){
@@ -92,11 +92,11 @@ class SecondRegistration extends Component {
 	}
 
 	handleChange = (e) => {
-		this.setState({ [e.target.name] : e.target.value, [e.target.name + '_invalid'] : false });
+		this.setState({ [e.target.name] : e.target.value, [e.target.name + '_invalid'] : false })
 	}
 
 	handleBirthDate = (birthdate) => {
-		this.setState({ birthdate });
+		this.setState({ birthdate })
 	}
 
 	onUpdateUser = async () => {
@@ -216,7 +216,7 @@ class SecondRegistration extends Component {
 										<Row>
 											<div className="col col-md-auto no-right-padding">
 												<Select
-													className={'li-input-select sr-num '.concat(phone_code_invalid || phone_invalid ? 'sr-no-margin' : '')}
+													className={ 'li-input-select sr-num '.concat(phone_code_invalid || phone_invalid ? 'sr-no-margin' : '') }
 													name="form-field-name"
 													value={ phone_code }
 													clearable={ false }
@@ -232,8 +232,8 @@ class SecondRegistration extends Component {
 										</Row>
 										{
 											phone_code_invalid || phone_invalid ?
-											<label className="font14 text-red font-weight-semi-bold li-invalid">{ strings.wrong_phone }</label>			
-											:null								
+												<label className="font14 text-red font-weight-semi-bold li-invalid">{ strings.wrong_phone }</label>			
+												:null								
 										}
 									</div>
 
@@ -247,7 +247,7 @@ class SecondRegistration extends Component {
 									<div className="col col-md-6">
 										<label className="font16 text-black-semi full-width no-margin font-weight-semi-bold">{ strings.country }</label>						
 										<Select
-											className={'li-input-select '.concat(origin_country_invalid ? 'sr-no-margin' : '')}
+											className={ 'li-input-select '.concat(origin_country_invalid ? 'sr-no-margin' : '') }
 											name="form-field-name"
 											value={ origin_country }
 											clearable={ false }

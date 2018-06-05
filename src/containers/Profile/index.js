@@ -17,6 +17,7 @@ import ModalChangePassword from '../../components/ModalChangePassword'
 import ModalIdCard from '../../components/ModalIdCard'
 import ModalEditProfile from '../../components/ModalEditProfile'
 import { uploadIdCard } from '../TradeConfirmation/actions'
+import { getLoading } from '../TradeConfirmation/selectors'
 
 class Profile extends Component {
 	constructor(props){
@@ -90,7 +91,7 @@ class Profile extends Component {
 			identification: this.state.file, 
 			id: this.props.user.get('id')
 		}
-		const res = await this.props.uploadIdCard(payload)
+		const res = await this.props.uploadIdCard(payload, true)
 		if(res){
 			await this.props.getUser(this.props.user.get('id'))
 			this.setState({ modalUploadIdCard: false })
@@ -238,7 +239,7 @@ class Profile extends Component {
 					imagePreviewUrl={ this.state.imagePreviewUrl }
 					onClose={ () => this.setState({ modalUploadIdCard: false }) }
 					onSendImage={ this.onSendImage }
-					loading={ this.props.loading }
+					loading={ this.props.id_loading }
 				/>
 				<input 
 					id="file"
@@ -263,6 +264,7 @@ class Profile extends Component {
 
 Profile.propTypes = {
 	loading: PropTypes.bool,
+	id_loading: PropTypes.bool,
 	countries: PropTypes.any,
 	user: PropTypes.object,
 	getUser: PropTypes.func,
@@ -275,6 +277,7 @@ Profile.propTypes = {
 const mapStateToProps = createStructuredSelector({
 	loading: selectors.getLoading(),
 	countries: selectors.getCountries(),
+	id_loading: getLoading(),
 	user: getUser(),
 })
 
@@ -283,7 +286,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getCountries: () => dispatch(actions.getCountries()),
 	updateUser: (payload, id, photoPayload) => dispatch(actions.updateProfile(payload, id, photoPayload)),
 	updatePassword: (payload) => dispatch(actions.updatePassword(payload)),
-	uploadIdCard: (payload) => dispatch(uploadIdCard(payload))
+	uploadIdCard: (payload, alert) => dispatch(uploadIdCard(payload, alert))
 })
 
 export default connect (mapStateToProps, mapDispatchToProps)(Profile)

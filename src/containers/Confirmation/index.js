@@ -6,9 +6,9 @@ import PropTypes from 'prop-types'
 
 import { Logo } from './../../images'
 import strings from '../../localizations'
-import CopyRight from '../../components/CopyRight'
 
 import history from './../../history'
+import CopyRight from '../CopyRight'
 
 class Confirmation extends Component {
 	render() {

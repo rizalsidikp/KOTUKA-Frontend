@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import * as selectors from './../Header/selectors'
+import * as actions from './../Header/actions'
 import PropTypes from 'prop-types'
 
 import './style.scss'
-import Row from '../Row'
 import strings from '../../localizations'
-import ModalHelp from '../ModalHelp'
+import ModalHelp from '../../components/ModalHelp'
+import Row from '../../components/Row'
 
 class CopyRight extends Component {
 	constructor(props) {
@@ -12,6 +16,11 @@ class CopyRight extends Component {
 		this.state = {
 			modalHelp: false
 		}
+	}
+
+	sendEmail = async(payload) => {
+		await this.props.sendEmail(payload)
+		this.setState({ modalHelp: false })
 	}
 	
 	render() {
@@ -31,6 +40,8 @@ class CopyRight extends Component {
 				<ModalHelp
 					open={ this.state.modalHelp }
 					onClose={ () => this.setState({ modalHelp: false }) }
+					loading={ this.props.loading }
+					onClick={ (payload) => this.sendEmail(payload) }
 				/>
 			</div>
 		)
@@ -38,7 +49,17 @@ class CopyRight extends Component {
 }
 
 CopyRight.propTypes = {
-	theme: PropTypes.string
+	theme: PropTypes.string,
+	loading: PropTypes.bool,
+	sendEmail: PropTypes.func
 }
 
-export default CopyRight
+const mapStateToProps = createStructuredSelector({
+	loading: selectors.getLoading(),
+})
+
+const mapDispatchToProps = (dispatch) => ({
+	sendEmail: (payload) => dispatch(actions.sendEmail(payload)),
+})
+
+export default connect (mapStateToProps, mapDispatchToProps) (CopyRight)

@@ -5,7 +5,7 @@ import Row from '../../components/Row'
 
 import { Logo } from './../../images'
 import strings from '../../localizations'
-import CopyRight from '../../components/CopyRight'
+import CopyRight from '../CopyRight'
 
 class Confirmation extends Component {
 	render() {
