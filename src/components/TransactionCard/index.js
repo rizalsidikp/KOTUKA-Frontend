@@ -42,10 +42,10 @@ class TransactionCard extends Component {
 					</div>
 					<div className="font12 text-gray">{ strings.transaction_status }</div>
 					<span className='font16 text-black-semi font-weight-semi-bold'>{
-						this.props.status === 'SETTLEMENT' ?
+						this.props.status === 'SETTLEMENT' && this.props.status_poster !== null ?
 							statusAlias(this.props.statuses, this.props.status_poster) 
 							:
-							statusAlias(this.props.statuses, this.props.status) 
+							statusAlias(this.props.statuses, this.props.status)
 					}</span>
 					{
 						this.props.status === 'PENDING' ? 

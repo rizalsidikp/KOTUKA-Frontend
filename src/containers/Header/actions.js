@@ -15,7 +15,11 @@ export function setInitialState() {
 }
 
 export function setUser(user) {
-	user.address = JSON.parse(user.address)
+	try {
+		user.address = JSON.parse(user.address)
+	} catch (error) {
+		user.address = null
+	}
 	return { type: constants.SET_USER, payload: { user } }
 }
 
@@ -116,6 +120,7 @@ export function login(username, password) {
 				})
 			}
 			if(response.data_user){
+				console.log(response)
 				dispatch(setUser(response.data_user))
 				setHtmlStorage('accessToken', response.token, 1500)
 				setHtmlStorage('firebaseToken', response.rtDB, 1500)

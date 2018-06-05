@@ -4,9 +4,21 @@ import './style.scss'
 import strings from '../../localizations'
 import Countdown from 'react-countdown-now'
 
+
+
 class InquiryBox extends Component {
+	constructor(props){
+		super(props)
+		this.state = {
+			pay: true
+		}
+	}
+
+	renderer = ({ minutes, seconds }) => {
+		return <span>{minutes}:{seconds}</span>
+	}
 	render() {
-		const { you = false, status = '', name = '', deadline = '', isInquiry = false, onClickPayNow = () => {} } = this.props
+		const { you = false, status = '', name = '', deadline = '', onClickPayNow = () => {} } = this.props
 		return (
 			<div className="ib-box">
 				{
@@ -22,14 +34,10 @@ class InquiryBox extends Component {
 							<div className="font14 font-weight-semi-bold text-black ib-name background-light">
 								{ you ? strings.you : name } &nbsp;
 								<span className="text-orange">
-									<Countdown date={ deadline } />
+									<Countdown date={ deadline } renderer={ this.renderer } />
 								</span>
 							</div>
-							{
-								(you || isInquiry) && status === 'PENDING' ?
-									<div className="font14 text-white font-weight-semi-bold button-secondary ib-pay clickable" onClick={ onClickPayNow }>{ strings.pay_now }</div>
-									: status
-							}
+							<div className="font14 text-white font-weight-semi-bold button-secondary ib-pay clickable" onClick={ onClickPayNow }>{ strings.pay_now }</div>
 						</div>
 				}
 			</div>

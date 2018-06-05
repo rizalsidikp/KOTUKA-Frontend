@@ -25,9 +25,11 @@ export function getRecipients(id) {
 			if(response.result){
 				dispatch(setRecipients(response.result))
 			}else{
-				dispatch(setAlertStatus(true, 'danger', strings.fail_get_recipient))
-				dispatch(setRecipients([]))
-				console.log('res = ', response)
+				if(response.msg !== 'THERE IS NO DATA TO SHOW'){
+					dispatch(setAlertStatus(true, 'danger', strings.fail_get_recipient))
+					dispatch(setRecipients([]))
+					console.log('res = ', response)
+				}
 			}
 		} catch (error) {
 			dispatch(setAlertStatus(true, 'danger', strings.fail_get_recipient))

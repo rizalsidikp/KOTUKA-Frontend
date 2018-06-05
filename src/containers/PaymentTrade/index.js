@@ -20,6 +20,21 @@ import history from './../../history'
 // import tradingService from './../../services/trading'
 
 
+const renderer = ({ minutes, seconds, completed }) => {
+	if(completed)
+	{
+		return <Redirect to='/dashboard/transaction' />
+	}
+	return <span>{minutes}:{seconds}</span>
+}
+
+renderer.propTypes = {
+	minutes :PropTypes.string,
+	seconds :PropTypes.string,
+	completed :PropTypes.bool,
+}
+
+
 
 class PaymentTrade extends Component {
 
@@ -213,8 +228,8 @@ class PaymentTrade extends Component {
 									<div className="col col-md-6">
 										<LabelValue
 											label={ strings.time_limit }
-											value={ <Countdown date={ this.props.inquiry.get('deadline_post') } /> }
 											valueClassName="font20 font-weight-bold text-orange"
+											value={ <Countdown date={ this.props.inquiry.get('deadline_post') } renderer={ renderer } /> }
 										/>
 									</div>
 								</Row>
