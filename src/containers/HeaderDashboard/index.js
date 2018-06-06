@@ -58,8 +58,8 @@ class HeaderDashboard extends Component {
 							{strings.profile}
 						</div>
 					</div>
-					<div className="col col-md-auto d-flex align-items-center clickable" onClick={ this.props.logout }>
-						<div className='hd-image' style={{ backgroundImage: `url('${ this.props.user.get('avatar') }')` }} /><i className='down hd-arrow' />
+					<div className="col col-md-auto d-flex align-items-center clickable font-weight-bold text-primary" onClick={ this.props.logout }>
+						<div className='hd-image' style={{ backgroundImage: `url('${ this.props.user.get('avatar') }')` }} /> Logout
 					</div>
 				</Row>
 			</div>

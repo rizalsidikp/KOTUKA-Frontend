@@ -23,10 +23,15 @@ class ModalLogin extends Component {
 		}
 	}
 
+	onClose = () => {
+		this.props.onClose()
+		this.setState({ email: '', password: '' })
+	}
+
 	render() {
 		const { type = 'register', open = false } = this.props
 		return (
-			<Modal open={ open } onClose={ this.props.onClose } contentStyle='ml-body'>
+			<Modal open={ open } onClose={ this.onClose } contentStyle='ml-body'>
 				<h2 className="ml-header background-secondary font24 text-white font-weight-bold no-margin" >{ type === 'register' ? strings.lets_start : strings.login }</h2>
 				<form>
 					<div className="ml-content">
@@ -63,8 +68,7 @@ class ModalLogin extends Component {
 							} }
 							value={ type === 'register' ? strings.register : strings.login }
 						/>
-						<label className="font16 text-primary text-center full-width clickable">{ type === 'register' ? strings.or_register_with : strings.or_login_with }</label>
-
+						<label className="font16 text-primary text-center full-width">{ type === 'register' ? strings.or_register_with : strings.or_login_with }</label>
 						<button 
 							disabled={ this.props.loading } 
 							className="button button-red-google full-width modal-button" 

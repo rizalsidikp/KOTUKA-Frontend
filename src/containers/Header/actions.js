@@ -168,7 +168,10 @@ export function register(email, password) {
 					}
 				})			
 			}else{
-				dispatch(setLoading(false))	
+				dispatch(setLoading(false))
+				if(response.msg === 'USER ALREADY REGISTERED'){
+					return dispatch(setInvalid(true, strings.this_user_already_registered))
+				}	
 				console.log('res = ',response)
 				return dispatch(setInvalid(true, strings.wrong))
 			}

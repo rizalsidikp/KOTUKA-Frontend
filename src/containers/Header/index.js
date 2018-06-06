@@ -50,6 +50,11 @@ class Header extends Component {
 		this.setState({ modalHelp: false })
 	}
 
+	closeModal = () => {
+		this.setState({ modalLogin: false })
+		this.props.setInvalid(false, '')
+	}
+
 
 	render() {
 		return (
@@ -83,7 +88,7 @@ class Header extends Component {
 
 				<ModalLogin
 					open={ this.state.modalLogin }
-					onClose={ () => this.setState({ modalLogin: false }) }
+					onClose={ this.closeModal }
 					loading={ this.props.loading }
 					onGoogleLogin={ this.onGoogleLogin }
 					onFacebookLogin={ this.onFacebookLogin }

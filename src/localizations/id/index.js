@@ -192,6 +192,7 @@ export default {
 	fail_get_account: 'Failed to get accounts',
 	fail_upload_id_card: 'Failed to upload id card',
 	success_upload_id_card: 'Your ID Card succesfully uploaded',
-	fail_get_status: 'Failed to get statuses'
+	fail_get_status: 'Failed to get statuses',
+	this_user_already_registered: 'This user already registered'	
 }
 
