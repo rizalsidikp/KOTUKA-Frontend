@@ -236,7 +236,7 @@ class TradeConfirmation extends Component {
 							theme="top"
 							title={ strings.create_post }
 							pass={ collapse > 1 }
-							disabledNext={ invalidMaxHave || invalidMaxNeed || invalidMinHave || invalidMinNeed || this.props.amountNeed === '' || this.props.amountHave === '' }							
+							disabledNext={ invalidMaxHave || invalidMaxNeed || invalidMinHave || invalidMinNeed || this.props.amountNeed === '' || this.props.amountHave === '' || this.props.homeLoading }							
 							renderOnComplete={ this.renderStepOneComplete(
 								this.props.chooseNeed,
 								this.props.amountNeed,

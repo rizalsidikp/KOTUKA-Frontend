@@ -8,6 +8,8 @@ import LabelInput from './../LabelInput'
 // import './style.scss'
 import strings from '../../localizations'
 
+import { validatePassword } from './../../services/helper'
+
 
 class ModalChangePassword extends Component {
 	constructor(props){
@@ -27,9 +29,19 @@ class ModalChangePassword extends Component {
 		await this.props.onClick(payload)
 		this.setState({ old_password : '', new_password: '', c_password: '' })
 	}
+	
+	onClose = () => {
+		this.props.onClose()
+		this.setState({ old_password : '', new_password: '', c_password: '' })
+	}
+
 	render() {
+		const vNewPassword = validatePassword(this.state.new_password)
+		const vCPassword = this.state.new_password === this.state.c_password
+
+		const valid = this.state.old_password && vNewPassword && vCPassword
 		return (
-			<Modal open={ this.props.open } onClose={ this.props.onClose } >
+			<Modal open={ this.props.open } onClose={ this.onClose } >
 				<div className="mic-content">			
 					<h2 className="font24 text-center text-black-semi font-weight-bold">
 						{ strings.change_password }
@@ -50,6 +62,8 @@ class ModalChangePassword extends Component {
 						placeholder={ strings.your_new_password }
 						value={ this.state.new_password }
 						onChange={ (e) => this.setState({ new_password: e.target.value }) }
+						invalid={ !vNewPassword && !!this.state.new_password }
+						invalidMessage={ strings.password_validation }
 					/>
 					<LabelInput
 						type="password"
@@ -58,8 +72,10 @@ class ModalChangePassword extends Component {
 						placeholder={ strings.confirm_new_password }
 						value={ this.state.c_password }
 						onChange={ (e) => this.setState({ c_password: e.target.value }) }
+						invalid={ !vCPassword && !!this.state.c_password }
+						invalidMessage={ strings.password_not_match }
 					/>
-					<button disabled={ this.props.loading } className="button button-primary full-width" onClick={ this.onChangePassword }>{ strings.change }</button>
+					<button disabled={ this.props.loading || !valid } className="button button-primary full-width" onClick={ this.onChangePassword }>{ strings.change }</button>
 				</div>
 			</Modal>
 		)

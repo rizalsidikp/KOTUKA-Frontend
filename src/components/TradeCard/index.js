@@ -40,7 +40,7 @@ class TradeCard extends Component {
 			<div className="col col-md-6">
 				<Row className="tc-col position-relative">
 					<div className="col col-md-auto tc-img-col d-flex align-items-center">
-						<div className="tc-image" style={{ backgroundImage: `url('${ anonymous ? '' : user.avatar }')` }} />
+						<div className="tc-image" style={{ backgroundImage: `url('${ anonymous ? Profile : user.avatar }')` }} />
 					</div>
 					<div className="col no-padding">
 						<p className="font14 text-gray-dark no-margin p_line"> { anonymous ? censoredText(user.first_and_middle_name + ' ' + user.last_name) : user.first_and_middle_name + ' ' + user.last_name }</p>

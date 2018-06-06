@@ -6,6 +6,7 @@ import Modal from '../Modal'
 import './style.scss'
 import strings from '../../localizations'
 import LabelInput from '../LabelInput'
+import { validateEmail, validatePassword } from '../../services/helper'
 
 
 class ModalLogin extends Component {
@@ -30,6 +31,11 @@ class ModalLogin extends Component {
 
 	render() {
 		const { type = 'register', open = false } = this.props
+		const vEmail = validateEmail(this.state.email)
+		const vPassword = validatePassword(this.state.password)
+
+		const valid = vEmail && vPassword
+
 		return (
 			<Modal open={ open } onClose={ this.onClose } contentStyle='ml-body'>
 				<h2 className="ml-header background-secondary font24 text-white font-weight-bold no-margin" >{ type === 'register' ? strings.lets_start : strings.login }</h2>
@@ -39,7 +45,9 @@ class ModalLogin extends Component {
 							disabled={ this.props.loading } 
 							name='email' label={ strings.your_email } 
 							placeholder={ strings.email_address } 
-							value={ this.state.email } 
+							value={ this.state.email }
+							invalid={ !vEmail && this.state.email !== '' && type === 'register' }
+							invalidMessage={ strings.please_email }
 							onChange={ (e) => {
 								this.setInvalid()
 								this.setState({ email: e.target.value }) }
@@ -50,6 +58,8 @@ class ModalLogin extends Component {
 							label={ strings.password } 
 							placeholder={ strings.password } 
 							value={ this.state.password } 
+							invalid={ !vPassword && this.state.password !== '' && type === 'register' }
+							invalidMessage={ strings.password_validation }
 							onChange={ (e) => {
 								this.setInvalid()							
 								this.setState({ password: e.target.value }) }
@@ -60,7 +70,7 @@ class ModalLogin extends Component {
 						}
 						<input
 							type="submit" 
-							disabled={ this.props.loading } 
+							disabled={ this.props.loading || ( !valid && type === 'register' ) } 
 							className="button button-primary full-width login-button" 
 							onClick={ () => {
 								this.setInvalid()							

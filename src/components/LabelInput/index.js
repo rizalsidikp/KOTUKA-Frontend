@@ -7,7 +7,7 @@ import './style.scss'
 
 class LabelInput extends Component {
 	render() {
-		const { name='', label = '', placeholder = 'Placeholder..', value = '', type = 'text', onChange = () => {}, disabled = false, noLabel = false, labelClassName=''  } = this.props
+		const { name='', maxLength = 100, label = '', placeholder = 'Placeholder..', value = '', type = 'text', onChange = () => {}, disabled = false, noLabel = false, labelClassName=''  } = this.props
 		return (
 			<div className="d-block text-left">
 				{
@@ -26,11 +26,11 @@ class LabelInput extends Component {
 								readOnly
 							/>
 							:
-							<input name={ name } className={ 'li-input '.concat(this.props.invalid ? 'li-no-margin ' : '' ) } type={ type } placeholder={ placeholder } value={ value } onChange={ onChange } disabled={ disabled } />
+							<input maxLength={ maxLength } name={ name } className={ 'li-input '.concat(this.props.invalid ? 'li-no-margin ' : '' ) } type={ type } placeholder={ placeholder } value={ value } onChange={ onChange } disabled={ disabled } />
 				}
 				{
 					this.props.invalid &&
-					<label className="font14 text-red font-weight-semi-bold li-invalid">{ this.props.invalidMessage }</label>
+					<label className="font14 text-red font-weight-semi-bold">{ this.props.invalidMessage }</label>
 				}
 			</div>	
 		)
@@ -46,6 +46,7 @@ LabelInput.propTypes = {
 		PropTypes.object
 	]),
 	type: PropTypes.string,
+	maxLength: PropTypes.number,
 	onChange: PropTypes.func,
 	name: PropTypes.string,
 	disabled: PropTypes.bool,

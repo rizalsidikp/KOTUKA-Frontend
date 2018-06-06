@@ -112,7 +112,7 @@ class PaymentTrade extends Component {
 										<tr>
 											<td className="tc-td font14 text-black-semi">{ strings.kotuka_fee } <br /> 
 												<span className="font12 text-gray">
-													({ strings.fee_percent + ' '  }
+													({ parseFloat(getPercentFromCurrency(this.state.currencies, this.props.inquiry.get('have_currency')))) + strings.fee_percent + ' '  }
 													{ getSymbolFromCurrency(this.props.inquiry.get('have_currency')) + ' ' }
 													{ getCostFromCurrency(this.state.currencies, this.props.inquiry.get('have_currency')) }
 													) + { strings.uniq_code }

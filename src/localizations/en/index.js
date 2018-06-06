@@ -193,5 +193,10 @@ export default {
 	fail_upload_id_card: 'Failed to upload id card',
 	success_upload_id_card: 'Your ID Card succesfully uploaded',
 	fail_get_status: 'Failed to get statuses',
-	this_user_already_registered: 'This user already registered'
+	this_user_already_registered: 'This user already registered',
+	wrong_name: 'Name must contain letters only',
+	wrong_address: 'Please input a valid address',
+	password_not_match: 'Password not match',		
+	wrong_old_password: 'Your old password is wrong',
+	click_image_to_change: 'Click image to change'	
 }

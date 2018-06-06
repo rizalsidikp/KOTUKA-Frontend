@@ -76,6 +76,16 @@ export function validateLength(inputString, length = 3) {
 	return inputString.trim().length >= length
 }
 
+export function validatePassword(password){
+	const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+	return regex.test(password)
+}
+
+export function validateName(name) {
+	const regex = /^[a-zA-Z\s]*$/
+	return regex.test(name)
+}
+
 
 /**
 * method to validate numbers and length

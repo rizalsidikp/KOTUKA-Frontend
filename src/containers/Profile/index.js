@@ -18,6 +18,9 @@ import ModalIdCard from '../../components/ModalIdCard'
 import ModalEditProfile from '../../components/ModalEditProfile'
 import { uploadIdCard } from '../TradeConfirmation/actions'
 import { getLoading } from '../TradeConfirmation/selectors'
+import { Profile as ImageProfile } from './../../images'
+import { getTransactions } from '../Transaction/actions'
+import { getInquiries } from '../Transaction/selectors'
 
 class Profile extends Component {
 	constructor(props){
@@ -30,6 +33,10 @@ class Profile extends Component {
 			file: null,
 			profileUrl: '',
 			photo: null,
+			idImageFile: false,
+			idImageSize: false,
+			photoFile: false,
+			photoSize: false,
 		}
 	}
 	componentWillMount() {
@@ -46,6 +53,10 @@ class Profile extends Component {
 		e.preventDefault()
 		let reader = new FileReader()
 		let file = e.target.files[0]
+
+		const type = file.type.split('/')[0]
+		this.setState({ idImageFile : type === 'image', idImageSize: file.size <= 5242880 })
+
 		reader.onloadend = () => {
 			this.setState({
 				file: file,
@@ -58,6 +69,8 @@ class Profile extends Component {
 		e.preventDefault()
 		let reader = new FileReader()
 		let file = e.target.files[0]
+		const type = file.type.split('/')[0]
+		this.setState({ photoFile : type === 'image', photoSize: file.size <= 2097152 })
 		reader.onloadend = () => {
 			this.setState({
 				photo: file,
@@ -146,11 +159,11 @@ class Profile extends Component {
 				<Row className="justify-content-center">
 					<div className="col col-md-8">
 						<div className="d-flex">
-							<div className="usr-image" style={{ backgroundImage: `url('${ this.props.user.get('avatar') }')` }} />
+							<div className="usr-image" style={{ backgroundImage: `url('${ this.props.user.get('avatar') || ImageProfile }')` }} />
 							<div className="d-flex justify-content-between full-width flex-column usr-name">
 								<div className="font16 text-gray-80 font-weight-semi-bold">{ strings.my_profile }</div>
 								<div className="font36 font-weight-bold text-black-semi" >{ firstName + ' ' + lastName }</div>
-								<div className="font16 text-gray-80 font-weight-semi-bold d-flex align-items-center">{ strings.transaction } &emsp;
+								<div className="font16 text-gray-80 font-weight-semi-bold d-flex align-items-center">{ this.props.inquiries.length + ' ' + strings.transaction } &emsp;
 									<TradeLevel
 										className="font16 usr-lvl"
 										level={ response }
@@ -232,6 +245,8 @@ class Profile extends Component {
 					loading={ this.props.loading }
 					profileUrl={ this.state.profileUrl }		
 					onImgClick = { () => this.uploadImgProfile.click() }
+					wrongSize={ !this.state.photoSize && !!this.state.photo }
+					wrongImage={ !this.state.photoFile && !!this.state.photo }
 				/>
 				<ModalIdCard
 					open={ this.state.modalUploadIdCard }
@@ -266,12 +281,14 @@ Profile.propTypes = {
 	loading: PropTypes.bool,
 	id_loading: PropTypes.bool,
 	countries: PropTypes.any,
+	inquiries: PropTypes.any,
 	user: PropTypes.object,
 	getUser: PropTypes.func,
 	updateUser: PropTypes.func,
 	getCountries: PropTypes.func,
 	updatePassword: PropTypes.func,
 	uploadIdCard: PropTypes.func,
+	getTransactions: PropTypes.func,
 }
 
 const mapStateToProps = createStructuredSelector({
@@ -279,6 +296,7 @@ const mapStateToProps = createStructuredSelector({
 	countries: selectors.getCountries(),
 	id_loading: getLoading(),
 	user: getUser(),
+	inquiries: getInquiries(),
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -286,7 +304,8 @@ const mapDispatchToProps = (dispatch) => ({
 	getCountries: () => dispatch(actions.getCountries()),
 	updateUser: (payload, id, photoPayload) => dispatch(actions.updateProfile(payload, id, photoPayload)),
 	updatePassword: (payload) => dispatch(actions.updatePassword(payload)),
-	uploadIdCard: (payload, alert) => dispatch(uploadIdCard(payload, alert))
+	uploadIdCard: (payload, alert) => dispatch(uploadIdCard(payload, alert)),
+	getTransactions: (id) => dispatch(getTransactions(id))
 })
 
 export default connect (mapStateToProps, mapDispatchToProps)(Profile)

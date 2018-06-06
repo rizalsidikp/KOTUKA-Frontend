@@ -11,7 +11,7 @@ import Row from './../../components/Row'
 
 import strings from '../../localizations'
 import history from './../../history'
-import { Logo } from './../../images'
+import { Logo, Profile } from './../../images'
 
 class HeaderDashboard extends Component {
 
@@ -59,7 +59,7 @@ class HeaderDashboard extends Component {
 						</div>
 					</div>
 					<div className="col col-md-auto d-flex align-items-center clickable font-weight-bold text-primary" onClick={ this.props.logout }>
-						<div className='hd-image' style={{ backgroundImage: `url('${ this.props.user.get('avatar') }')` }} /> Logout
+						<div className='hd-image' style={{ backgroundImage: `url('${ this.props.user.get('avatar') || Profile }')` }} /> Logout
 					</div>
 				</Row>
 			</div>

@@ -50,8 +50,8 @@ export function loginWithGoogle() {
 				dispatch(setUser(userResponse.data_user))
 				setHtmlStorage('accessToken', userResponse.token, 1500)
 				setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
-				dispatch(setLoading(false))		
-				if(userResponse.data_user.address === null || userResponse.data_user.phone === null){
+				dispatch(setLoading(false))
+				if(!userResponse.data_user.first_and_middle_name || !userResponse.data_user.phone_code || !userResponse.data_user.phone || !userResponse.data_user.address.address || !userResponse.data_user.address.post_code ){				
 					localStorage.setItem('secondRegistration', 'true')
 				}else{
 					localStorage.removeItem('secondRegistration')
@@ -85,11 +85,12 @@ export function loginWithFacebook() {
 			}
 			const userResponse = await auth.exLogin(payload)
 			if(userResponse.data_user){
+				console.log(userResponse)				
 				dispatch(setUser(userResponse.data_user))			
 				setHtmlStorage('accessToken', userResponse.token, 1500)
 				setHtmlStorage('firebaseToken', userResponse.rtDB, 1500)
 				dispatch(setLoading(false))		
-				if(userResponse.data_user.address === null || userResponse.data_user.phone === null){
+				if(!userResponse.data_user.first_and_middle_name || !userResponse.data_user.phone_code || !userResponse.data_user.phone || !userResponse.data_user.address.address || !userResponse.data_user.address.post_code ){				
 					localStorage.setItem('secondRegistration', 'true')
 				}else{
 					localStorage.removeItem('secondRegistration')
@@ -120,12 +121,11 @@ export function login(username, password) {
 				})
 			}
 			if(response.data_user){
-				console.log(response)
 				dispatch(setUser(response.data_user))
 				setHtmlStorage('accessToken', response.token, 1500)
 				setHtmlStorage('firebaseToken', response.rtDB, 1500)
 				dispatch(setLoading(false))
-				if(response.data_user.address === null || response.data_user.phone === null){
+				if(!response.data_user.first_and_middle_name || !response.data_user.phone_code || !response.data_user.phone || !response.data_user.address.address || !response.data_user.address.post_code ){								
 					localStorage.setItem('secondRegistration', 'true')
 				}else{
 					localStorage.removeItem('secondRegistration')

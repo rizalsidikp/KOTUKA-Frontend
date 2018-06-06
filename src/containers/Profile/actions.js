@@ -26,7 +26,7 @@ export function getUser(id) {
 			if(response.result){
 				setHtmlStorage('accessToken', response.token, 1500)
 				await dispatch(setUser(response.result))
-				if(response.result.address === null || response.result.phone === null){
+				if(!response.result.first_and_middle_name || !response.result.phone_code || !response.result.phone || !response.result.address.address || !response.result.address.post_code ){
 					if(!localStorage.getItem('secondRegistration')){
 						await localStorage.setItem('secondRegistration', 'true')
 						await dispatch(setLoading(false))
@@ -103,10 +103,14 @@ export function updatePassword(payload) {
 		dispatch(setLoading(true))
 		try{
 			const response  = await userService.changePassword(payload)
-			setHtmlStorage('accessToken', response.token, 1500)
-			await dispatch(	getUser(payload.id))
-			dispatch(setAlertStatus(true, 'success', strings.success_update_password))
-			console.log(response)
+			if(response.wrong_password){
+				setHtmlStorage('accessToken', response.token, 1500)
+				dispatch(setAlertStatus(true, 'danger', strings.wrong_old_password))
+			}else{
+				setHtmlStorage('accessToken', response.token, 1500)
+				await dispatch(	getUser(payload.id))
+				dispatch(setAlertStatus(true, 'success', strings.success_update_password))
+			}
 		}catch (error) {
 			dispatch(setAlertStatus(true, 'danger', strings.fail_update_password))
 			console.log(error)

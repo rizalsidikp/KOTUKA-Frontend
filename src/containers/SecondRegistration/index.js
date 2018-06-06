@@ -15,10 +15,11 @@ import './style.scss'
 import strings from '../../localizations'
 import LabelInput from '../../components/LabelInput'
 import HeaderDashboard from './../HeaderDashboard'
-import { statusHtmlStorage, chunkArray, validateVocalLetter, validateNumber, validateLength } from '../../services/helper'
+import { statusHtmlStorage, chunkArray, validateNumber, validateLength, validateName } from '../../services/helper'
 import TitleWithHr from '../../components/TitleWithHr'
 import Select from 'react-select-plus/lib/Select'
 import CopyRight from '../CopyRight'
+import { Profile, Camera } from './../../images'
 
 class SecondRegistration extends Component {
 	constructor(props){
@@ -34,14 +35,8 @@ class SecondRegistration extends Component {
 			origin_country: '',
 			post_code: '',
 			address: '',
-			//invalid
-			first_and_middle_name_invalid: false,
-			last_name_invalid: false,
-			phone_code_invalid: false,
-			phone_invalid: false,
-			origin_country_invalid: false,
-			post_code_invalid: false,
-			address_invalid: false,
+			photoFile: true,
+			photoSize: true,
 		}
 	}
 	componentWillMount() {
@@ -67,6 +62,8 @@ class SecondRegistration extends Component {
 		e.preventDefault()
 		let reader = new FileReader()
 		let photo = e.target.files[0]
+		const type = photo.type.split('/')[0]
+		this.setState({ photoFile : type === 'image', photoSize: photo.size <= 2097152 })
 		reader.onloadend = () => {
 			this.setState({
 				photo: photo,
@@ -92,7 +89,7 @@ class SecondRegistration extends Component {
 	}
 
 	handleChange = (e) => {
-		this.setState({ [e.target.name] : e.target.value, [e.target.name + '_invalid'] : false })
+		this.setState({ [e.target.name] : e.target.value })
 	}
 
 	handleBirthDate = (birthdate) => {
@@ -111,23 +108,6 @@ class SecondRegistration extends Component {
 			address,
 		} = this.state
 
-		//validation
-		let errorValidation = false
-		await this.setState({
-			first_and_middle_name_invalid: !validateVocalLetter(first_and_middle_name),
-			last_name_invalid: !validateVocalLetter(last_name),
-			phone_code_invalid: phone_code === '',
-			phone_invalid: !validateNumber(phone),
-			origin_country_invalid: origin_country === '',
-			post_code_invalid: !validateLength(post_code),
-			address_invalid: !validateVocalLetter(address),
-		})
-		errorValidation = this.state.first_and_middle_name_invalid || this.state.last_name_invalid || this.state.phone_code_invalid || this.state.phone_invalid || this.state.origin_country_invalid || this.state.post_code_invalid || this.state.address_invalid 
-		if(errorValidation){
-			return true
-		}
-		//validation
-
 		let addressJ = {
 			origin_country,
 			post_code,
@@ -135,16 +115,15 @@ class SecondRegistration extends Component {
 		}
 		addressJ = JSON.stringify(addressJ)
 		const payload = {
-			first_and_middle_name,
-			last_name,
+			first_and_middle_name : first_and_middle_name .trim(),
+			last_name : last_name.trim(),
 			birthday: moment(birthdate).format('YYYY-MM-DD'),
 			phone_code,
-			phone,
-			address: addressJ
+			phone : phone.trim(),
+			address: addressJ.trim()
 		}
 		let photoPayload = null
 		if(this.state.photo){
-			console.log('addaaa')
 			photoPayload = {
 				avatar: this.state.photo,
 				id: this.props.user.get('id')
@@ -170,17 +149,17 @@ class SecondRegistration extends Component {
 			origin_country,
 			post_code,
 			address,
-			//invalid
-			first_and_middle_name_invalid,
-			last_name_invalid,
-			phone_code_invalid,
-			phone_invalid,
-			origin_country_invalid,
-			post_code_invalid,
-			address_invalid,
 		} = this.state
 		const options = chunkArray(this.props.countries, 'name', 'name', 'flag')		
 		const optionsNum = chunkArray(this.props.countries, 'callingCodes', 'callingCodes', 'flag', true)
+
+		const vName = validateName(first_and_middle_name)
+		const vPhone = validateNumber(phone)
+		const vPostCode = validateLength(post_code)
+		const vAddress = validateLength(address, 5)
+
+		const valid = vName && first_and_middle_name && phone_code && vPhone && origin_country && vPostCode && vAddress && this.state.photoFile && this.state.photoSize
+		
 		return (
 			<div>
 				<div className="container sr-container">
@@ -194,16 +173,25 @@ class SecondRegistration extends Component {
 								<h1 className="font24 text-white font-weight-bold">{ strings.before_we_move }, { strings.lets_complete_your_profile }</h1>
 							</div>
 							<div className="sr-form">
-								<div className="sr-photo-profile mx-auto clickable" onClick={ () => this.upload.click() } style={{ backgroundImage: `url('${ imagePreviewUrl }')` }} />
-								<div className="d-flex">
-									<label className="mx-auto font16 text-primary font-weight-semi-bold clickable" onClick={ () => this.upload.click() } >{ strings.upload }</label>
+								<div className="sr-photo-profile mx-auto clickable" onClick={ () => this.upload.click() } style={{ backgroundImage: `url('${ imagePreviewUrl || Profile }')` }} >
+									<div className="profile-camera">
+										<img src={ Camera } />
+									</div>
 								</div>
+								{
+									!this.state.photoFile && !!this.state.photo &&
+									<label className="font14 full-width text-center text-red font-weight-semi-bold">{ strings.file_not_image }</label>					
+								}
+								{
+									!this.state.photoSize && !!this.state.photo &&
+									<label className="font14 full-width text-center text-red font-weight-semi-bold">{ strings.file_to_large } 2MB</label>					
+								}
 								<Row>
 									<div className="col col-md-6">
-										<LabelInput invalid={ first_and_middle_name_invalid } invalidMessage={ strings.wrong_vocal_letter } name='first_and_middle_name' label={ strings.first_n_midle_name } placeholder={ strings.first_n_midle_name } value={ first_and_middle_name } onChange={ this.handleChange } /> 
+										<LabelInput invalid={ !vName && first_and_middle_name !== '' } invalidMessage={ strings.wrong_name } name='first_and_middle_name' label={ strings.first_n_midle_name } placeholder={ strings.first_n_midle_name } value={ first_and_middle_name } onChange={ this.handleChange } /> 
 									</div>
 									<div className="col col-md-6">
-										<LabelInput invalid={ last_name_invalid } invalidMessage={ strings.wrong_vocal_letter } name='last_name' label={ strings.last_name } placeholder={ strings.last_name } value={ last_name } onChange={ this.handleChange } /> 
+										<LabelInput name='last_name' label={ strings.last_name } placeholder={ strings.last_name } value={ last_name } onChange={ this.handleChange } /> 
 									</div>
 
 									<div className="col col-md-6">
@@ -216,7 +204,7 @@ class SecondRegistration extends Component {
 										<Row>
 											<div className="col col-md-auto no-right-padding">
 												<Select
-													className={ 'li-input-select sr-num '.concat(phone_code_invalid || phone_invalid ? 'sr-no-margin' : '') }
+													className={ 'li-input-select sr-num '.concat(!vPhone ? 'sr-no-margin' : '') }
 													name="form-field-name"
 													value={ phone_code }
 													clearable={ false }
@@ -227,11 +215,11 @@ class SecondRegistration extends Component {
 												/>
 											</div>
 											<div className="col">
-												<LabelInput invalid={ phone_invalid } noLabel name='phone' label={ strings.phone } placeholder={ strings.phone } value={ phone } onChange={ this.handleChange } /> 											
+												<LabelInput invalid={ !vPhone && phone !== '' } noLabel name='phone' label={ strings.phone } placeholder={ strings.phone } value={ phone } onChange={ this.handleChange } /> 											
 											</div>
 										</Row>
 										{
-											phone_code_invalid || phone_invalid ?
+											!vPhone ?
 												<label className="font14 text-red font-weight-semi-bold li-invalid">{ strings.wrong_phone }</label>			
 												:null								
 										}
@@ -247,7 +235,7 @@ class SecondRegistration extends Component {
 									<div className="col col-md-6">
 										<label className="font16 text-black-semi full-width no-margin font-weight-semi-bold">{ strings.country }</label>						
 										<Select
-											className={ 'li-input-select '.concat(origin_country_invalid ? 'sr-no-margin' : '') }
+											className={ 'li-input-select ' }
 											name="form-field-name"
 											value={ origin_country }
 											clearable={ false }
@@ -256,19 +244,15 @@ class SecondRegistration extends Component {
 											options={ options }
 											valueRenderer={ (props) => this.renderItem(props) }
 										/>
-										{
-											origin_country_invalid &&
-											<label className="font14 text-red font-weight-semi-bold li-invalid">{ strings.wrong_select }</label>											
-										}
-										<LabelInput invalid={ post_code_invalid } invalidMessage={ strings.wrong_postal_code } name="post_code" label={ strings.postalCode } placeholder={ strings.postalCode } value={ post_code } onChange={ this.handleChange } />							
+										<LabelInput invalid={ !vPostCode && post_code !== '' } invalidMessage={ strings.wrong_postal_code } name="post_code" label={ strings.postalCode } placeholder={ strings.postalCode } value={ post_code } onChange={ this.handleChange } />							
 									</div>
 									<div className="col col-md-6">
-										<LabelInput invalid={ address_invalid } invalidMessage={ strings.wrong_vocal_letter }  type='textarea' name='address' label={ strings.address } placeholder={ strings.address } value={ address } onChange={ this.handleChange } />										
+										<LabelInput invalid={ !vAddress && address !== '' } invalidMessage={ strings.wrong_address }  type='textarea' name='address' label={ strings.address } placeholder={ strings.address } value={ address } onChange={ this.handleChange } />										
 									</div>
 									<div className="col col-md-6">
 									</div>
 									<div className="col col-md-16">
-										<button disabled={ this.props.loading } className="button button-primary full-width" onClick={ this.onUpdateUser }>{ strings.complete_my_profile }</button>
+										<button disabled={ this.props.loading || !valid } className="button button-primary full-width" onClick={ this.onUpdateUser }>{ strings.complete_my_profile }</button>
 									</div>				
 								</Row>
 							</div>

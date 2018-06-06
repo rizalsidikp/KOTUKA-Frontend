@@ -39,7 +39,7 @@ export default (state = INITIAL_STATE, action) => {
 		return state.setIn(['user', 'address', 'origin_country'], action.payload.user.address ? action.payload.user.address.origin_country : '')
 			.setIn(['user', 'address', 'post_code'], action.payload.user.address ? action.payload.user.address.post_code : '')
 			.setIn(['user', 'address', 'address'], action.payload.user.address ? action.payload.user.address.address : '')
-			.setIn(['user', 'avatar'], action.payload.user.avatar || '')
+			.setIn(['user', 'avatar'], action.payload.user.avatar  + '?' + new Date().getTime() || '')
 			.setIn(['user', 'birthday'], action.payload.user.birthday || '')
 			.setIn(['user', 'createdAt'], action.payload.user.createdAt || '')
 			.setIn(['user', 'email'], action.payload.user.email || '')
@@ -52,7 +52,7 @@ export default (state = INITIAL_STATE, action) => {
 			.setIn(['user', 'trans_count'], action.payload.user.trans_count || 0)
 			.setIn(['user', 'updatedAt'], action.payload.user.updatedAt || '')
 			.setIn(['user', 'verified'], action.payload.user.verified || '')
-			.setIn(['user', 'identification_photo'], action.payload.user.identification_photo || null)
+			.setIn(['user', 'identification_photo'], action.payload.user.identification_photo  + '?' + new Date().getTime() || null)
 			.setIn(['user', 'verified_id'], action.payload.user.verified_id || null)
 	case constants.SET_ID_CARD:
 		return state.setIn(['user', 'identification_photo'], action.payload.identification_photo)

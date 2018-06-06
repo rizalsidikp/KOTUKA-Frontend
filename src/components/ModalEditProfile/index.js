@@ -9,10 +9,10 @@ import LabelInput from './../LabelInput'
 import './style.scss'
 import strings from '../../localizations'
 import Row from '../Row'
-import { chunkArray } from '../../services/helper'
+import { chunkArray, validateNumber, validateLength } from '../../services/helper'
 import Select from 'react-select-plus/lib/Select'
 import TitleWithHr from '../TitleWithHr'
-
+import { Camera, Profile } from './../../images'
 
 class ModalEditProfile extends Component {
 
@@ -104,6 +104,14 @@ class ModalEditProfile extends Component {
 	render() {
 		const options = chunkArray(this.props.countries, 'name', 'name', 'flag')		
 		const optionsNum = chunkArray(this.props.countries, 'callingCodes', 'callingCodes', 'flag', true)
+
+		const vPhone = validateNumber(this.state.phone)
+		const vPostCode = validateLength(this.state.post_code)
+		const vAddress = validateLength(this.state.address, 5)
+
+		const valid = this.state.phone_code && vPhone && this.state.origin_country && vPostCode && vAddress && !this.props.wrongSize && !this.props.wrongImage
+
+
 		return (
 			<Modal open={ this.props.open } onClose={ this.onClose } contentStyle="mep-wrapper" >
 				<div className="mic-content">			
@@ -111,7 +119,19 @@ class ModalEditProfile extends Component {
 						{ strings.edit_profile }
 					</h2>
 					<hr />
-					<div className="mep-photo-profile mx-auto clickable" style={{ backgroundImage: `url('${ this.props.profileUrl }')` }} onClick={ this.props.onImgClick } />
+					<div className="mep-photo-profile mx-auto clickable" style={{ backgroundImage: `url('${ this.props.profileUrl || Profile }')` }} onClick={ this.props.onImgClick } >
+						<div className="profile-camera">
+							<img src={ Camera } />
+						</div>
+					</div>
+					{
+						this.props.wrongImage &&
+						<label className="font14 full-width text-center text-red font-weight-semi-bold">{ strings.file_not_image }</label>					
+					}
+					{
+						this.props.wrongSize &&
+						<label className="font14 full-width text-center text-red font-weight-semi-bold">{ strings.file_to_large } 2MB</label>					
+					}
 					<Row>
 						<div className="col col-md-6">
 							<LabelInput disabled name="firstname" label={ strings.first_n_midle_name } value={ this.state.first_and_middle_name } onChange={ (e) => this.setState({ first_and_middle_name: e.target.value }) } />
@@ -123,7 +143,7 @@ class ModalEditProfile extends Component {
 							<Row>
 								<div className="col col-md-auto no-right-padding">
 									<Select
-										className="li-input-select mep-num"
+										className={ 'li-input-select mep-num '.concat(!vPhone ? 'sr-no-margin' : '') }
 										name="form-field-name"
 										value={ this.state.phone_code }
 										clearable={ false }
@@ -134,9 +154,14 @@ class ModalEditProfile extends Component {
 									/>
 								</div>
 								<div className="col">
-									<LabelInput noLabel name='phone' label={ strings.phone } placeholder={ strings.phone } value={ this.state.phone } onChange={ (e) => this.setState({ phone : e.target.value }) } /> 																				
+									<LabelInput maxLength={ 15 } noLabel name='phone' label={ strings.phone } placeholder={ strings.phone } value={ this.state.phone } onChange={ (e) => this.setState({ phone : e.target.value }) } /> 																				
 								</div>
 							</Row>
+							{
+								!vPhone ?
+									<label className="font14 text-red font-weight-semi-bold li-invalid">{ strings.wrong_phone }</label>			
+									:null								
+							}
 						</div>
 						<div className="col col-md-12">
 							<TitleWithHr
@@ -156,14 +181,14 @@ class ModalEditProfile extends Component {
 								options={ options }
 								valueRenderer={ (props) => this.renderItem(props) }
 							/>
-							<LabelInput name="postalCode" label={ strings.postalCode } placeholder={ strings.postalCode } value={ this.state.post_code } onChange={ (e) => this.setState({ post_code: e.target.value }) } />					
+							<LabelInput invalid={ !vPostCode && this.state.post_code !== '' } invalidMessage={ strings.wrong_postal_code } name="postalCode" label={ strings.postalCode } placeholder={ strings.postalCode } value={ this.state.post_code } onChange={ (e) => this.setState({ post_code: e.target.value }) } />					
 						</div>
 						<div className="col col-md-6">
-							<LabelInput type='textarea' name='address' label={ strings.address } placeholder={ strings.address } value={ this.state.address } onChange={ (e) => this.setState({ address : e.target.value }) } />																
+							<LabelInput invalid={ !vAddress && this.state.address !== '' } invalidMessage={ strings.wrong_address } type='textarea' name='address' label={ strings.address } placeholder={ strings.address } value={ this.state.address } onChange={ (e) => this.setState({ address : e.target.value }) } />																
 						</div>
 						<div className="col col-md-12 d-flex justify-content-end">
-							<button className="button button-secondary-white" disabled={ this.props.loading } >{ strings.cancel }</button>
-							<button className="button button-primary mep-btn" onClick={ this.onUpdateUser } disabled={ this.props.loading }>{ strings.save }</button>
+							<button className="button button-secondary-white" onClick={ this.onClose } disabled={ this.props.loading } >{ strings.cancel }</button>
+							<button className="button button-primary mep-btn" onClick={ this.onUpdateUser } disabled={ this.props.loading || !valid }>{ strings.save }</button>
 						</div>				
 					</Row>						
 				</div>
@@ -174,6 +199,8 @@ class ModalEditProfile extends Component {
 
 ModalEditProfile.propTypes = {
 	open: PropTypes.bool,
+	wrongSize: PropTypes.bool,
+	wrongImage: PropTypes.bool,
 	loading: PropTypes.bool,
 	onClose: PropTypes.func,
 	onButtonClick: PropTypes.func,
